@@ -8,3 +8,5 @@ $connection = db_connect();
 if(!$connection) {
     echo "Could not connect to database: " . mysql_error();
 }
+?>
+<div><a href="add_tutorial.php">Add a new tutorial</a></div>
