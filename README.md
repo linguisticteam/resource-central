@@ -1,4 +1,4 @@
-# video-tutorials
+# Video Tutorials
 A management system for all video tutorials that we have.
 
 Features planned for version 1.0:
