@@ -11,6 +11,16 @@ CREATE TABLE `video` (
   `parts` INT UNSIGNED,
   `description` MEDIUMTEXT,
   PRIMARY KEY (id)
-) ENGINE=MyISAM
+) ENGINE=MyISAM;
+
+DROP TABLE IF EXISTS `video_url`
+CREATE TABLE `video_url` (
+  `id` INT AUTO_INCREMENT,
+  `video_id` INT REFERENCES `video` (`id`),
+  `part` INT UNSIGNED,
+  `part_title` VARCHAR(128),
+  `url` VARCHAR(1024),
+  PRIMARY KEY (id)
+) ENGINE=MyISAM;
 
 COMMIT
