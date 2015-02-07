@@ -3,6 +3,8 @@ START TRANSACTION;
 DROP DATABASE IF EXISTS `video_tutorials`;
 CREATE DATABASE `video_tutorials`;
 
+USE `video_tutorials`;
+
 DROP TABLE IF EXISTS `video`;
 CREATE TABLE `video` (
   `id` INT AUTO_INCREMENT,
