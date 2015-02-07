@@ -1,7 +1,9 @@
 START TRANSACTION;
 
 DROP DATABASE IF EXISTS `video_tutorials`;
-CREATE DATABASE `video_tutorials`;
+CREATE DATABASE `video_tutorials`
+DEFAULT CHARACTER SET utf8
+DEFAULT COLLATE utf_unicode_ci;
 
 USE `video_tutorials`;
 
@@ -13,7 +15,10 @@ CREATE TABLE `video` (
   `parts` INT UNSIGNED,
   `description` MEDIUMTEXT,
   PRIMARY KEY (id)
-) ENGINE=MyISAM;
+)
+ENGINE=MyISAM
+CHARACTER SET utf8
+COLLATE utf_unicode_ci;
 
 DROP TABLE IF EXISTS `video_url`;
 CREATE TABLE `video_url` (
@@ -23,6 +28,9 @@ CREATE TABLE `video_url` (
   `part_title` VARCHAR(128),
   `url` VARCHAR(1024),
   PRIMARY KEY (id)
-) ENGINE=MyISAM;
+)
+ENGINE=MyISAM
+CHARACTER SET utf8
+COLLATE utf_unicode_ci;
 
 COMMIT
