@@ -1,6 +1,6 @@
 <?php
 /* Don't allow direct access */
-defined('START') or die();
+//defined('START') or die();
 
 /** MySQL hostname */
 define('DB_HOST', 'localhost');

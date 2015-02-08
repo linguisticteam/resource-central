@@ -3,11 +3,6 @@ define('START', true);
 
 require_once('lib/config.php');
 require_once('/lib/database.php');
-
-$connection = db_connect();
-if(!$connection) {
-    echo "Could not connect to database: " . mysql_error();
-}
 ?>
 <h2>Add a new video tutorial:</h2>
 <form method="post" action="lib/add_entry.php" name="add_video">
