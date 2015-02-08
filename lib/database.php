@@ -34,16 +34,10 @@ function add_entry($connection, $author, $title, $url, $description) {
         // ToDo: output message probably through SESSION
         echo "Could not write to video table";
     }
-    
+
     $video_id = get_video_id($title);
-    
-    $sql = "INSERT INTO video_url(video_id, part, part_title, url)"
-            . "VALUES('{$video_id}', NULL, NULL, '{$url}')";
-    $result = mysqli_query($connection, $sql);
-    if(!$result) {
-        // ToDo: output message probably through SESSION
-        echo "Could not write to video_url table";
-    }
+
+    add_part($connection,$title,$url,"NULL");
 }
 
 function add_part($connection,$title,$url,$part) {
