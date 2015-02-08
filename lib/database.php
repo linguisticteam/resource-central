@@ -46,6 +46,13 @@ function add_entry($connection, $author, $title, $url, $description) {
     }
 }
 
-function add_part() {
-    
+function add_part($connection,$title,$url,$part) {
+    $video_id = get_video_id($title);
+    $sql = "INSERT INTO video_url(video_id,part,part_title,url)"
+        . "VALUES('($video_id)','($part)','($title)','($url)')";
+    $result = mysqli_query($connection,$sql);
+    if(!$result) {
+        // ToDo: output message probably through SESSION
+        echo "Could not write to video_url table";
+    }
 }
