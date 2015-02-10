@@ -67,6 +67,21 @@ CREATE TABLE `content` (
 )
 ENGINE=MyISAM;
 
+CREATE TABLE `content_type` (
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
+CREATE TABLE `content_info` (
+	`id` INT AUTO_INCREMENT,
+	`title` TINYTEXT,
+	`description` MEDIUMTEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
 CREATE TABLE `content_purpose` (
 	`id` INT AUTO_INCREMENT,
 	`name` TINYTEXT,
@@ -92,13 +107,5 @@ INSERT INTO `content_medium` (name) VALUES (
 	'AUDIO FILE',
 	'PDF'
 );
-
-CREATE TABLE `content_info` (
-	`id` INT AUTO_INCREMENT,
-	`title` TINYTEXT,
-	`description` MEDIUMTEXT,
-	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
 
 COMMIT
