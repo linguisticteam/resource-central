@@ -1,11 +1,11 @@
 START TRANSACTION;
 
-DROP DATABASE IF EXISTS `tutorials`;
-CREATE DATABASE `tutorials`
+DROP DATABASE IF EXISTS `content_reference_central`;
+CREATE DATABASE `content_reference_central`
 DEFAULT CHARACTER SET utf8
 DEFAULT COLLATE utf_unicode_ci;
 
-USE `tutorials`;
+USE `content_reference_central`;
 
 CREATE TABLE `source` (
 	`id` INT AUTO_INCREMENT,
