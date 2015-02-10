@@ -33,12 +33,12 @@ ENGINE=MyISAM;
 
 CREATE TABLE `creditee_type` (
 	`id` INT AUTO_INCREMENT,
-	`type` TINYTEXT,
+	`name` TINYTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-INSERT INTO `creditee_type` (type) VALUES (
+INSERT INTO `creditee_type` (name) VALUES (
 	'AUTHOR',
 	'CO-AUTHOR'
 );
@@ -53,10 +53,29 @@ ENGINE=MyISAM;
 
 CREATE TABLE `content_type` (
 	`id` INT AUTO_INCREMENT,
-	`type` TINYTEXT,
+	`name` TINYTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
+
+INSERT INTO `content_type` (name) VALUES (
+	'TUTORIAL',
+	'DOCUMENTATION'
+);
+
+CREATE TABLE `content_medium` (
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
+INSERT INTO `content_medium` (name) VALUES (
+	'VIDEO STREAM',
+	'VIDEO FILE',
+	'AUDIO FILE',
+	'PDF'
+);
 
 CREATE TABLE `content_info` (
 	`id` INT AUTO_INCREMENT,
