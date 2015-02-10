@@ -59,7 +59,7 @@ INSERT INTO `creditee_type` (name) VALUES (
 CREATE TABLE `content` (
 	`id` INT AUTO_INCREMENT,
 	`parent_id` INT REFERENCES `content` (`id`),
-	`child_order` INT,
+	`child_index` INT,
 	`content_type_ref` INT REFERENCES `content_type` (`id`),
 	`content_info_ref` INT REFERENCES `content_info` (`id`),
 	`content_purpose_ref` INT REFERENCES `content_purpose` (`id`),
