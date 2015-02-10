@@ -10,22 +10,22 @@ USE `tutorials`;
 CREATE TABLE `source` (
 	`id` INT AUTO_INCREMENT,
 	`content_ref` INT REFERENCES `content` (`id`),
-	`type_ref` INT REFERENCES `source_type` (`id`),
-	`full_name` TINYTEXT,
+	`source_type_ref` INT REFERENCES `source_type` (`id`),
+	`name` TINYTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
 CREATE TABLE `source_type` (
 	`id` INT AUTO_INCREMENT,
-	`type` TINYTEXT,
+	`name` TINYTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
 CREATE TABLE `creditee` (
 	`id` INT AUTO_INCREMENT,
-	`type` INT REFERENCES `creditee_type` (`id`),
+	`creditee_type_ref` INT REFERENCES `creditee_type` (`id`),
 	`full_name` TINYTEXT,
 	PRIMARY KEY (id)
 )
