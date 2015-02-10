@@ -27,6 +27,14 @@ INSERT INTO `source_type` (name) VALUES (
 	'INTERNET SITE'
 );
 
+CREATE TABLE `url` (
+	`id` INT AUTO_INCREMENT,
+	`at_table` INT,
+	`url` TEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
 CREATE TABLE `creditee` (
 	`id` INT AUTO_INCREMENT,
 	`creditee_type_ref` INT REFERENCES `creditee_type` (`id`),
