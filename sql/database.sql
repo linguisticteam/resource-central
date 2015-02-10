@@ -13,18 +13,14 @@ CREATE TABLE `creditee` (
 	`full_name` TINYTEXT,
 	PRIMARY KEY (id)
 )
-ENGINE=MyISAM
-CHARACTER SET utf8
-COLLATE utf_unicode_ci;
+ENGINE=MyISAM;
 
 CREATE TABLE `creditee_type` (
 	`id` INT AUTO_INCREMENT,
 	`type` TINYTEXT,
 	PRIMARY KEY (id)
 )
-ENGINE=MyISAM
-CHARACTER SET utf8
-COLLATE utf_unicode_ci;
+ENGINE=MyISAM;
 
 INSERT INTO `creditee_type` (type) VALUES (
 	'AUTHOR',
@@ -36,17 +32,13 @@ CREATE TABLE `content` (
 	`type` INT REFERENCES `content_type` (`id`),
 	PRIMARY KEY (id)
 )
-ENGINE=MyISAM
-CHARACTER SET utf8
-COLLATE utf_unicode_ci;
+ENGINE=MyISAM;
 
 CREATE TABLE `content_type` (
 	`id` INT AUTO_INCREMENT,
 	`type` TINYTEXT,
 	PRIMARY KEY (id)
 )
-ENGINE=MyISAM
-CHARACTER SET utf8
-COLLATE utf_unicode_ci;
+ENGINE=MyISAM;
 
 COMMIT
