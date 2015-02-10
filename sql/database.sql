@@ -29,7 +29,8 @@ INSERT INTO `source_type` (name) VALUES (
 
 CREATE TABLE `url` (
 	`id` INT AUTO_INCREMENT,
-	`at_table` INT,
+	`ref_id` INT,
+	`in_table` INT,
 	`url` TEXT,
 	PRIMARY KEY (id)
 )
