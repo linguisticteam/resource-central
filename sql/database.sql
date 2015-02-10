@@ -23,6 +23,10 @@ CREATE TABLE `source_type` (
 )
 ENGINE=MyISAM;
 
+INSERT INTO `source_type` (name) VALUES (
+	'INTERNET SITE'
+);
+
 CREATE TABLE `creditee` (
 	`id` INT AUTO_INCREMENT,
 	`creditee_type_ref` INT REFERENCES `creditee_type` (`id`),
@@ -47,18 +51,20 @@ CREATE TABLE `content` (
 	`id` INT AUTO_INCREMENT,
 	`content_type_ref` INT REFERENCES `content_type` (`id`),
 	`content_info_ref` INT REFERENCES `content_info` (`id`),
+	`content_purpose_ref` INT REFERENCES `content_purpose` (`id`),
+	`content_medium_ref` INT REFERENCES `content_medium` (`id`),
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-CREATE TABLE `content_type` (
+CREATE TABLE `content_purpose` (
 	`id` INT AUTO_INCREMENT,
 	`name` TINYTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-INSERT INTO `content_type` (name) VALUES (
+INSERT INTO `content_purpose` (name) VALUES (
 	'TUTORIAL',
 	'DOCUMENTATION'
 );
