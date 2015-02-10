@@ -1,36 +1,112 @@
 START TRANSACTION;
 
-DROP DATABASE IF EXISTS `video_tutorials`;
-CREATE DATABASE `video_tutorials`
+DROP DATABASE IF EXISTS `content_reference_central`;
+CREATE DATABASE `content_reference_central`
 DEFAULT CHARACTER SET utf8
 DEFAULT COLLATE utf_unicode_ci;
 
-USE `video_tutorials`;
+USE `content_reference_central`;
 
-DROP TABLE IF EXISTS `video`;
-CREATE TABLE `video` (
-  `id` INT AUTO_INCREMENT,
-  `author` VARCHAR(64),
-  `title` VARCHAR(128),
-  `parts` INT UNSIGNED,
-  `description` MEDIUMTEXT,
-  PRIMARY KEY (id)
+CREATE TABLE `source` (
+	`id` INT AUTO_INCREMENT,
+	`content_ref` INT REFERENCES `content` (`id`),
+	`source_type_ref` INT REFERENCES `source_type` (`id`),
+	`name` TINYTEXT,
+	PRIMARY KEY (id)
 )
-ENGINE=MyISAM
-CHARACTER SET utf8
-COLLATE utf_unicode_ci;
+ENGINE=MyISAM;
 
-DROP TABLE IF EXISTS `video_url`;
-CREATE TABLE `video_url` (
-  `id` INT AUTO_INCREMENT,
-  `video_id` INT REFERENCES `video` (`id`),
-  `part` INT UNSIGNED,
-  `part_title` VARCHAR(128),
-  `url` VARCHAR(1024),
-  PRIMARY KEY (id)
+CREATE TABLE `source_type` (
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT,
+	PRIMARY KEY (id)
 )
-ENGINE=MyISAM
-CHARACTER SET utf8
-COLLATE utf_unicode_ci;
+ENGINE=MyISAM;
+
+INSERT INTO `source_type` (name) VALUES (
+	'INTERNET SITE'
+);
+
+CREATE TABLE `url` (
+	`id` INT AUTO_INCREMENT,
+	`ref_id` INT,
+	`in_table` ENUM('source','creditee','content'),
+	`url` TEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
+CREATE TABLE `creditee` (
+	`id` INT AUTO_INCREMENT,
+	`creditee_type_ref` INT REFERENCES `creditee_type` (`id`),
+	`full_name` TINYTEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
+CREATE TABLE `creditee_type` (
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
+INSERT INTO `creditee_type` (name) VALUES (
+	'AUTHOR',
+	'CO-AUTHOR'
+);
+
+CREATE TABLE `content` (
+	`id` INT AUTO_INCREMENT,
+	`parent_id` INT REFERENCES `content` (`id`),
+	`child_index` INT,
+	`content_type_ref` INT REFERENCES `content_type` (`id`),
+	`content_info_ref` INT REFERENCES `content_info` (`id`),
+	`content_purpose_ref` INT REFERENCES `content_purpose` (`id`),
+	`content_medium_ref` INT REFERENCES `content_medium` (`id`),
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
+CREATE TABLE `content_type` (
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
+CREATE TABLE `content_info` (
+	`id` INT AUTO_INCREMENT,
+	`title` TINYTEXT,
+	`description` MEDIUMTEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
+CREATE TABLE `content_purpose` (
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
+INSERT INTO `content_purpose` (name) VALUES (
+	'TUTORIAL',
+	'DOCUMENTATION'
+);
+
+CREATE TABLE `content_medium` (
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
+INSERT INTO `content_medium` (name) VALUES (
+	'VIDEO STREAM',
+	'VIDEO FILE',
+	'AUDIO FILE',
+	'PDF'
+);
 
 COMMIT
