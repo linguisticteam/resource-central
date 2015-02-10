@@ -25,4 +25,9 @@ ENGINE=MyISAM
 CHARACTER SET utf8
 COLLATE utf_unicode_ci;
 
+INSERT INTO `creditee_type` (type) VALUES (
+	'AUTHOR',
+	'CO-AUTHOR'
+);
+
 COMMIT
