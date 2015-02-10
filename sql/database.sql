@@ -7,6 +7,22 @@ DEFAULT COLLATE utf_unicode_ci;
 
 USE `tutorials`;
 
+CREATE TABLE `source` (
+	`id` INT AUTO_INCREMENT,
+	`content_ref` INT REFERENCES `content` (`id`),
+	`type_ref` INT REFERENCES `source_type` (`id`),
+	`full_name` TINYTEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
+CREATE TABLE `source_type` (
+	`id` INT AUTO_INCREMENT,
+	`type` TINYTEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
 CREATE TABLE `creditee` (
 	`id` INT AUTO_INCREMENT,
 	`type` INT REFERENCES `creditee_type` (`id`),
@@ -29,7 +45,8 @@ INSERT INTO `creditee_type` (type) VALUES (
 
 CREATE TABLE `content` (
 	`id` INT AUTO_INCREMENT,
-	`type` INT REFERENCES `content_type` (`id`),
+	`content_type_ref` INT REFERENCES `content_type` (`id`),
+	`content_info_ref` INT REFERENCES `content_info` (`id`),
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
@@ -37,6 +54,14 @@ ENGINE=MyISAM;
 CREATE TABLE `content_type` (
 	`id` INT AUTO_INCREMENT,
 	`type` TINYTEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
+CREATE TABLE `content_info` (
+	`id` INT AUTO_INCREMENT,
+	`title` TINYTEXT,
+	`description` MEDIUMTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
