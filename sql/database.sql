@@ -104,15 +104,20 @@ INSERT INTO `content_purpose` (name) VALUES (
 CREATE TABLE `content_medium` (
 	`id` INT AUTO_INCREMENT,
 	`name` TINYTEXT,
+	`content_type_match` INT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
 INSERT INTO `content_medium` (name) VALUES (
 	'VIDEO STREAM',
+		SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO',
 	'VIDEO FILE',
+		SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO',
 	'AUDIO FILE',
-	'PDF'
+		SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO',
+	'PDF',
+		SELECT `id` FROM `content_type` WHERE `name` LIKE 'TEXT'
 );
 
 COMMIT
