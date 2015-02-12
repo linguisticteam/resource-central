@@ -75,6 +75,12 @@ CREATE TABLE `content_type` (
 )
 ENGINE=MyISAM;
 
+INSERT INTO `content_type` (name) VALUES (
+	'AUDIO',
+	'VIDEO',
+	'TEXT'
+);
+
 CREATE TABLE `content_info` (
 	`id` INT AUTO_INCREMENT,
 	`title` TINYTEXT,
