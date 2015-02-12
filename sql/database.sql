@@ -114,6 +114,8 @@ INSERT INTO `content_medium` (name) VALUES (
 		SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO',
 	'VIDEO FILE',
 		SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO',
+	'AUDIO STREAM',
+		SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO',
 	'AUDIO FILE',
 		SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO',
 	'PDF',
