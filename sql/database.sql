@@ -59,6 +59,14 @@ INSERT INTO `creditee_type` (name) VALUES (
 	'CO-AUTHOR'
 );
 
+CREATE TABLE `creditee_attribute` (
+	`id` INT AUTO_INCREMENT,
+	`creditee_id` INT,
+	`name` TINYTEXT,
+	`value` TINYTEXT
+)
+ENGINE=MyISAM;
+
 CREATE TABLE `content` (
 	`id` INT AUTO_INCREMENT,
 	`parent_id` INT REFERENCES `content` (`id`),
