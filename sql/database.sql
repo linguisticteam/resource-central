@@ -9,8 +9,8 @@ USE `content_reference_central`;
 
 CREATE TABLE `source` (
 	`id` INT AUTO_INCREMENT,
-	`content_ref` INT REFERENCES `content` (`id`),
-	`source_type_ref` INT REFERENCES `source_type` (`id`),
+	`content_id` INT REFERENCES `content` (`id`),
+	`source_type_id` INT REFERENCES `source_type` (`id`),
 	`name` TINYTEXT,
 	PRIMARY KEY (id)
 )
@@ -39,33 +39,51 @@ CREATE TABLE `url` (
 )
 ENGINE=MyISAM;
 
+CREATE TABLE `creditee_to_content` (
+	`id` INT AUTO_INCREMENT,
+	`creditee_id` INT REFERENCES `creditee` (`id`),
+	`content_id` INT REFERENCES `content` (`id`)
+)
+ENGINE=MyISAM;
+
 CREATE TABLE `creditee` (
 	`id` INT AUTO_INCREMENT,
-	`creditee_type_ref` INT REFERENCES `creditee_type` (`id`),
 	`full_name` TINYTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-CREATE TABLE `creditee_type` (
-	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT,
-	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
-
-INSERT INTO `creditee_type` (name) VALUES (
-	'AUTHOR',
-	'CO-AUTHOR'
-);
-
 CREATE TABLE `creditee_attribute` (
 	`id` INT AUTO_INCREMENT,
-	`creditee_id` INT,
-	`name` TINYTEXT,
+	`creditee_id` INT REFERENCES `creditee` (`id`),
+	`creditee_attribute_type_id` INT REFERENCES `creditee_attribute_type` (`id`),
 	`value` TINYTEXT
 )
 ENGINE=MyISAM;
+
+CREATE TABLE `creditee_attribute_type` (
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT
+)
+ENGINE=MyISAM;
+
+INSERT INTO `creditee_attribute_type` VALUES (
+	'CREDITEE TYPE',
+	'FIRST NAME',
+	'MIDDLE NAME',
+	'LAST NAME'
+);
+
+CREATE TABLE `valid_creditee_type` (
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT
+)
+ENGINE=MYISAM;
+
+INSERT INTO `valid_creditee_type` VALUES (
+	'AUTHOR',
+	'CO-AUTHOR'
+);
 
 CREATE TABLE `content` (
 	`id` INT AUTO_INCREMENT,
