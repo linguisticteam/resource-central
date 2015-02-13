@@ -30,7 +30,10 @@ INSERT INTO `source_type` (name) VALUES (
 CREATE TABLE `url` (
 	`id` INT AUTO_INCREMENT,
 	`ref_id` INT,
-	`in_table` ENUM('source','creditee','content'),
+	`in_table` ENUM(
+		'source',
+		'creditee',
+		'content'),
 	`url` TEXT,
 	PRIMARY KEY (id)
 )
