@@ -48,7 +48,6 @@ ENGINE=MyISAM;
 
 CREATE TABLE `creditee` (
 	`id` INT AUTO_INCREMENT,
-	`full_name` TINYTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
