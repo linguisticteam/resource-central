@@ -51,7 +51,7 @@ function add_creditee_attribute($connection, $creditee_id, $attribute_name, $att
         return;
     }
 
-    $creditee_attribute_type_id = $result;
+    $creditee_attribute_type_id = mysqli_fetch_array($result)[0];
 
     $sql = "INSERT INTO creditee_attribute(creditee_id, creditee_attribute_type_id, value)"
         . "VALUES('{$creditee_id}', '{$creditee_attribute_type_id}', '{$value}');"
