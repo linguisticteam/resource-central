@@ -140,15 +140,15 @@ ENGINE=MyISAM;
 
 INSERT INTO `content_medium` (name) VALUES (
 	'VIDEO STREAM',
-		SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO',
+		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO'),
 	'VIDEO FILE',
-		SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO',
+		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO'),
 	'AUDIO STREAM',
-		SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO',
+		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO'),
 	'AUDIO FILE',
-		SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO',
+		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO'),
 	'PDF',
-		SELECT `id` FROM `content_type` WHERE `name` LIKE 'TEXT'
+		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'TEXT')
 );
 
 COMMIT
