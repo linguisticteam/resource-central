@@ -6,7 +6,7 @@ DEFAULT CHARACTER SET utf8
 DEFAULT COLLATE utf_unicode_ci;
 
 USE `content_reference_central`;
-
+/* :) */
 CREATE TABLE `source` (
 	`id` INT AUTO_INCREMENT,
 	`content_id` INT REFERENCES `content` (`id`),
