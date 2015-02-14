@@ -3,7 +3,7 @@ START TRANSACTION;
 DROP DATABASE IF EXISTS `content_reference_central`;
 CREATE DATABASE `content_reference_central`
 DEFAULT CHARACTER SET 'utf8'
-DEFAULT COLLATE 'utf_unicode_ci';
+DEFAULT COLLATE 'utf8_unicode_ci';
 
 USE `content_reference_central`;
 
@@ -42,7 +42,8 @@ ENGINE=MyISAM;
 CREATE TABLE `creditee_to_content` (
 	`id` INT AUTO_INCREMENT,
 	`creditee_id` INT REFERENCES `creditee` (`id`),
-	`content_id` INT REFERENCES `content` (`id`)
+	`content_id` INT REFERENCES `content` (`id`),
+	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
@@ -57,33 +58,36 @@ CREATE TABLE `creditee_attribute` (
 	`id` INT AUTO_INCREMENT,
 	`creditee_id` INT REFERENCES `creditee` (`id`),
 	`creditee_attribute_type_id` INT REFERENCES `creditee_attribute_type` (`id`),
-	`value` TINYTEXT
+	`value` TINYTEXT,
+	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
 CREATE TABLE `creditee_attribute_type` (
 	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT
+	`name` TINYTEXT,
+	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-INSERT INTO `creditee_attribute_type` VALUES (
-	'CREDITEE TYPE',
-	'FIRST NAME',
-	'MIDDLE NAME',
-	'LAST NAME'
-);
+INSERT INTO `creditee_attribute_type` (name) VALUES
+	('CREDITEE TYPE'),
+	('FIRST NAME'),
+	('MIDDLE NAME'),
+	('LAST NAME')
+;
 
 CREATE TABLE `valid_creditee_type` (
 	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT
+	`name` TINYTEXT,
+	PRIMARY KEY (id)
 )
 ENGINE=MYISAM;
 
-INSERT INTO `valid_creditee_type` VALUES (
-	'AUTHOR',
-	'CO-AUTHOR'
-);
+INSERT INTO `valid_creditee_type` (name) VALUES
+	('AUTHOR'),
+	('CO-AUTHOR')
+;
 
 CREATE TABLE `content` (
 	`id` INT AUTO_INCREMENT,
@@ -104,11 +108,11 @@ CREATE TABLE `content_type` (
 )
 ENGINE=MyISAM;
 
-INSERT INTO `content_type` (name) VALUES (
-	'AUDIO',
-	'VIDEO',
-	'TEXT'
-);
+INSERT INTO `content_type` (name) VALUES
+	('AUDIO'),
+	('VIDEO'),
+	('TEXT')
+;
 
 CREATE TABLE `content_info` (
 	`id` INT AUTO_INCREMENT,
@@ -125,10 +129,10 @@ CREATE TABLE `content_purpose` (
 )
 ENGINE=MyISAM;
 
-INSERT INTO `content_purpose` (name) VALUES (
-	'TUTORIAL',
-	'DOCUMENTATION'
-);
+INSERT INTO `content_purpose` (name) VALUES
+	('TUTORIAL'),
+	('DOCUMENTATION')
+;
 
 CREATE TABLE `content_medium` (
 	`id` INT AUTO_INCREMENT,
@@ -138,17 +142,17 @@ CREATE TABLE `content_medium` (
 )
 ENGINE=MyISAM;
 
-INSERT INTO `content_medium` (name) VALUES (
-	'VIDEO STREAM',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO'),
-	'VIDEO FILE',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO'),
-	'AUDIO STREAM',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO'),
-	'AUDIO FILE',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO'),
-	'PDF',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'TEXT')
-);
+INSERT INTO `content_medium` (name,content_type_match) VALUES
+	('VIDEO STREAM',
+		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO')),
+	('VIDEO FILE',
+		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO')),
+	('AUDIO STREAM',
+		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO')),
+	('AUDIO FILE',
+		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO')),
+	('PDF',
+		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'TEXT'))
+;
 
 COMMIT
