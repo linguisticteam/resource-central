@@ -77,14 +77,14 @@ INSERT INTO `creditee_attribute_type` (name) VALUES
 	('LAST NAME')
 ;
 
-CREATE TABLE `valid_creditee_type` (
+CREATE TABLE `creditee_valid_type` (
 	`id` INT AUTO_INCREMENT,
 	`name` TINYTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MYISAM;
 
-INSERT INTO `valid_creditee_type` (name) VALUES
+INSERT INTO `creditee_valid_type` (name) VALUES
 	('AUTHOR'),
 	('CO-AUTHOR')
 ;
