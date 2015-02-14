@@ -6,7 +6,7 @@ DEFAULT CHARACTER SET utf8
 DEFAULT COLLATE utf_unicode_ci;
 
 USE `content_reference_central`;
-
+/* :) */
 CREATE TABLE `source` (
 	`id` INT AUTO_INCREMENT,
 	`content_id` INT REFERENCES `content` (`id`),
@@ -48,7 +48,7 @@ ENGINE=MyISAM;
 
 CREATE TABLE `creditee` (
 	`id` INT AUTO_INCREMENT,
-	`full_name` TINYTEXT,
+	`temp_id` INT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
@@ -89,10 +89,10 @@ CREATE TABLE `content` (
 	`id` INT AUTO_INCREMENT,
 	`parent_id` INT REFERENCES `content` (`id`),
 	`child_index` INT,
-	`content_type_ref` INT REFERENCES `content_type` (`id`),
-	`content_info_ref` INT REFERENCES `content_info` (`id`),
-	`content_purpose_ref` INT REFERENCES `content_purpose` (`id`),
-	`content_medium_ref` INT REFERENCES `content_medium` (`id`),
+	`content_type_id` INT REFERENCES `content_type` (`id`),
+	`content_info_id` INT REFERENCES `content_info` (`id`),
+	`content_purpose_id` INT REFERENCES `content_purpose` (`id`),
+	`content_medium_id` INT REFERENCES `content_medium` (`id`),
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
