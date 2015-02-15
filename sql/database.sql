@@ -7,6 +7,10 @@ DEFAULT COLLATE 'utf8_unicode_ci';
 
 USE `content_reference_central`;
 
+/*--------------------------------*/
+/*----   TABLES AND INSERTS   ----*/
+/*--------------------------------*/
+
 CREATE TABLE `source` (
 	`id` INT AUTO_INCREMENT,
 	`content_id` INT REFERENCES `content` (`id`),
@@ -154,5 +158,79 @@ INSERT INTO `content_medium` (name,content_type_match) VALUES
 	('PDF',
 		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'TEXT'))
 ;
+
+/*-------------------*/
+/*----   VIEWS   ----*/
+/*-------------------*/
+
+CREATE VIEW view_all_creditees AS
+	SELECT
+		`creditee`.`id` AS 'Creditee ID',
+		(SELECT `value`
+			FROM `creditee_attribute`
+			WHERE `creditee_attribute_type_id` LIKE
+				(SELECT `id` FROM `creditee_attribute_type` WHERE `name` LIKE 'FIRST NAME')
+			AND `creditee_id` LIKE `creditee`.`id`) AS 'First Name',
+		(SELECT `value`
+			FROM `creditee_attribute`
+			WHERE `creditee_attribute_type_id` LIKE
+				(SELECT `id` FROM `creditee_attribute_type` WHERE `name` LIKE 'LAST NAME')
+			AND `creditee_id` LIKE `creditee`.`id`) AS 'Last Name'
+	FROM
+		`creditee`;
+
+/*-------------------------------*/
+/*----   STORED PROCEDURES   ----*/
+/*-------------------------------*/
+
+DELIMITER $
+
+CREATE FUNCTION stfc_get_creditee_attribute_type_id (
+	param_attribute_name TINYTEXT)
+RETURNS INT
+BEGIN
+	RETURN (SELECT `id` FROM `creditee_attribute_type` WHERE `name` LIKE param_attribute_name);
+END $
+
+CREATE PROCEDURE stpc_insert_new_creditee_attribute (
+	IN param_creditee_id INT,
+	IN param_creditee_attribute_name TINYTEXT,
+	IN param_value TINYTEXT)
+BEGIN
+	INSERT INTO `creditee_attribute` (
+		creditee_id,
+		creditee_attribute_type_id,
+		value)
+	VALUES (
+		param_creditee_id,
+		stfc_get_creditee_attribute_type_id(param_creditee_attribute_name),
+		param_value
+	);
+END $
+
+CREATE PROCEDURE stpc_insert_new_creditee (
+	IN param_first_name TINYTEXT,
+	IN param_last_name TINYTEXT)
+BEGIN
+	DECLARE local_current_insert_id INT;
+
+	INSERT INTO `creditee` () VALUES ();
+
+	SET local_current_insert_id = LAST_INSERT_ID();
+
+	CALL stpc_insert_new_creditee_attribute(
+		local_current_insert_id,
+		'FIRST NAME',
+		param_first_name
+	);
+
+	CALL stpc_insert_new_creditee_attribute(
+		local_current_insert_id,
+		'LAST NAME',
+		param_last_name
+	);
+END $
+
+DELIMITER ;
 
 COMMIT
