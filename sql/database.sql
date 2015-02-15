@@ -159,38 +159,58 @@ INSERT INTO `content_medium` (name,content_type_match) VALUES
 		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'TEXT'))
 ;
 
+/*-------------------*/
+/*----   VIEWS   ----*/
+/*-------------------*/
+
+CREATE VIEW view_all_creditees AS
+	SELECT
+		`creditee`.`id` AS 'Creditee ID',
+		(SELECT `value`
+			FROM `creditee_attribute`
+			WHERE `creditee_attribute_type_id` LIKE
+				(SELECT `id` FROM `creditee_attribute_type` WHERE `name` LIKE 'FIRST NAME')
+			AND `creditee_id` LIKE `creditee`.`id`) AS 'First Name',
+		(SELECT `value`
+			FROM `creditee_attribute`
+			WHERE `creditee_attribute_type_id` LIKE
+				(SELECT `id` FROM `creditee_attribute_type` WHERE `name` LIKE 'LAST NAME')
+			AND `creditee_id` LIKE `creditee`.`id`) AS 'Last Name'
+	FROM
+		`creditee`;
+
 /*-------------------------------*/
 /*----   STORED PROCEDURES   ----*/
 /*-------------------------------*/
 
 DELIMITER $
 
-CREATE PROCEDURE stpc_get_creditee_attribute_type_id (
+CREATE FUNCTION stfc_get_creditee_attribute_type_id (
 	param_attribute_name TINYTEXT)
+RETURNS INT
 BEGIN
 	RETURN (SELECT `id` FROM `creditee_attribute_type` WHERE `name` LIKE param_attribute_name);
 END $
 
 CREATE PROCEDURE stpc_insert_new_creditee_attribute (
-	param_creditee_id INT,
-	param_creditee_attribute_name TINYTEXT,
-	param_value TINYTEXT)
+	IN param_creditee_id INT,
+	IN param_creditee_attribute_name TINYTEXT,
+	IN param_value TINYTEXT)
 BEGIN
 	INSERT INTO `creditee_attribute` (
 		creditee_id,
 		creditee_attribute_type_id,
 		value)
 	VALUES (
-		local_current_insert_id,
-		(SELECT stpc_get_creditee_attribute_type_id(param_creditee_attribute_name)),
+		param_creditee_id,
+		stfc_get_creditee_attribute_type_id(param_creditee_attribute_name),
 		param_value
-		)
-	;
+	);
 END $
 
 CREATE PROCEDURE stpc_insert_new_creditee (
-	param_first_name TINYTEXT,
-	param_last_name TINYTEXT)
+	IN param_first_name TINYTEXT,
+	IN param_last_name TINYTEXT)
 BEGIN
 	DECLARE local_current_insert_id INT;
 
@@ -198,13 +218,13 @@ BEGIN
 
 	SET local_current_insert_id = LAST_INSERT_ID();
 
-	SELECT stpc_insert_new_creditee_attribute(
+	CALL stpc_insert_new_creditee_attribute(
 		local_current_insert_id,
 		'FIRST NAME',
 		param_first_name
 	);
 
-	SELECT stpc_insert_new_creditee_attribute(
+	CALL stpc_insert_new_creditee_attribute(
 		local_current_insert_id,
 		'LAST NAME',
 		param_last_name
