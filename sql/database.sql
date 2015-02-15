@@ -7,6 +7,10 @@ DEFAULT COLLATE 'utf8_unicode_ci';
 
 USE `content_reference_central`;
 
+/*--------------------------------*/
+/*----   TABLES AND INSERTS   ----*/
+/*--------------------------------*/
+
 CREATE TABLE `source` (
 	`id` INT AUTO_INCREMENT,
 	`content_id` INT REFERENCES `content` (`id`),
@@ -154,5 +158,59 @@ INSERT INTO `content_medium` (name,content_type_match) VALUES
 	('PDF',
 		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'TEXT'))
 ;
+
+/*-------------------------------*/
+/*----   STORED PROCEDURES   ----*/
+/*-------------------------------*/
+
+DELIMITER $
+
+CREATE PROCEDURE stpc_get_creditee_attribute_type_id (
+	param_attribute_name TINYTEXT)
+BEGIN
+	RETURN (SELECT `id` FROM `creditee_attribute_type` WHERE `name` LIKE param_attribute_name);
+END $
+
+CREATE PROCEDURE stpc_insert_new_creditee_attribute (
+	param_creditee_id INT,
+	param_creditee_attribute_name TINYTEXT,
+	param_value TINYTEXT)
+BEGIN
+	INSERT INTO `creditee_attribute` (
+		creditee_id,
+		creditee_attribute_type_id,
+		value)
+	VALUES (
+		local_current_insert_id,
+		(SELECT stpc_get_creditee_attribute_type_id(param_creditee_attribute_name)),
+		param_value
+		)
+	;
+END $
+
+CREATE PROCEDURE stpc_insert_new_creditee (
+	param_first_name TINYTEXT,
+	param_last_name TINYTEXT)
+BEGIN
+	DECLARE local_current_insert_id INT;
+
+	INSERT INTO `creditee` () VALUES ();
+
+	SET local_current_insert_id = LAST_INSERT_ID();
+
+	SELECT stpc_insert_new_creditee_attribute(
+		local_current_insert_id,
+		'FIRST NAME',
+		param_first_name
+	);
+
+	SELECT stpc_insert_new_creditee_attribute(
+		local_current_insert_id,
+		'LAST NAME',
+		param_last_name
+	);
+END $
+
+DELIMITER ;
 
 COMMIT
