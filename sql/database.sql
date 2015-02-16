@@ -95,13 +95,6 @@ INSERT INTO `creditee_attribute_type` (name) VALUES
 	('LAST NAME')
 ;
 
-CREATE TABLE `creditee_valid_type` (
-	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT,
-	PRIMARY KEY (id)
-)
-ENGINE=MYISAM;
-
 CREATE TABLE `content` (
 	`id` INT AUTO_INCREMENT,
 	`parent_id` INT REFERENCES `content` (`id`),
