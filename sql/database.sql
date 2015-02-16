@@ -43,13 +43,29 @@ CREATE TABLE `url` (
 )
 ENGINE=MyISAM;
 
-CREATE TABLE `creditee_to_content` (
+CREATE TABLE `creditee_role` (
 	`id` INT AUTO_INCREMENT,
 	`creditee_id` INT REFERENCES `creditee` (`id`),
+	`role_type_id` INT REFERENCES `role_type` (`id`),
 	`content_id` INT REFERENCES `content` (`id`),
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
+
+CREATE TABLE `role_type` (
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT,
+	PRIMARY KEY (id)
+)
+ENGINE=MyISAM;
+
+INSERT INTO `role_type` (name) VALUES
+	('Author'),
+	('Co-Author'),
+	('Editor'),
+	('Producer'),
+	('Director')
+;
 
 CREATE TABLE `creditee` (
 	`id` INT AUTO_INCREMENT,
@@ -75,7 +91,6 @@ CREATE TABLE `creditee_attribute_type` (
 ENGINE=MyISAM;
 
 INSERT INTO `creditee_attribute_type` (name) VALUES
-	('CREDITEE TYPE'),
 	('FIRST NAME'),
 	('MIDDLE NAME'),
 	('LAST NAME')
@@ -87,11 +102,6 @@ CREATE TABLE `creditee_valid_type` (
 	PRIMARY KEY (id)
 )
 ENGINE=MYISAM;
-
-INSERT INTO `creditee_valid_type` (name) VALUES
-	('AUTHOR'),
-	('CO-AUTHOR')
-;
 
 CREATE TABLE `content` (
 	`id` INT AUTO_INCREMENT,
