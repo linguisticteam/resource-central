@@ -107,14 +107,14 @@ CREATE TABLE `content` (
 )
 ENGINE=MyISAM;
 
-CREATE TABLE `content_type` (
+CREATE TABLE `content_base_type` (
 	`id` INT AUTO_INCREMENT,
 	`name` TINYTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-INSERT INTO `content_type` (name) VALUES
+INSERT INTO `content_base_type` (name) VALUES
 	('AUDIO'),
 	('VIDEO'),
 	('TEXT')
