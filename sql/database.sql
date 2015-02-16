@@ -99,7 +99,7 @@ CREATE TABLE `content` (
 	`id` INT AUTO_INCREMENT,
 	`parent_id` INT REFERENCES `content` (`id`),
 	`child_index` INT,
-	`content_type_id` INT REFERENCES `content_type` (`id`),
+	`content_base_type_id` INT REFERENCES `content_base_type` (`id`),
 	`content_info_id` INT REFERENCES `content_info` (`id`),
 	`content_purpose_id` INT REFERENCES `content_purpose` (`id`),
 	`content_medium_id` INT REFERENCES `content_medium` (`id`),
