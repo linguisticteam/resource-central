@@ -69,7 +69,6 @@ INSERT INTO `role_type` (name) VALUES
 
 CREATE TABLE `creditee` (
 	`id` INT AUTO_INCREMENT,
-	`temp_id` INT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
