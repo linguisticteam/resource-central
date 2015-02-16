@@ -31,28 +31,16 @@ INSERT INTO `source_type` (name) VALUES (
 	'INTERNET SITE'
 );
 
-CREATE TABLE `url` (
-	`id` INT AUTO_INCREMENT,
-	`ref_id` INT,
-	`in_table` ENUM(
-		'source',
-		'creditee',
-		'content'),
-	`url` TEXT,
-	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
-
 CREATE TABLE `creditee_role` (
 	`id` INT AUTO_INCREMENT,
 	`creditee_id` INT REFERENCES `creditee` (`id`),
-	`role_type_id` INT REFERENCES `role_type` (`id`),
+	`creditee_role_type_id` INT REFERENCES `creditee_role_type` (`id`),
 	`content_id` INT REFERENCES `content` (`id`),
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-CREATE TABLE `role_type` (
+CREATE TABLE `creditee_role_type` (
 	`id` INT AUTO_INCREMENT,
 	`name` TINYTEXT,
 	PRIMARY KEY (id)
@@ -100,7 +88,6 @@ CREATE TABLE `content` (
 	`parent_id` INT REFERENCES `content` (`id`),
 	`child_index` INT,
 	`content_base_type_id` INT REFERENCES `content_base_type` (`id`),
-	`content_info_id` INT REFERENCES `content_info` (`id`),
 	`content_purpose_id` INT REFERENCES `content_purpose` (`id`),
 	`content_medium_id` INT REFERENCES `content_medium` (`id`),
 	PRIMARY KEY (id)
@@ -122,11 +109,22 @@ INSERT INTO `content_base_type` (name) VALUES
 
 CREATE TABLE `content_info` (
 	`id` INT AUTO_INCREMENT,
-	`title` TINYTEXT,
-	`description` MEDIUMTEXT,
+	`content_info_type_id` INT REFERENCES `content_info_type` (`id`),
+	`value` MEDIUMTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
+
+CREATE TABLE `content_info_type` (
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT
+)
+ENGINE=MyISAM;
+
+INSERT INTO `content_info_type` (name) VALUES
+	('TITLE'),
+	('DESCRIPTION')
+;
 
 CREATE TABLE `content_purpose` (
 	`id` INT AUTO_INCREMENT,
