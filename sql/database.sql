@@ -11,226 +11,143 @@ USE `content_reference_central`;
 /*----   TABLES AND INSERTS   ----*/
 /*--------------------------------*/
 
-CREATE TABLE `source` (
+CREATE TABLE `page` (
 	`id` INT AUTO_INCREMENT,
-	`content_id` INT REFERENCES `content` (`id`),
-	`source_type_id` INT REFERENCES `source_type` (`id`),
-	`name` TINYTEXT,
+)
+ENGINE=MyISAM;
+
+CREATE TABLE `parse_relation` (
+	`id` INT AUTO_INCREMENT,
+	`action` ENUM (
+		'print'
+	);
+	`first_entity_type_name` TINYTEXT,
+	`relation_type_name` TINYTEXT,
+	`second_entity_type_name` TINYTEXT,
+	`description` MEDIUMTEXT,
+	`code` MEDIUMTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-CREATE TABLE `source_type` (
-	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT,
-	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
-
-INSERT INTO `source_type` (name) VALUES (
-	'INTERNET SITE'
-);
-
-CREATE TABLE `creditee_role` (
-	`id` INT AUTO_INCREMENT,
-	`creditee_id` INT REFERENCES `creditee` (`id`),
-	`creditee_role_type_id` INT REFERENCES `creditee_role_type` (`id`),
-	`content_id` INT REFERENCES `content` (`id`),
-	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
-
-CREATE TABLE `creditee_role_type` (
-	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT,
-	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
-
-INSERT INTO `role_type` (name) VALUES
-	('Author'),
-	('Co-Author'),
-	('Editor'),
-	('Producer'),
-	('Director')
+INSERT INTO `parse_relation` (
+	action,
+	first_entity_type_name,
+	relation_type_name,
+	second_entity_type_name,
+	description,
+	code)
+	(	'print',
+		'PERSON',
+		'MEMBER OF',
+		'ORGANIZATION',
+		'Print membership.',
+		'Is member of %s')
 ;
 
-CREATE TABLE `creditee` (
+CREATE TABLE `parse_attribute` (
 	`id` INT AUTO_INCREMENT,
+	`action` ENUM (
+		'print'
+	);
+	`entity_type_name` TINYTEXT,
+	`attribute_type_name` TINYTEXT,
+	`description` MEDIUMTEXT,
+	`code` MEDIUMTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-CREATE TABLE `creditee_attribute` (
+INSERT INTO `parse_attribute` (
+	action,
+	entity_type_name,
+	attribute_type_name,
+	description,
+	code)
+	(	'print',
+		'PERSON',
+		'FIRST NAME',
+		'Print the first name of a person.',
+		'First name: %s')
+;
+
+CREATE TABLE `entity` (
 	`id` INT AUTO_INCREMENT,
-	`creditee_id` INT REFERENCES `creditee` (`id`),
-	`creditee_attribute_type_id` INT REFERENCES `creditee_attribute_type` (`id`),
-	`value` TINYTEXT,
+	`entity_type_id` INT REFERENCES `entity_type` (`id`),
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-CREATE TABLE `creditee_attribute_type` (
+CREATE TABLE `entity_type` (
 	`id` INT AUTO_INCREMENT,
 	`name` TINYTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-INSERT INTO `creditee_attribute_type` (name) VALUES
-	('FIRST NAME'),
-	('MIDDLE NAME'),
-	('LAST NAME')
+INSERT INTO `entity_type` (name) VALUES
+	('PERSON'),
+	('ORGANIZATION'),
+	('TEAM'),
+	('CONTENT'),
+	('INTERNET SITE')
 ;
 
-CREATE TABLE `content` (
+CREATE TABLE `relation` (
 	`id` INT AUTO_INCREMENT,
-	`parent_id` INT REFERENCES `content` (`id`),
-	`child_index` INT,
-	`content_base_type_id` INT REFERENCES `content_base_type` (`id`),
-	`content_purpose_id` INT REFERENCES `content_purpose` (`id`),
-	`content_medium_id` INT REFERENCES `content_medium` (`id`),
+	`relation_type_id` INT REFERENCES `relation_type` (`id`),
+	`from_entity_id` INT REFERENCES `entity` (`id`),
+	`to_entity_id` INT REFERENCES `entity` (`id`),
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-CREATE TABLE `content_base_type` (
+CREATE TABLE `relation_type` (
 	`id` INT AUTO_INCREMENT,
 	`name` TINYTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-INSERT INTO `content_base_type` (name) VALUES
-	('AUDIO'),
-	('VIDEO'),
-	('TEXT')
+INSERT INTO `relation_type` (name) VALUES
+	('AUTHOR OF'),
+	('CO-AUTHOR OF'),
+	('OWNER OF'),
+	('COORDINATOR OF'),
+	('PRODUCER OF'),
+	('MEMBER OF')
 ;
 
-CREATE TABLE `content_info` (
+CREATE TABLE `attribute` (
 	`id` INT AUTO_INCREMENT,
-	`content_info_type_id` INT REFERENCES `content_info_type` (`id`),
+	`entity_id` INT REFERENCES `entity` (`id`),
+	`attribute_type_id` INT REFERENCES `attribute_type` (`id`),
 	`value` MEDIUMTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-CREATE TABLE `content_info_type` (
-	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT
-)
-ENGINE=MyISAM;
-
-INSERT INTO `content_info_type` (name) VALUES
-	('TITLE'),
-	('DESCRIPTION')
-;
-
-CREATE TABLE `content_purpose` (
+CREATE TABLE `attribute_type` (
 	`id` INT AUTO_INCREMENT,
 	`name` TINYTEXT,
 	PRIMARY KEY (id)
 )
 ENGINE=MyISAM;
 
-INSERT INTO `content_purpose` (name) VALUES
-	('TUTORIAL'),
-	('DOCUMENTATION')
-;
-
-CREATE TABLE `content_medium` (
-	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT,
-	`content_type_match` INT,
-	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
-
-INSERT INTO `content_medium` (name,content_type_match) VALUES
-	('VIDEO STREAM',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO')),
-	('VIDEO FILE',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO')),
-	('AUDIO STREAM',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO')),
-	('AUDIO FILE',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO')),
-	('PDF',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'TEXT'))
+INSERT INTO `attribute_type` (name) VALUES
+	('FIRST NAME'),
+	('LAST NAME'),
+	('MIDDLE NAME'),
+	('URL'),
+	('E-MAIL')
 ;
 
 /*-------------------*/
 /*----   VIEWS   ----*/
 /*-------------------*/
 
-CREATE VIEW view_all_creditees AS
-	SELECT
-		`creditee`.`id` AS 'Creditee ID',
-		(SELECT `value`
-			FROM `creditee_attribute`
-			WHERE `creditee_attribute_type_id` LIKE
-				(SELECT `id` FROM `creditee_attribute_type` WHERE `name` LIKE 'FIRST NAME')
-			AND `creditee_id` LIKE `creditee`.`id`) AS 'First Name',
-		(SELECT `value`
-			FROM `creditee_attribute`
-			WHERE `creditee_attribute_type_id` LIKE
-				(SELECT `id` FROM `creditee_attribute_type` WHERE `name` LIKE 'LAST NAME')
-			AND `creditee_id` LIKE `creditee`.`id`) AS 'Last Name'
-	FROM
-		`creditee`;
-
 /*-------------------------------*/
 /*----   STORED PROCEDURES   ----*/
 /*-------------------------------*/
-
-DELIMITER $
-
-CREATE FUNCTION stfc_get_creditee_attribute_type_id (
-	param_attribute_name TINYTEXT)
-RETURNS INT
-BEGIN
-	RETURN (SELECT `id` FROM `creditee_attribute_type` WHERE `name` LIKE param_attribute_name);
-END $
-
-CREATE PROCEDURE stpc_insert_new_creditee_attribute (
-	IN param_creditee_id INT,
-	IN param_creditee_attribute_name TINYTEXT,
-	IN param_value TINYTEXT)
-BEGIN
-	INSERT INTO `creditee_attribute` (
-		creditee_id,
-		creditee_attribute_type_id,
-		value)
-	VALUES (
-		param_creditee_id,
-		stfc_get_creditee_attribute_type_id(param_creditee_attribute_name),
-		param_value
-	);
-END $
-
-CREATE PROCEDURE stpc_insert_new_creditee (
-	IN param_first_name TINYTEXT,
-	IN param_last_name TINYTEXT)
-BEGIN
-	DECLARE local_current_insert_id INT;
-
-	INSERT INTO `creditee` () VALUES ();
-
-	SET local_current_insert_id = LAST_INSERT_ID();
-
-	CALL stpc_insert_new_creditee_attribute(
-		local_current_insert_id,
-		'FIRST NAME',
-		param_first_name
-	);
-
-	CALL stpc_insert_new_creditee_attribute(
-		local_current_insert_id,
-		'LAST NAME',
-		param_last_name
-	);
-END $
-
-DELIMITER ;
 
 COMMIT
