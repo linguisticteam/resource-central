@@ -11,7 +11,7 @@ USE `content_reference_central`;
 /*----   TABLES AND INSERTS   ----*/
 /*--------------------------------*/
 
-CREATE TABLE `page` (
+CREATE TABLE `page_context` (
 	`id` INT AUTO_INCREMENT,
 )
 ENGINE=MyISAM;
