@@ -12,7 +12,7 @@ USE `content_reference_central`;
 /*--------------------------------*/
 
 CREATE TABLE `page_context` (
-	`id` INT AUTO_INCREMENT,
+	`id` INT AUTO_INCREMENT
 )
 ENGINE=MyISAM;
 
@@ -20,7 +20,7 @@ CREATE TABLE `parse_relation` (
 	`id` INT AUTO_INCREMENT,
 	`action` ENUM (
 		'print'
-	);
+	),
 	`first_entity_type_name` TINYTEXT,
 	`relation_type_name` TINYTEXT,
 	`second_entity_type_name` TINYTEXT,
@@ -36,7 +36,7 @@ INSERT INTO `parse_relation` (
 	relation_type_name,
 	second_entity_type_name,
 	description,
-	code)
+	code) VALUES
 	(	'print',
 		'PERSON',
 		'MEMBER OF',
@@ -49,7 +49,7 @@ CREATE TABLE `parse_attribute` (
 	`id` INT AUTO_INCREMENT,
 	`action` ENUM (
 		'print'
-	);
+	),
 	`entity_type_name` TINYTEXT,
 	`attribute_type_name` TINYTEXT,
 	`description` MEDIUMTEXT,
@@ -63,7 +63,7 @@ INSERT INTO `parse_attribute` (
 	entity_type_name,
 	attribute_type_name,
 	description,
-	code)
+	code) VALUES
 	(	'print',
 		'PERSON',
 		'FIRST NAME',
