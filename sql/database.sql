@@ -30,7 +30,7 @@ CREATE TABLE `element` (
 CREATE TABLE `entity` (
     `id` INT AUTO_INCREMENT,
     `resource_id` INT REFERENCES `resource` (`id`),
-`entity_type_id` INT REFERENCES `entity_type` (`id`),
+    `entity_type_id` INT REFERENCES `entity_type` (`id`),
 PRIMARY KEY (id)
 );
 
@@ -41,8 +41,8 @@ CREATE TABLE `entity_type` (
 );
 
 INSERT INTO `entity_type` (name) VALUES
-('PERSON'),
-('ORGANIZATION')
+    ('PERSON'),
+    ('ORGANIZATION')
 ;
 
 CREATE TABLE `resource_type` (
@@ -52,8 +52,8 @@ CREATE TABLE `resource_type` (
 );
 
 INSERT INTO `resource_type` (name) VALUES
-('TUTORIAL'),
-('DOCUMENTATION')
+    ('TUTORIAL'),
+    ('DOCUMENTATION')
 ;
 
 CREATE TABLE `element_type` (
