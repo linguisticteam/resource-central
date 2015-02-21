@@ -11,8 +11,15 @@ USE `content_reference_central`;
 /*----   TABLES AND INSERTS   ----*/
 /*--------------------------------*/
 
-CREATE TABLE `page_context` (
-	`id` INT AUTO_INCREMENT
+CREATE TABLE `page_field` (
+	`id` INT AUTO_INCREMENT,
+	`index` INT,
+	`name` TINYTEXT,
+	`type` ENUM (
+		'text_print',
+		'text_edit'
+	),
+	`entity_id` INT
 )
 ENGINE=MyISAM;
 
@@ -149,5 +156,7 @@ INSERT INTO `attribute_type` (name) VALUES
 /*-------------------------------*/
 /*----   STORED PROCEDURES   ----*/
 /*-------------------------------*/
+
+
 
 COMMIT
