@@ -79,24 +79,22 @@ INSERT INTO `element_type` (name) VALUES
 /*----   STORED PROCEDURES   ----*/
 /*-------------------------------*/
 
-/* Stored procedure to insert an entity */
-
 DELIMITER $$
 
+/* Stored procedure to insert an entity */
 CREATE PROCEDURE insert_entity (IN param_element_title TEXT, IN param_entity_type_name TINYTEXT, IN param_entity_full_name TEXT)
 BEGIN
     INSERT INTO `entity` (
-    resource_id,
-    entity_type_id,
-full_name
-    ) 
-VALUES (
-    (SELECT resource_id
-FROM element
-WHERE title = param_element_title),
-    (SELECT id
-FROM entity_type
-WHERE name = param_entity_type_name),
+		resource_id,
+		entity_type_id,
+		full_name) 
+	VALUES (
+		(SELECT resource_id
+			FROM element
+			WHERE title = param_element_title),
+		(SELECT id
+			FROM entity_type
+			WHERE name = param_entity_type_name),
     param_entity_full_name
 );
 
@@ -104,16 +102,19 @@ END $$
 
 DELIMITER ;
 
+/*---------------------------*/
+/*----   DEMONSTRATION   ----*/
+/*---------------------------*/
+
 /* Make an entry into the resource table */
 INSERT INTO resource (
     resource_type_id,
-    description
-)
+    description)
 VALUES (
-(SELECT id
-FROM resource_type
-WHERE name = 'TUTORIAL'),
-'My description is tasty'
+	(SELECT id
+		FROM resource_type
+		WHERE name = 'TUTORIAL'),
+	'My description is tasty'
 );
 
 /* Make an entry into the element table */
@@ -122,20 +123,30 @@ INSERT INTO element (
     `element_type_id`,
     `title`,
     `index`,
-    `url`
-)
+    `url`)
 VALUES (
-(SELECT MAX(id) 
-FROM resource),
-(SELECT id
-FROM element_type
-WHERE name = 'PRIMARY'),
-'How to database',
-NULL,
-'http://databaseieat.com'
+    (SELECT MAX(id) 
+        FROM resource),
+    (SELECT id
+        FROM element_type
+        WHERE name = 'PRIMARY'),
+    'How to database',
+    NULL,
+    'http://databaseieat.com'
 );
 
 CALL insert_entity('How to database','PERSON','My full name');
 
+SELECT
+	`id` AS 'ID',
+	(SELECT `description`
+		FROM `resource`
+		WHERE `resource`.`id` LIKE `entity`.`id`) AS 'Description',
+	(SELECT `name`
+		FROM `entity_type`
+		WHERE `entity_type`.`id` LIKE `entity`.`id`) AS 'Entity Type',
+	`full_name` AS 'Full Name'
+FROM
+	`entity`;
 
 COMMIT
