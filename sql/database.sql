@@ -22,6 +22,7 @@ CREATE TABLE `element` (
     `id` INT AUTO_INCREMENT,
     `resource_id` INT REFERENCES `resource` (`id`),
     `element_type_id` INT REFERENCES `element_type` (`id`),
+    `title` TEXT,
     `index` INT,
     `url` TEXT,
     PRIMARY KEY (id)
@@ -31,6 +32,7 @@ CREATE TABLE `entity` (
     `id` INT AUTO_INCREMENT,
     `resource_id` INT REFERENCES `resource` (`id`),
     `entity_type_id` INT REFERENCES `entity_type` (`id`),
+    `full_name` TEXT,
 PRIMARY KEY (id)
 );
 
