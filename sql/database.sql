@@ -12,63 +12,63 @@ USE `content_reference_central`;
 /*--------------------------------*/
 
 CREATE TABLE `resource` (
-    `id` INT AUTO_INCREMENT,
-    `resource_type_id` INT REFERENCES `resource_type` (`id`),
-    `description` TEXT,
-PRIMARY KEY (id)
+	`id` INT AUTO_INCREMENT,
+	`resource_type_id` INT REFERENCES `resource_type` (`id`),
+	`description` TEXT,
+	PRIMARY KEY (id)
 );
 
 CREATE TABLE `element` (
-    `id` INT AUTO_INCREMENT,
-    `resource_id` INT REFERENCES `resource` (`id`),
-    `element_type_id` INT REFERENCES `element_type` (`id`),
-    `title` TEXT,
-    `index` INT,
-    `url` TEXT,
-    PRIMARY KEY (id)
+	`id` INT AUTO_INCREMENT,
+	`resource_id` INT REFERENCES `resource` (`id`),
+	`element_type_id` INT REFERENCES `element_type` (`id`),
+	`title` TEXT,
+	`index` INT,
+	`url` TEXT,
+	PRIMARY KEY (id)
 );
 
 CREATE TABLE `entity` (
-    `id` INT AUTO_INCREMENT,
-    `resource_id` INT REFERENCES `resource` (`id`),
-    `entity_type_id` INT REFERENCES `entity_type` (`id`),
-    `full_name` TEXT,
-PRIMARY KEY (id)
+	`id` INT AUTO_INCREMENT,
+	`resource_id` INT REFERENCES `resource` (`id`),
+	`entity_type_id` INT REFERENCES `entity_type` (`id`),
+	`full_name` TEXT,
+	PRIMARY KEY (id)
 );
 
 CREATE TABLE `entity_type` (
-    `id` INT AUTO_INCREMENT,
-    `name` TINYTEXT,
-    PRIMARY KEY (id)
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT,
+	PRIMARY KEY (id)
 );
 
 INSERT INTO `entity_type` (name) VALUES
-    ('PERSON'),
-    ('ORGANIZATION')
+	('PERSON'),
+	('ORGANIZATION')
 ;
 
 CREATE TABLE `resource_type` (
-    `id` INT AUTO_INCREMENT,
-    `name` TINYTEXT,
-    PRIMARY KEY (id)
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT,
+	PRIMARY KEY (id)
 );
 
 INSERT INTO `resource_type` (name) VALUES
-    ('TUTORIAL'),
-    ('DOCUMENTATION')
+	('TUTORIAL'),
+	('DOCUMENTATION')
 ;
 
 CREATE TABLE `element_type` (
-    `id` INT AUTO_INCREMENT,
-    `name` TINYTEXT,
-    PRIMARY KEY (id)
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT,
+	PRIMARY KEY (id)
 );
 
 INSERT INTO `element_type` (name) VALUES
-    ('PRIMARY'),
-    ('PART'),
-    ('LESSON'),
-    ('CHAPTER')
+	('PRIMARY'),
+	('PART'),
+	('LESSON'),
+	('CHAPTER')
 ;
 
 /*-------------------*/
@@ -84,7 +84,7 @@ DELIMITER $$
 /* Stored procedure to insert an entity */
 CREATE PROCEDURE insert_entity (IN param_element_title TEXT, IN param_entity_type_name TINYTEXT, IN param_entity_full_name TEXT)
 BEGIN
-    INSERT INTO `entity` (
+	INSERT INTO `entity` (
 		resource_id,
 		entity_type_id,
 		full_name) 
@@ -95,7 +95,7 @@ BEGIN
 		(SELECT id
 			FROM entity_type
 			WHERE name = param_entity_type_name),
-    param_entity_full_name
+	param_entity_full_name
 );
 
 END $$
@@ -108,8 +108,8 @@ DELIMITER ;
 
 /* Make an entry into the resource table */
 INSERT INTO resource (
-    resource_type_id,
-    description)
+	resource_type_id,
+	description)
 VALUES (
 	(SELECT id
 		FROM resource_type
@@ -119,20 +119,20 @@ VALUES (
 
 /* Make an entry into the element table */
 INSERT INTO element (
-    `resource_id`,
-    `element_type_id`,
-    `title`,
-    `index`,
-    `url`)
+	`resource_id`,
+	`element_type_id`,
+	`title`,
+	`index`,
+	`url`)
 VALUES (
-    (SELECT MAX(id) 
-        FROM resource),
-    (SELECT id
-        FROM element_type
-        WHERE name = 'PRIMARY'),
-    'How to database',
-    NULL,
-    'http://databaseieat.com'
+	(SELECT MAX(id) 
+		FROM resource),
+	(SELECT id
+		FROM element_type
+		WHERE name = 'PRIMARY'),
+	'How to database',
+	NULL,
+	'http://databaseieat.com'
 );
 
 CALL insert_entity('How to database','PERSON','My full name');
