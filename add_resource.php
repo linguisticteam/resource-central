@@ -6,14 +6,72 @@ require_once('/lib/database.php');
 ?>
 <h2>Add a new resource:</h2>
 <form method="post" action="lib/add_entry.php" name="add_resource">
-    Resource Title: <input type="text" name="title"><br><br>
-    Resource Type:  <select name="resource_type">
+    Is this a resource with multiple elements? <br>
+    <input type="radio" name="multi_element" value="yes"> Yes
+    <input type="radio" name="multi_element" value="no"> No
+    
+    <hr>
+    <div style="float:left;">
+    <em>[Single element case]</em><br><br>
+    Resource Title*: <input type="text" name="title"><br><br>
+    Resource Type*:  <select name="resource_type">
+                                <option value="default">Please Select</option>
                                 <option value="tutorial">Tutorial</option>
                                 <option value="documentation">Documentation</option>
                             </select>
     <br><br>
-    Resource Description: <br>
-    <textarea name="description"></textarea>
+    Resource URL*: <input type="text" name="url"><br><br>
+    Resource Author: <input type="text" name="url">
+    Author Type:  <select name="author_type">
+                                <option value="default">Please Select</option>
+                                <option value="person">Person</option>
+                                <option value="organization">Organization</option>
+                            </select>
+    <br><br>
+    <a href="">+ Add another author</a>
+    <br><br><br>
+    Keywords*: <em>(separate them with commas)</em><br>
+    <textarea name="url" rows="2" cols="50"></textarea>  <br><br> 
+    Description*: <br>
+    <textarea name="description" rows="8" cols="50"></textarea>
     <br><br>
     <input type="submit" value="submit">
 </form>
+</div>
+<div style='float:left; margin-left:60px;'>
+<em>[Multiple elements case]</em>
+<br><br>
+    Resource Title*: <input type="text" name="title"><br><br>
+    Resource Type*:  <select name="resource_type">
+                                <option value="default">Please Select</option>
+                                <option value="tutorial">Tutorial</option>
+                                <option value="documentation">Documentation</option>
+                            </select>
+    <br><br>
+    Keywords*: <em>(separate them with commas)</em><br>
+    <textarea name="url" rows="2" cols="50"></textarea>  <br><br> 
+    Description*: <br>
+    <textarea name="description" rows="8" cols="50"></textarea>
+    <br><br>
+    What type of elements is this resource divided into?<br>
+    Elements Type: <select name="element_type">
+                                <option value="default">Please Select</option>
+                                <option value="parts">Parts</option>
+                                <option value="lessons">Lessons</option>
+                                <option value="chapters">Chapters</option>
+                            </select>
+    <br><br>
+    Part 1: [or lesson/chapter, depending on selection above]<br>
+    Title: <input type="text" name="part1_title"><br><br>
+    URL: <input type="text" name="part1_url"><br><br>
+    Author: <input type="text" name="url">
+    Author Type:  <select name="author_type">
+                                <option value="default">Please Select</option>
+                                <option value="person">Person</option>
+                                <option value="organization">Organization</option>
+                            </select>
+    <br><br>
+    <a href="">+ Add another author</a>
+    <br><br>
+    <input type="submit" value="submit">
+</div>
