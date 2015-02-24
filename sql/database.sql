@@ -29,10 +29,17 @@ CREATE TABLE `element` (
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE `keyword` (
+CREATE TABLE `keyword_xref` (
 	`id` INT AUTO_INCREMENT,
 	`resource_id` INT REFERENCES `resource` (`id`),
-	`name` TINYTEXT
+	`keyword_id` INT REFERENCES `keyword` (`id`),
+	PRIMARY KEY(id)
+);
+
+CREATE TABLE `keyword` (
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT,
+	PRIMARY KEY(id)
 );
 
 CREATE TABLE `entity` (
