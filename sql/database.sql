@@ -29,6 +29,10 @@ CREATE TABLE `element` (
 	PRIMARY KEY (id)
 );
 
+CREATE TABLE `keyword` (
+	`id` INT AUTO_INCREMENT,
+);
+
 CREATE TABLE `entity` (
 	`id` INT AUTO_INCREMENT,
 	`resource_id` INT REFERENCES `resource` (`id`),
