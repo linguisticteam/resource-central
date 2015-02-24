@@ -9,4 +9,6 @@ if(!$connection) {
     echo "Could not connect to database: " . mysql_error();
 }
 ?>
-<div><a href="add_tutorial.php">Add a new tutorial</a></div>
+<div><a href="add_resource.php">Add a new resource</a></div>
+<div><a href="add_resource_element.php">Add an element for an existing resource</a></div>
+<div><a href="add_entity.php">Add a new resource, resource element or entity type</a></div>
