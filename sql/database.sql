@@ -31,6 +31,8 @@ CREATE TABLE `element` (
 
 CREATE TABLE `keyword` (
 	`id` INT AUTO_INCREMENT,
+	`resource_id` INT REFERENCES `resource` (`id`),
+	`name` TINYTEXT
 );
 
 CREATE TABLE `entity` (
