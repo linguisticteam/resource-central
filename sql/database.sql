@@ -14,6 +14,7 @@ USE `content_reference_central`;
 CREATE TABLE `resource` (
 	`id` INT AUTO_INCREMENT,
 	`resource_type_id` INT REFERENCES `resource_type` (`id`),
+	`title` TEXT,
 	`description` TEXT,
 	PRIMARY KEY (id)
 );
