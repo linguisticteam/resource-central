@@ -95,6 +95,53 @@ INSERT INTO `element_type` (name) VALUES
 
 DELIMITER $$
 
+
+
+/* Stored procedure to insert an single-element resource */
+CREATE PROCEDURE insert_resource (IN param_title TEXT, IN param_resource_type TEXT, IN param_url TEXT, IN param_description TEXT)
+BEGIN
+                INSERT INTO `resource` (
+                    `resource_type_id`,
+                    `title`,
+                    `description`
+                )
+                VALUES (
+                    (SELECT `id` FROM `resource_type` WHERE `name` = param_resource_type),
+                    param_title,
+                    param_description
+                );
+
+                INSERT INTO `element` (
+                    `url`
+                )
+                VALUES (
+                    param_url
+                );
+END $$
+
+/* Stored procedure to check if the keyword is a new one and insert it if so */
+CREATE PROCEDURE insert_keyword (IN param_keyword TINYTEXT)
+BEGIN
+        IF
+            (SELECT COUNT(`name`) FROM `keyword` WHERE `name` = param_keyword) = 0
+        THEN
+            INSERT INTO `keyword` (`name`) VALUES (param_keyword);
+        END IF;
+END $$
+
+/* Stored procedure to insert into keyword_xref */
+CREATE PROCEDURE insert_keyword_xref (IN param_resource_title TEXT, IN param_keyword_name TINYTEXT)
+BEGIN
+        INSERT INTO `keyword_xref` (
+            `resource_id`,
+            `keyword_id`)
+        VALUES (
+        (SELECT `id` FROM `resource` WHERE `title` = param_resource_title),
+        (SELECT `id` FROM `keyword` WHERE `name` = param_keyword_name)
+        );
+END $$
+
+
 /* Stored procedure to insert an entity */
 CREATE PROCEDURE insert_entity (IN param_element_title TEXT, IN param_entity_type_name TINYTEXT, IN param_entity_full_name TEXT)
 BEGIN

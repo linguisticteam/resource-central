@@ -4,10 +4,13 @@
 
 require_once('database.php');
 
-if(!empty($_POST['author']) && !empty($_POST['title']) && !empty($_POST['url']) && !empty($_POST['description'])) {
+if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['url']) && !empty($_POST['keywords']) && !empty($_POST['description'])) {
     $connection = db_connect();
-    add_entry($connection, mysqli_real_escape_string($connection, $_POST['author']), mysqli_real_escape_string($connection, $_POST['title']),
-                    mysqli_real_escape_string($connection, $_POST['url']), mysqli_real_escape_string($connection, $_POST['description']));
+    add_entry($connection, mysqli_real_escape_string($connection, $_POST['title']),
+            mysqli_real_escape_string($connection, $_POST['resource_type']),
+            mysqli_real_escape_string($connection, $_POST['url']),
+            mysqli_real_escape_string($connection, $_POST['keywords']),
+            mysqli_real_escape_string($connection, $_POST['description']));
 }
 
 

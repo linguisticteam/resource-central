@@ -21,7 +21,7 @@ require_once('/lib/database.php');
                             </select>
     <br><br>
     Resource URL*: <input type="text" name="url"><br><br>
-    Resource Author: <input type="text" name="url">
+    Resource Author: <input type="text" name="author">
     Author Type:  <select name="author_type">
                                 <option value="default">Please Select</option>
                                 <option value="person">Person</option>
@@ -31,13 +31,17 @@ require_once('/lib/database.php');
     <a href="">+ Add another author</a>
     <br><br><br>
     Keywords*: <em>(separate them with commas)</em><br>
-    <textarea name="url" rows="2" cols="50"></textarea>  <br><br> 
+    <textarea name="keywords" rows="2" cols="50"></textarea>  <br><br> 
     Description*: <br>
     <textarea name="description" rows="8" cols="50"></textarea>
     <br><br>
     <input type="submit" value="submit">
 </form>
 </div>
+    
+    
+    
+    
 <div style='float:left; margin-left:60px;'>
 <em>[Multiple elements case]</em>
 <br><br>
@@ -64,6 +68,7 @@ require_once('/lib/database.php');
     Part 1: [or lesson/chapter, depending on selection above]<br>
     Title: <input type="text" name="part1_title"><br><br>
     URL: <input type="text" name="part1_url"><br><br>
+    Description <input type="text" name="element_description"><br><br>
     Author: <input type="text" name="url">
     Author Type:  <select name="author_type">
                                 <option value="default">Please Select</option>

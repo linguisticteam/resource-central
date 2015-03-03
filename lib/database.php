@@ -27,70 +27,46 @@ function db_connect() {
 //    $row = mysqli_fetch_array($result);
 //    return $row[0];
 //}
-//
-//function add_entry($connection, $author, $title, $url, $description) {
-//    $sql = "INSERT INTO video(author, title, parts, description)"
-//            . "VALUES('{$author}', '{$title}', NULL, '{$description}')";
-//    $result = mysqli_query($connection, $sql);
-//    if(!$result) {
-//        // ToDo: output message probably through SESSION
-//        echo "Could not write to video table";
-//    }
-//
-//    $video_id = get_video_id($title);
-//
-//    add_part($connection,$title,$url,"NULL");
-//}
 
-function add_creditee($connection) {
-    $temp_id = mt_rand(-2^32/2,2^32/2-1);
-
-    $sql = "INSERT INTO creditee(temp_id)"
-        . "VALUES('{$temp_id}')";
+function add_entry($connection, $title, $resource_type, $url, $keywords, $description) {
+    //Return with error if resource title already exist
+    $sql = "SELECT COUNT(title) FROM resource WHERE title LIKE '{$title}'";
     $result = mysqli_query($connection, $sql);
-    if(!$result) {
-        // ToDo: output message probably through SESSION
-        echo "Could not enter data";
+    $row = mysqli_fetch_array($result);
+    if($row[0] > 0) {
+        echo 'A resource with this title already exists';
         return;
     }
-
-    $sql = "SELECT id FROM creditee WHERE temp_id LIKE '{$temp_id}'";
+    
+    //Add resource
+    $sql = "CALL insert_resource ('{$title}', '{$resource_type}', '{$url}', '{$description}')";
     $result = mysqli_query($connection, $sql);
-    if(!$result) {
+    if(($rows = mysqli_affected_rows($connection)) == 0) {
         // ToDo: output message probably through SESSION
-        echo "Could not enter data";
+        echo "insert_resource procedure failed";
         return;
     }
-
-    $creditee_id = mysqli_fetch_array($result)[0];
-
-    $sql = "UPDATE creditee SET temp_id = NULL WHERE id LIKE '{$creditee_id}'";
-    $result = mysqli_query($connection, $sql);
-    if(!$result) {
-        // ToDo: output message probably through SESSION
-        echo "Could not update table";
-        return;
+    
+    //Add keywords
+    $pieces = explode(",", $keywords);
+    foreach($pieces as $piece) {
+        $piece = trim($piece);
+        //Add the keyword name if it's a new keyword
+        $sql = "CALL insert_keyword ('{$piece}')";
+        mysqli_query($connection, $sql);
+        //Add the keyword-resource relations
+        $sql = "CALL insert_keyword_xref ('{$title}', '{$piece}')";
+        $result = mysqli_query($connection, $sql);
+        if(!$result) {
+            echo "Could not add keywords for the resource";
+            return;
+        }
     }
+    
+       echo "Resource added successfully";
 
-    return $creditee_id;
+    //$video_id = get_video_id($title);
+
+    //add_part($connection,$title,$url,"NULL");
 }
 
-function add_creditee_attribute($connection, $creditee_id, $attribute_name, $attribute_value) {
-    $sql = "SELECT id FROM creditee_attribute_type WHERE name LIKE '{$attribute_name}'";
-    $result = mysqli_query($connection, $sql);
-    if(!$result) {
-        // ToDo: output message probably through SESSION
-        echo "Could not retrieve data";
-        return;
-    }
-
-    $creditee_attribute_type_id = mysqli_fetch_array($result)[0];
-
-    $sql = "INSERT INTO creditee_attribute(creditee_id, creditee_attribute_type_id, value)"
-        . "VALUES('{$creditee_id}', '{$creditee_attribute_type_id}', '{$value}')";
-    $result = mysqli_query($connection, $sql);
-    if(!$result) {
-        // ToDo: output message probably through SESSION
-        echo "Could not enter data";
-    }
-}
