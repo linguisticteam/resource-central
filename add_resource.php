@@ -21,14 +21,16 @@ require_once('/lib/database.php');
                             </select>
     <br><br>
     Resource URL*: <input type="text" name="url"><br><br>
-    Resource Author: <input type="text" name="author">
-    Author Type:  <select name="author_type">
+    Resource Author: <input type="text" name="author" id="resource_author_0" class="resource_author">
+    Author Type:  <select name="author_type" id="author_0_type" class="author_type">
                                 <option value="default">Please Select</option>
                                 <option value="person">Person</option>
                                 <option value="organization">Organization</option>
                             </select>
+    <div id="additional_authors">
+    </div>
     <br><br>
-    <a href="">+ Add another author</a>
+    <a href="#" id="add_another_author">+ Add another author</a>
     <br><br><br>
     Keywords*: <em>(separate them with commas)</em><br>
     <textarea name="keywords" rows="2" cols="50"></textarea>  <br><br> 
@@ -80,3 +82,5 @@ require_once('/lib/database.php');
     <br><br>
     <input type="submit" value="submit">
 </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/main.js" type="text/javascript"></script>
