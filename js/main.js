@@ -1,30 +1,69 @@
 $(function(){
+
+    /* --- Event handlers --- */
+
     $("#add_another_author").click(function() {
-        var oAuthorTypeFieldClone;
+
+        /* Declare local variables */
+
+        var iAdditionalAuthorCount;
         var oAdditionalAuthors;
-        var oAdditionalAuthors = $("#additional_authors");
-        var sAuthorTypeFieldCloneId;
-        var iChildCount;
+        var oAuthorTypeFieldClone;
+        var sFirstId;
+        var sNewId;
 
+        /* Initialize local variables */
 
+        // (DOM) Get divs by id
+        oAdditionalAuthors = $("#additional_authors");
         oAuthorTypeFieldClone = $("#author_0_type").clone();
 
-        //update the child count
-        iChildCount = oAdditionalAuthors.children().length;
-        sAuthorTypeFieldCloneId = oAuthorTypeFieldClone[0].id;
-        oAuthorTypeFieldClone[0].id = IncrementId(sAuthorTypeFieldCloneId, iChildCount);
+        /* Execute */
 
+        // Get the ID of the first author
+        sFirstId = oAuthorTypeFieldClone[0].id;
+
+        // Get count of additional authors already added
+        iAdditionalAuthorCount = oAdditionalAuthors.children().length;
+
+        // Create new ID based on how many additional authors already exist
+        sNewId = IncrementId(sFirstId, 1, iAdditionalAuthorCount);
+
+        // Assign new ID to the clone
+        oAuthorTypeFieldClone[0].id = sNewId;
+
+        // Insert clone into group of additional authors
         oAdditionalAuthors.append(oAuthorTypeFieldClone[0]);
 
+        /* Final */
 
-        function IncrementId(sAuthorTypeFieldCloneId, iChildCount) {
-            var sNextId;
-            var aAuthorTypeIdParts;
-            aAuthorTypeIdParts = sAuthorTypeFieldCloneId.split("_");
-            aAuthorTypeIdParts[1] = iChildCount + 1;
-            sNextId = aAuthorTypeIdParts.join("_");
-            return sNextId;
+        // Return nothing
+        return;
+
+        /* --- Local Functions --- */
+
+        function IncrementId(sId, iElementIndex, iCount) {
+            
+            /* Declare local variables */
+            
+            var aIdParts;
+            var sNewId;
+
+            /* Execute */
+
+            // Split ID string up into an array, for easier manipulation
+            aIdParts = sId.split("_");
+
+            // Do some arithmetic, and replace the specified element in the array
+            aIdParts[iElementIndex] = iCount + 1;
+
+            // Reconstruct string with new ID
+            sNewId = aIdParts.join("_");
+
+            /* Final */
+
+            // Return the new ID
+            return sNewId;
         }
     });
 });
-
