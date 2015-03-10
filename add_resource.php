@@ -21,12 +21,14 @@ require_once('/lib/database.php');
                             </select>
     <br><br>
     Resource URL*: <input type="text" name="url"><br><br>
-    Resource Author: <input type="text" name="author" id="resource_author_0" class="resource_author">
-    Author Type:  <select name="author_type" id="author_0_type" class="author_type">
-                                <option value="default">Please Select</option>
-                                <option value="person">Person</option>
-                                <option value="organization">Organization</option>
-                            </select>
+    <div id="author_template">
+        Resource Author: <input type="text" name="author" id="resource_author_0" class="resource_author">
+        Author Type:  <select name="author_0_type" id="author_type" class="author_type">
+                                    <option value="default">Please Select</option>
+                                    <option value="person">Person</option>
+                                    <option value="organization">Organization</option>
+                                </select>
+    </div>
     <div id="additional_authors">
     </div>
     <br><br>
