@@ -4,15 +4,22 @@ $(function(){
 
     $("#add_another_author").click(function() {
 
+        /* Define local enumerators */
+
+        var AUTHOR_FIELD = {
+            NAME: 0,
+            TYPE: 1
+        };
+
         /* Declare local variables */
 
         var iAdditionalAuthorCount;
         var oAdditionalAuthors;
+        var oAuthorTemplateChildren;
         var oAuthorTemplateClone;
         var sAuthorTypeNameAttribute;
         var sNewAuthorTypeName;
         var sNewResourceAuthorName;
-        var oAuthorTemplateChildren;
         var sResourceAuthorNameAttribute;
 
         /* Initialize local variables */
@@ -24,22 +31,21 @@ $(function(){
         oAuthorTemplateChildren = oAuthorTemplateClone.children();
         
         /* Execute */
-        
 
-        // Get the Name attribute of the first author
-        sResourceAuthorNameAttribute = oAuthorTemplateChildren[0].name;
-        sAuthorTypeNameAttribute = oAuthorTemplateChildren[1].name;
+        // Get the Name attribute of the first author div
+        sResourceAuthorNameAttribute = oAuthorTemplateChildren[AUTHOR_FIELD.NAME].name;
+        sAuthorTypeNameAttribute = oAuthorTemplateChildren[AUTHOR_FIELD.TYPE].name;
 
-        // Get count of additional authors already added
+        // Get count of additional author divs already added
         iAdditionalAuthorCount = oAdditionalAuthors.children().length;
 
         // Create new name attribute based on how many additional authors already exist
-        sNewResourceAuthorName = IncrementName(sResourceAuthorNameAttribute, 2, iAdditionalAuthorCount);
-        sNewAuthorTypeName = IncrementName(sAuthorTypeNameAttribute, 1, iAdditionalAuthorCount);
+        sNewResourceAuthorName = IncrementNumeralInString(sResourceAuthorNameAttribute, 2, iAdditionalAuthorCount);
+        sNewAuthorTypeName = IncrementNumeralInString(sAuthorTypeNameAttribute, 1, iAdditionalAuthorCount);
 
         // Assign new name attribute to the clone
-        oAuthorTemplateClone[0].children[0].name = sNewResourceAuthorName;
-        oAuthorTemplateClone[0].children[1].name = sNewAuthorTypeName;
+        oAuthorTemplateClone[0].children[AUTHOR_FIELD.NAME].name = sNewResourceAuthorName;
+        oAuthorTemplateClone[0].children[AUTHOR_FIELD.TYPE].name = sNewAuthorTypeName;
 
         // Remove the ID from the cloned div
         oAuthorTemplateClone[0].removeAttribute("id");
@@ -54,30 +60,28 @@ $(function(){
 
         /* --- Local Functions --- */
         
-       // function ExtractNameAttribute()
-
-        function IncrementName(sName, iElementIndex, iCount) {
+        function IncrementNumeralInString(sString, iElementIndex, iCount) {
             
             /* Declare local variables */
             
-            var aNameParts;
-            var sNewAuthorTypeName;
+            var aStringParts;
+            var sNewString;
 
             /* Execute */
 
-            // Split ID string up into an array, for easier manipulation
-            aNameParts = sName.split("_");
+            // Split string up into an array, for easier manipulation
+            aStringParts = sString.split("_");
 
             // Do some arithmetic, and replace the specified element in the array
-            aNameParts[iElementIndex] = iCount + 1;
+            aStringParts[iElementIndex] = iCount + 1;
 
-            // Reconstruct string with new ID
-            sNewAuthorTypeName = aNameParts.join("_");
+            // Reconstruct new string from the altered array
+            sNewString = aStringParts.join("_");
 
             /* Final */
 
-            // Return the new ID
-            return sNewAuthorTypeName;
+            // Return the new string
+            return sNewString;
         }
     });
 });
