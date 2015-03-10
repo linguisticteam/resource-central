@@ -41,6 +41,9 @@ $(function(){
         oAuthorTemplateClone[0].children[0].name = sNewResourceAuthorName;
         oAuthorTemplateClone[0].children[1].name = sNewAuthorTypeName;
 
+        // Remove the ID from the cloned div
+        oAuthorTemplateClone[0].removeAttribute("id");
+        
         // Insert clone into group of additional authors
         oAdditionalAuthors.append(oAuthorTemplateClone);
 
