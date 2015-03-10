@@ -2,8 +2,9 @@
 define('START', true);
 
 require_once('lib/config.php');
-require_once('/lib/database.php');
+require_once('lib/database.php');
 ?>
+<link rel="stylesheet" type="text/css" href="css/main.css">
 <h2>Add a new resource:</h2>
 <form method="post" action="lib/add_entry.php" name="add_resource">
     Is this a resource with multiple elements? <br>
@@ -21,7 +22,7 @@ require_once('/lib/database.php');
                             </select>
     <br><br>
     Resource URL*: <input type="text" name="url"><br><br>
-    <div id="author_template">
+    <div id="author_template" class="author_template">
         Resource Author: <input type="text" name="resource_author_0" class="resource_author">
         Author Type:  <select name="author_0_type" class="author_type">
                                     <option value="default">Please Select</option>
