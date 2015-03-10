@@ -22,7 +22,7 @@ $(function(){
         oAuthorTemplateClone = $("#author_template").clone();
         
         oAuthorTemplateChildren = oAuthorTemplateClone.children();
-
+        
         /* Execute */
         
 
@@ -38,10 +38,11 @@ $(function(){
         sNewAuthorTypeName = IncrementName(sAuthorTypeNameAttribute, 1, iAdditionalAuthorCount);
 
         // Assign new name attribute to the clone
-        oAuthorTemplateClone[0].name = sNewAuthorTypeName;
+        oAuthorTemplateClone[0].children[0].name = sNewResourceAuthorName;
+        oAuthorTemplateClone[0].children[1].name = sNewAuthorTypeName;
 
         // Insert clone into group of additional authors
-        oAdditionalAuthors.append(oAuthorTemplateClone[0]);
+        oAdditionalAuthors.append(oAuthorTemplateClone);
 
         /* Final */
 
