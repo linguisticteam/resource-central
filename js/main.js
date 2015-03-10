@@ -15,7 +15,6 @@ $(function(){
 
         var iAdditionalAuthorCount;
         var oAdditionalAuthors;
-        var oAuthorTemplateChildren;
         var oAuthorTemplateClone;
         var sAuthorTypeNameAttribute;
         var sNewAuthorTypeName;
@@ -28,13 +27,11 @@ $(function(){
         oAdditionalAuthors = $("#additional_authors");
         oAuthorTemplateClone = $("#author_template").clone();
         
-        oAuthorTemplateChildren = oAuthorTemplateClone.children();
-        
         /* Execute */
 
         // Get the Name attribute of the first author div
-        sResourceAuthorNameAttribute = oAuthorTemplateChildren[AUTHOR_FIELD.NAME].name;
-        sAuthorTypeNameAttribute = oAuthorTemplateChildren[AUTHOR_FIELD.TYPE].name;
+        sResourceAuthorNameAttribute = oAuthorTemplateClone[0].children[AUTHOR_FIELD.NAME].name
+        sAuthorTypeNameAttribute = oAuthorTemplateClone[0].children[AUTHOR_FIELD.TYPE].name
 
         // Get count of additional author divs already added
         iAdditionalAuthorCount = oAdditionalAuthors.children().length;
