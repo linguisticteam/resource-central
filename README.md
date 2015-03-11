@@ -2,6 +2,7 @@
 This Content Reference Central will be used as a searchable storage system for all useful content that we come accross and want to have in one place. Examples include tutorials, books, lessons, etc.
 
 ###User Stories (US)
+The User Stories are descriptions of functionality from the point of view of the end user (for more information, see http://www.mountaingoatsoftware.com/agile/user-stories). Here we have divided the user stories into three sections so that we can easily follow the progress. They have also been assigned importance points, which help us always work on the most important functionalities. The user stories are then further broken down into technical tasks, which you can see in the Issues section here on github.
 
 ToDo:
 * US2: As an administrator, I can update the details of existing resources. Importance = 10
