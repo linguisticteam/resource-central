@@ -1,5 +1,5 @@
 # Content Reference Central
-A reference management system for Audio, Video and Text-based content.
+This Content Reference Central will be used as a searchable storage system for all useful content that we come accross and want to have in one place. Examples include tutorials, books, lessons, etc.
 
 ###User Stories (US)
 
