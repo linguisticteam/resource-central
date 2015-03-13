@@ -1,14 +1,25 @@
-$(function(){
+$(function () {
 
+    /* --- Event Listeners --- */
+    
+    $("#add_another_author").click(addAnotherAuthor);
+    
+    
     /* --- Event handlers --- */
 
-    $("#add_another_author").click(function() {
+    function addAnotherAuthor() {
+        
+        /* Abbreviations */
+        
+        // RAUTH = Resource Author field
+        // ATYPE = Author Type field
+
 
         /* Define local enumerators */
 
         var AUTHOR_FIELD = {
-            NAME: 0,
-            TYPE: 1
+            RAUTH: 0,
+            ATYPE: 1
         };
 
         /* Declare local variables */
@@ -16,10 +27,10 @@ $(function(){
         var author = {
             clone: null,
             attr: {
-                name_field_old_name: "",
-                name_field_new_name: "",
-                type_field_old_name: "",
-                type_field_new_name: ""
+                RAuthOldNameAttr: "",
+                RAuthNewNameAttr: "",
+                ATypeOldNameAttr: "",
+                ATypeNewNameAttr: ""
             },
             additional: {
                 object: null,
@@ -32,27 +43,27 @@ $(function(){
         // (DOM) Get divs by id
         author.additional.object = $("#additional_authors");
         author.clone = $("#author_template").clone();
-        
+
         /* Execute */
 
-        // Get the Name attribute of the first author div
-        author.attr.name_field_old_name = author.clone[0].children[AUTHOR_FIELD.NAME].name
-        author.attr.type_field_old_name = author.clone[0].children[AUTHOR_FIELD.TYPE].name
+        // Get the name attributes of the author template fields
+        author.attr.RAuthOldNameAttr = author.clone[0].children[AUTHOR_FIELD.RAUTH].name;
+        author.attr.ATypeOldNameAttr = author.clone[0].children[AUTHOR_FIELD.ATYPE].name;
 
         // Get count of additional author divs already added
         author.additional.count = author.additional.object.children().length;
 
-        // Create new name attribute based on how many additional authors already exist
-        author.attr.name_field_new_name = IncrementNumeralInString(author.attr.name_field_old_name, 2, author.additional.count);
-        author.attr.type_field_new_name = IncrementNumeralInString(author.attr.type_field_old_name, 1, author.additional.count);
+        // Create new name attributes based on how many additional authors already exist
+        author.attr.RAuthNewNameAttr = IncrementNumeralInString(author.attr.RAuthOldNameAttr, 2, author.additional.count);
+        author.attr.ATypeNewNameAttr = IncrementNumeralInString(author.attr.ATypeOldNameAttr, 1, author.additional.count);
 
         // Assign new name attribute to the clone
-        author.clone[0].children[AUTHOR_FIELD.NAME].name = author.attr.name_field_new_name;
-        author.clone[0].children[AUTHOR_FIELD.TYPE].name = author.attr.type_field_new_name;
+        author.clone[0].children[AUTHOR_FIELD.RAUTH].name = author.attr.RAuthNewNameAttr;
+        author.clone[0].children[AUTHOR_FIELD.ATYPE].name = author.attr.ATypeNewNameAttr;
 
         // Remove the ID from the cloned div
         author.clone[0].removeAttribute("id");
-        
+
         // Insert clone into group of additional authors
         author.additional.object.append(author.clone);
 
@@ -62,11 +73,11 @@ $(function(){
         return;
 
         /* --- Local Functions --- */
-        
+
         function IncrementNumeralInString(sString, iElementIndex, iCount) {
-            
+
             /* Declare local variables */
-            
+
             var aStringParts;
             var sNewString;
 
@@ -86,5 +97,5 @@ $(function(){
             // Return the new string
             return sNewString;
         }
-    });
+    }  
 });
