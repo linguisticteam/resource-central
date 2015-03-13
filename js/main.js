@@ -12,14 +12,14 @@ $(function () {
         /* Abbreviations */
         
         // RAUTH = Resource Author field
-        // RTYPE = Author Type field
+        // ATYPE = Author Type field
 
 
         /* Define local enumerators */
 
         var AUTHOR_FIELD = {
             RAUTH: 0,
-            RTYPE: 1
+            ATYPE: 1
         };
 
         /* Declare local variables */
@@ -27,10 +27,10 @@ $(function () {
         var author = {
             clone: null,
             attr: {
-                RAuthOldNameAttr:  "",
+                RAuthOldNameAttr: "",
                 RAuthNewNameAttr: "",
-                RTypeOldNameAttr:  "",
-                RTypeNewNameAttr: ""
+                ATypeOldNameAttr: "",
+                ATypeNewNameAttr: ""
             },
             additional: {
                 object: null,
@@ -48,18 +48,18 @@ $(function () {
 
         // Get the name attributes of the author template fields
         author.attr.RAuthOldNameAttr = author.clone[0].children[AUTHOR_FIELD.RAUTH].name;
-        author.attr.RTypeOldNameAttr = author.clone[0].children[AUTHOR_FIELD.RTYPE].name;
+        author.attr.ATypeOldNameAttr = author.clone[0].children[AUTHOR_FIELD.ATYPE].name;
 
         // Get count of additional author divs already added
         author.additional.count = author.additional.object.children().length;
 
         // Create new name attributes based on how many additional authors already exist
         author.attr.RAuthNewNameAttr = IncrementNumeralInString(author.attr.RAuthOldNameAttr, 2, author.additional.count);
-        author.attr.RTypeNewNameAttr = IncrementNumeralInString(author.attr.RTypeOldNameAttr, 1, author.additional.count);
+        author.attr.ATypeNewNameAttr = IncrementNumeralInString(author.attr.ATypeOldNameAttr, 1, author.additional.count);
 
         // Assign new name attribute to the clone
         author.clone[0].children[AUTHOR_FIELD.RAUTH].name = author.attr.RAuthNewNameAttr;
-        author.clone[0].children[AUTHOR_FIELD.RTYPE].name = author.attr.RTypeNewNameAttr;
+        author.clone[0].children[AUTHOR_FIELD.ATYPE].name = author.attr.ATypeNewNameAttr;
 
         // Remove the ID from the cloned div
         author.clone[0].removeAttribute("id");
