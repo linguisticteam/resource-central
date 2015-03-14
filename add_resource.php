@@ -16,7 +16,7 @@ require_once('lib/database.php');
     <em>[Single element case]</em><br><br>
     Resource Title*: <input type="text" name="title"><br><br>
     Resource Type*:  <select name="resource_type">
-                                <option value="default">Please Select</option>
+                                <option value="">Please Select</option>
                                 <option value="tutorial">Tutorial</option>
                                 <option value="documentation">Documentation</option>
                             </select>
@@ -25,7 +25,7 @@ require_once('lib/database.php');
     <div id="author_template" class="author_template">
         Resource Author: <input type="text" name="resource_author_0" class="resource_author">
         Author Type:  <select name="author_0_type" class="author_type">
-                                    <option value="default">Please Select</option>
+                                    <option value="">Please Select</option>
                                     <option value="person">Person</option>
                                     <option value="organization">Organization</option>
                                 </select>
