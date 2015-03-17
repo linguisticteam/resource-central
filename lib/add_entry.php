@@ -17,7 +17,20 @@ class FormProcessor {
     public function __construct () { 
     }
 
-    public function addResourceAuthorToArray ($Index) {
+    public function addResourceAuthorToArray ($FieldType, $Index) {
+        
+        
+        switch($FieldType) {
+            case FieldType::RESOURCE_AUTHOR:
+                //process Resource Author
+                $tempResourceAuthor = FormProcessor::getField('resource_author_' . $Index);
+                break;
+            case FieldType::AUTHOR_TYPE:
+                //process Author Type
+                $tempResourceAuthor = FormProcessor::getField('author_' . $Index . '_type');
+                break;
+        }
+ 
         $tempResourceAuthor = FormProcessor::getEscapedField('resource_author_' . $Index);
 
         if (FormProcessor::containsComma($tempResourceAuthor) == true) {
@@ -29,7 +42,20 @@ class FormProcessor {
         // Ok
         $resource_author_array[] = $tempResourceAuthor;
         return true;
+        
+
+        switch($FieldType) {
+            case FieldType::RESOURCE_AUTHOR:
+                //process Resource Author
+                $tempResourceAuthor = FormProcessor::getField('resource_author_' . $Index);
+                break;
+            case FieldType::AUTHOR_TYPE:
+                //process Author Type
+                $tempResourceAuthor = FormProcessor::getField('author_' . $Index . '_type');
+                break;
+        }
     }
+    
 
     public function addAuthorTypeToArray ($Index) {
         $author_type_array[] = FormProcessor::getEscapedField('author_' . $Index . '_type');
