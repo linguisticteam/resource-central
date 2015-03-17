@@ -5,14 +5,37 @@ require_once('database.php');
 
 $connection = db_connect();
 
+class FieldType {
+    const RESOURCE_AUTHOR = 0;
+    const AUTHOR_TYPE = 1;
+}
+
 class FormProcessor {
-    private $author_type = null;
     private $author_type_array = [];
-    private $resource_author = null;
     private $resource_author_array = [];
 
     public function __construct () { 
     }
+
+    public function addResourceAuthorToArray ($Index) {
+        $tempResourceAuthor = FormProcessor::getEscapedField('resource_author_' . $Index);
+
+        if (FormProcessor::containsComma($tempResourceAuthor) == true) {
+            // Error
+            echo("Error: Resource Author Name contains reserved character: ','\n");
+            return false;
+        }
+
+        // Ok
+        $resource_author_array[] = $tempResourceAuthor;
+        return true;
+    }
+
+    public function addAuthorTypeToArray ($Index) {
+        $author_type_array[] = FormProcessor::getEscapedField('author_' . $Index . '_type');
+    }
+
+    /* Static Functions */
 
     public static function isFieldPresent ($Field) {
         return !empty($_POST[$Field]);
@@ -23,19 +46,34 @@ class FormProcessor {
     }
 
     public static function getEscapedField ($Field) {
-        $tempField = this::getField($Field);
-        return this::escapeString($tempField);
+        $tempField = FormProcessor::getField($Field);
+        return FormProcessor::escapeString($tempField);
     }
 
     public static function escapeString ($String) {
         global $connection;
         return mysqli_real_escape_string($connection,$String);
     }
+
+    public static function containsComma ($String) {
+        // Check if $String contains commas
+        $Result = strstr($String,',');
+
+        // If it does not, then return false
+        if ($Result == false) {
+            return false;
+        }
+
+        // If it does, then return true
+        return true;
+    }
 }
 
 if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['url']) && !empty($_POST['keywords']) && !empty($_POST['description'])) {
 
     /* Declare variables */
+
+    $FormProcInstance = new FormProcessor;
 
     for($i = 0; true; $i++) {
         $resource_author_exists = FormProcessor::isFieldPresent('resource_author_' . $i);
@@ -44,10 +82,8 @@ if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['
         if( $resource_author_exists &&
             $author_type_exists) {
             // Both author name and author type exist.
-            $resource_author = FormProcessor::getEscapedField('resource_author_' . $i);
-            $author_type = FormProcessor::getEscapedField('author_' . $i . '_type');
-            $resource_author_array[] = $resource_author;
-            $author_type_array[] = $author_type;
+            $FormProcInstance->addResourceAuthorToArray($i);
+            $FormProcInstance->addAuthorTypeToArray($i);
         }
         elseif(!$resource_author_exists &&
                !$author_type_exists) {
