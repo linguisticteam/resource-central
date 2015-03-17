@@ -3,6 +3,8 @@
 //defined('START') or die();
 require_once('database.php');
 
+$connection = db_connect();
+
 class FormProcessor {
     private $author_type = null;
     private $author_type_array = [];
@@ -12,10 +14,22 @@ class FormProcessor {
     public function __construct () { 
     }
 
-    public function 
-
-    public static function isFieldPresent (string $Field) {
+    public static function isFieldPresent ($Field) {
         return !empty($_POST[$Field]);
+    }
+
+    public static function getField ($Field) {
+        return $_POST[$Field];
+    }
+
+    public static function getEscapedField ($Field) {
+        $tempField = this::getField($Field);
+        return this::escapeString($tempField);
+    }
+
+    public static function escapeString ($String) {
+        global $connection;
+        return mysqli_real_escape_string($connection,$String);
     }
 }
 
@@ -30,8 +44,8 @@ if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['
         if( $resource_author_exists &&
             $author_type_exists) {
             // Both author name and author type exist.
-            $resource_author = mysqli_real_escape_string($_POST['resource_author_' . $i]);
-            $author_type = mysqli_real_escape_string($_POST['author_' . $i . '_type']);
+            $resource_author = FormProcessor::getEscapedField('resource_author_' . $i);
+            $author_type = FormProcessor::getEscapedField('author_' . $i . '_type');
             $resource_author_array[] = $resource_author;
             $author_type_array[] = $author_type;
         }
@@ -51,7 +65,7 @@ if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['
             echo "Please specify a Resource Author\n";
         }
     }
-    $connection = db_connect();
+    
     add_entry($connection, mysqli_real_escape_string($connection, $_POST['title']),
             mysqli_real_escape_string($connection, $_POST['resource_type']),
             mysqli_real_escape_string($connection, $_POST['url']),
