@@ -7,36 +7,10 @@ require_once('form_processor.php');
 
 $connection = db_connect();
 
-
+//ToDo: check whether these are empty one by one and output appropriate error message if so
 if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['url']) && !empty($_POST['keywords']) && !empty($_POST['description'])) {
  
-    //ToDo: put the for loop in the FormProcessor class
-    for($i = 0; true; $i++) {
-        $resource_author_exists = FormProcessor::isFieldPresent('resource_author_' . $i);
-        $author_type_exists = FormProcessor::isFieldPresent('author_' . $i . '_type');
-
-        if( $resource_author_exists &&
-            $author_type_exists) {
-            // Both author name and author type exist.
-            $FormProcessor->addFieldToArray(0, $i);
-            $FormProcessor->addFieldToArray(1, $i);
-        }
-        elseif(!$resource_author_exists &&
-               !$author_type_exists) {
-            // Neither author name nor author type exist.
-            break;
-        }
-        elseif( $resource_author_exists &&
-               !$author_type_exists) {
-            // Only author name exists.
-            $Error->raise('SelectAuthorType');
-        }
-        elseif(!$resource_author_exists &&
-                $author_type_exists) {
-            // Only author type exists.
-            $Error->raise('SpecifyResourceAuthor');
-        }
-    }
+   $authors = $FormProcessor->GetAuthors();
     
     //ToDo: Check for raised errors, cancel operation if found
     
@@ -44,6 +18,7 @@ if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['
             $FormProcessor->escapeString($_POST['title']),
             $FormProcessor->escapeString($_POST['resource_type']),
             $FormProcessor->escapeString($_POST['url']),
+            $authors,
             $FormProcessor->escapeString($_POST['keywords']),
             $FormProcessor->escapeString($_POST['description']));
 }

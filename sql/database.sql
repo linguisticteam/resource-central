@@ -89,6 +89,23 @@ INSERT INTO `element_type` (name) VALUES
 /*----   VIEWS   ----*/
 /*-------------------*/
 
+/*-------------------*/
+/*---  FUNCTIONS  ---*/
+/*-------------------*/
+
+/* Function which splits a string based on a supplied delimiter and string position */
+
+CREATE FUNCTION SPLIT_STR(
+  string VARCHAR(255),
+  delim VARCHAR(12),
+  string_position INT
+)
+RETURNS VARCHAR(255)
+RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(string, delim, string_position),
+       LENGTH(SUBSTRING_INDEX(string, delim, string_position -1)) + 1),
+       delim, '');
+
+
 /*-------------------------------*/
 /*----   STORED PROCEDURES   ----*/
 /*-------------------------------*/
@@ -142,72 +159,47 @@ BEGIN
 END $$
 
 
-/* Stored procedure to insert an entity */
-CREATE PROCEDURE insert_entity (IN param_element_title TEXT, IN param_entity_type_name TINYTEXT, IN param_entity_full_name TEXT)
+/* Stored procedure to insert authors */
+CREATE PROCEDURE insert_authors(IN param_authors VARCHAR(255), IN param_resource_title TEXT)
 BEGIN
-	INSERT INTO `entity` (
-		resource_id,
-		entity_type_id,
-		full_name) 
-	VALUES (
-		(SELECT resource_id
-			FROM element
-			WHERE title = param_element_title),
-		(SELECT id
-			FROM entity_type
-			WHERE name = param_entity_type_name),
-	param_entity_full_name
-);
+    DECLARE string_position INT;
+    DECLARE author_array VARCHAR(255);
+    DECLARE resource_author VARCHAR(255);
+    DECLARE author_type VARCHAR(255);
 
+    SET string_position = 1;
+
+    author_loop: LOOP
+            /* Divide the author_array in sections,
+            where each section is a Resource Author-Author Type couple
+            Note: SPLIT_STR() is a user defined function which splits
+            a string on a supplied delimiter and position */
+            SET author_array = SPLIT_STR(param_authors, '|', string_position);
+
+            IF author_array = ''
+                    THEN LEAVE author_loop;
+            ELSE
+                    /* Separate the Resource Author-Author Type couple */
+                    SET resource_author = SPLIT_STR(author_array, ',', 1);
+                    SET author_type = SPLIT_STR(author_array, ',', 2);
+
+                    /* Insert the separated values in the table */
+                    INSERT INTO `entity`(
+                            `resource_id`,
+                            `entity_type_id`,
+                            `full_name`
+                    )
+                    VALUES (
+                            (SELECT `id` FROM `resource` WHERE `title` = param_resource_title),
+                            (SELECT `id` FROM `entity_type` WHERE `name` = author_type),
+                            resource_author
+                    );
+
+                    SET string_position = string_position + 1;
+            END IF;
+    END LOOP author_loop;
 END $$
 
 DELIMITER ;
-
-/*---------------------------*/
-/*----   DEMONSTRATION   ----*/
-/*---------------------------*/
-
-/* Make an entry into the resource table */
-INSERT INTO resource (
-	resource_type_id,
-	description)
-VALUES (
-	(SELECT id
-		FROM resource_type
-		WHERE name = 'TUTORIAL'),
-	'My description is tasty'
-);
-
-/* Make an entry into the element table */
-INSERT INTO element (
-	`resource_id`,
-	`element_type_id`,
-	`title`,
-	`index`,
-	`url`)
-VALUES (
-	(SELECT MAX(id) 
-		FROM resource),
-	(SELECT id
-		FROM element_type
-		WHERE name = 'PRIMARY'),
-	'How to database',
-	NULL,
-	'http://databaseieat.com'
-);
-
-CALL insert_entity('How to database','PERSON','My full name');
-
-SELECT
-	`id` AS 'ID',
-	(SELECT `description`
-		FROM `resource`
-		WHERE `resource`.`id` LIKE `entity`.`id`) AS 'Description',
-	(SELECT `name`
-		FROM `entity_type`
-		WHERE `entity_type`.`id` LIKE `entity`.`id`) AS 'Entity Type',
-	`full_name` AS 'Full Name'
-FROM
-	`entity`;
 
 COMMIT

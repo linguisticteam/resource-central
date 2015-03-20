@@ -28,7 +28,7 @@ function db_connect() {
 //    return $row[0];
 //}
 
-function add_entry($connection, $title, $resource_type, $url, $keywords, $description) {
+function add_entry($connection, $title, $resource_type, $url, $authors, $keywords, $description) {
     //Return with error if resource title already exist
     $sql = "SELECT COUNT(title) FROM resource WHERE title LIKE '{$title}'";
     $result = mysqli_query($connection, $sql);
@@ -61,6 +61,14 @@ function add_entry($connection, $title, $resource_type, $url, $keywords, $descri
             echo "Could not add keywords for the resource";
             return;
         }
+    }
+    
+    //Add authors
+    $sql ="CALL insert_authors('{$authors}', '{$title}')";
+    $result = mysqli_query($connection, $sql);
+    if(!$result) {
+        echo "Could not add authors to the database";
+        return;
     }
     
        echo "Resource added successfully";

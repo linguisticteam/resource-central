@@ -1,60 +1,75 @@
 <?php
 
-class FieldType {
-    const RESOURCE_AUTHOR = 0;
-    const AUTHOR_TYPE = 1;
-}
-
 class FormProcessor {
     //the instantiation of the Error class
     private $Error;
     //arrays to hold the inputted Resource Author(s) and Author Type(s)
-    private $resource_author_array = [];
-    private $author_type_array = [];
+    private $authors_array = array();
 
     public function __construct (Error $Error) {
         //pass the Error class so that we can use it
         $this->Error = $Error;
     }
 
-    public function addFieldToArray ($FieldType, $Index) {
-        
-        
-        switch($FieldType) {
-            case FieldType::RESOURCE_AUTHOR:
-                //process Resource Author
-                $tempResourceAuthor = FormProcessor::getEscapedField('resource_author_' . $Index);
-                break;
-            case FieldType::AUTHOR_TYPE:
-                //process Author Type
-                $tempAuthorType = FormProcessor::getEscapedField('author_' . $Index . '_type');
-                break;
-        }
+    public function AddAuthorToArray ($Index) {
 
-        if (FormProcessor::containsComma($tempResourceAuthor) == true) {
+        //Get the values in temporary variables so we can then do checking and concatenate them
+        $tempResourceAuthor = self::getEscapedField('resource_author_' . $Index);
+        $tempAuthorType = self::getEscapedField('author_' . $Index . '_type');
+        
+        //Remove whitespace
+        $tempResourceAuthor = trim($tempResourceAuthor);
+        $tempAuthorType = trim($tempAuthorType);
+        
+        //Resouce Author cannot contain any commas
+        if (self::containsComma($tempResourceAuthor) == true) {
             $this->Error->raise('ContainsComma');
         }
 
-        // Ok
-        $resource_author_array[] = $tempResourceAuthor;
-        return true;
+        //ToDo: make sure that Author Type is one of the values that we have predetermined
         
-
-        switch($FieldType) {
-            case FieldType::RESOURCE_AUTHOR:
-                //process Resource Author
-                $tempResourceAuthor = FormProcessor::getField('resource_author_' . $Index);
-                break;
-            case FieldType::AUTHOR_TYPE:
-                //process Author Type
-                $tempResourceAuthor = FormProcessor::getField('author_' . $Index . '_type');
-                break;
-        }
+        //Concatenate the values and put them together in the array,
+        //so as to preserve the relationship between the two
+        $this->authors_array[$Index] = $tempResourceAuthor . ',' . $tempAuthorType;
     }
     
 
-    public function addAuthorTypeToArray ($Index) {
-        $author_type_array[] = FormProcessor::getEscapedField('author_' . $Index . '_type');
+    public function GetAuthors () {
+        //Loop and on each iteration, check for values present
+        //in the Resource Author and Author Type fields 
+        for($i = 0; true; $i++) {
+            $resource_author_exists = self::isFieldPresent('resource_author_' . $i);
+            $author_type_exists = self::isFieldPresent('author_' . $i . '_type');
+    
+            if(!$resource_author_exists &&
+                   !$author_type_exists) {
+                // Neither author name nor author type exist.
+                break;
+            }
+            elseif( $resource_author_exists &&
+                   !$author_type_exists) {
+                // Only author name exists.
+                $Error->raise('SelectAuthorType');
+            }
+            elseif(!$resource_author_exists &&
+                    $author_type_exists) {
+                // Only author type exists.
+                $Error->raise('SpecifyResourceAuthor');
+            }
+            elseif( $resource_author_exists &&
+                $author_type_exists) {
+                // Both author name and author type exist.
+                
+                //Put Resource Author and Author Type in $authors_array,
+                //while preserving the relationship between the two values
+                $this->AddAuthorToArray($i);        
+            }
+        }
+        
+        //Put all collected Resouce Author-Auhtor Type couples
+        //in a string, divided in sections by "|"
+        $authors = implode('|', $this->authors_array);
+        return $authors;
     }
 
     
@@ -64,23 +79,20 @@ class FormProcessor {
         return !empty($_POST[$Field]);
     }
 
-    
     public static function getField ($Field) {
         return $_POST[$Field];
     }
 
-    
     public static function getEscapedField ($Field) {
-        $tempField = FormProcessor::getField($Field);
-        return FormProcessor::escapeString($tempField);
+        $tempField = self::getField($Field);
+        return self::escapeString($tempField);
     }
 
-    
     public static function escapeString ($String) {
         global $connection;
         return mysqli_real_escape_string($connection, $String);
     }
-
+    
     
     /* Checks whether a string contains any commas */
     
