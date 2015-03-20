@@ -1,12 +1,10 @@
 <?php
 define('START', true);
-
-require_once('lib/config.php');
-require_once('lib/database.php');
 ?>
+
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <h2>Add a new resource:</h2>
-<form method="post" action="lib/add_entry.php" name="add_resource">
+<form method="post" action="../controllers/form_processing.php" name="add_resource">
     Is this a resource with multiple elements? <br>
     <input type="radio" name="multi_element" value="yes"> Yes
     <input type="radio" name="multi_element" value="no"> No
