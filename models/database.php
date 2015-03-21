@@ -117,7 +117,7 @@ class AddEntry extends Database {
         }
     }
 
-    protected AddAuthors () {
+    protected function AddAuthors () {
         $sql ="CALL insert_authors('{$this->authors}', '{$this->$title}')";
         $result = $this->query($sql);
         if(!$result) {
