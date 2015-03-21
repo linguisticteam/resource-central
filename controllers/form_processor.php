@@ -1,28 +1,32 @@
 <?php
+require_once('error.php');
+require_once(dirname(dirname(__FILE__)) . '/models/database.php');
 
 class FormProcessor {
     //the instantiation of the Error class
     private $Error;
+    private $Database;
     //arrays to hold the inputted Resource Author(s) and Author Type(s)
     private $authors_array = array();
 
-    public function __construct (Error $Error) {
+    public function __construct (Error $Error, Database $Database) {
         //pass the Error class so that we can use it
         $this->Error = $Error;
+        $this->Database = $Database;
     }
 
     public function AddAuthorToArray ($Index) {
 
         //Get the values in temporary variables so we can then do checking and concatenate them
-        $tempResourceAuthor = self::getEscapedField('resource_author_' . $Index);
-        $tempAuthorType = self::getEscapedField('author_' . $Index . '_type');
+        $tempResourceAuthor = $this->getEscapedField('resource_author_' . $Index);
+        $tempAuthorType = $this->getEscapedField('author_' . $Index . '_type');
         
         //Remove whitespace
         $tempResourceAuthor = trim($tempResourceAuthor);
         $tempAuthorType = trim($tempAuthorType);
         
         //Resouce Author cannot contain any commas
-        if (self::containsComma($tempResourceAuthor) == true) {
+        if ($this->containsComma($tempResourceAuthor) == true) {
             $this->Error->raise('ContainsComma');
         }
 
@@ -38,8 +42,8 @@ class FormProcessor {
         //Loop and on each iteration, check for values present
         //in the Resource Author and Author Type fields 
         for($i = 0; true; $i++) {
-            $resource_author_exists = self::isFieldPresent('resource_author_' . $i);
-            $author_type_exists = self::isFieldPresent('author_' . $i . '_type');
+            $resource_author_exists = $this->isFieldPresent('resource_author_' . $i);
+            $author_type_exists = $this->isFieldPresent('author_' . $i . '_type');
     
             if(!$resource_author_exists &&
                    !$author_type_exists) {
@@ -75,28 +79,28 @@ class FormProcessor {
     
     /* Static Functions */
 
-    public static function isFieldPresent ($Field) {
+    public function isFieldPresent ($Field) {
         return !empty($_POST[$Field]);
     }
 
-    public static function getField ($Field) {
+    public function getField ($Field) {
         return $_POST[$Field];
     }
 
-    public static function getEscapedField ($Field) {
-        $tempField = self::getField($Field);
-        return self::escapeString($tempField);
+    public function getEscapedField ($Field) {
+        $tempField = $this->getField($Field);
+        return $this->escapeString($tempField);
     }
 
-    public static function escapeString ($String) {
-        global $connection;
-        return mysqli_real_escape_string($connection, $String);
+    public function escapeString ($String) {
+        $db = $this->Database;
+        return $db->real_escape_string($String);
     }
     
     
     /* Checks whether a string contains any commas */
     
-    public static function containsComma ($String) {
+    public function containsComma ($String) {
         // Check if $String contains commas
         $Result = strstr($String,',');
 
@@ -110,4 +114,4 @@ class FormProcessor {
     }
 }
 
-$FormProcessor = new FormProcessor($Error);
+$FormProcessor = new FormProcessor($Error, $Database);

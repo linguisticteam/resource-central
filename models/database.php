@@ -3,30 +3,49 @@
 //defined('START') or die();
 
 require_once(dirname(dirname(__FILE__)) . '/lib/config.php');
+require_once(dirname(dirname(__FILE__)) . '/controllers/error.php');
 
-function db_connect() {
-    $connection = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-    if(!$connection) {
-        echo "Could not connect to database: " . mysqli_errno($connection);
+class Database extends mysqli {
+    private $Error;
+    public $connection;
+    
+    public function __construct(Error $Error) {
+        parent::__construct(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        //pass the Error class so that we can use it
+        $this->Error = $Error;
     }
-    return $connection;
 }
 
-//OBSOLETE
-//
-//function get_video_id($title) {
-//    $sql = "SELECT id"
-//            . " FROM video"
-//            . " WHERE title = '" . $title . "'";
-//    $connection = db_connect();
-//    $result = mysqli_query($connection, $sql);
-//    if(!$result) {
-//        // ToDo: output message probably through SESSION
-//        echo "Could not read from video table";
-//    }
-//    $row = mysqli_fetch_array($result);
-//    return $row[0];
-//}
+$Database = new Database($Error);
+
+class AddEntry extends Database {
+    private $title;
+    private $resource_type;
+    private $url;
+    private $authors;
+    private $keywords;
+    private $description;
+    
+    //
+    
+    //Check whether resource title already exist
+    public function TitleExists($title) {  
+        $sql = "SELECT COUNT(title) FROM resource WHERE title LIKE '{$title}'";
+        $result = $this->query($sql);
+        $row = $result->fetch_array();
+        if($row[0] > 0) {
+            //Title exists, return true
+            $this->raise('TitleAlreadyExists');
+            return true;
+        } else {
+            //Title does not exist, return false
+            return false;
+        }
+    }
+}
+
+$AddEntry = new AddEntry($Error);
+$AddEntry->TitleExists('title');
 
 function add_entry($connection, $title, $resource_type, $url, $authors, $keywords, $description) {
     //Return with error if resource title already exist

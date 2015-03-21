@@ -96,7 +96,7 @@ INSERT INTO `element_type` (name) VALUES
 /* Function which splits a string based on a supplied delimiter and string position */
 
 CREATE FUNCTION SPLIT_STR(
-  string VARCHAR(255),
+  string TEXT,
   delim VARCHAR(12),
   string_position INT
 )

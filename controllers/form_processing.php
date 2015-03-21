@@ -5,7 +5,7 @@ require_once(dirname(dirname(__FILE__)) . '/models/database.php');
 require_once('error.php');
 require_once('form_processor.php');
 
-$connection = db_connect();
+//$connection = db_connect();
 
 //ToDo: check whether these are empty one by one and output appropriate error message if so
 if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['url']) && !empty($_POST['keywords']) && !empty($_POST['description'])) {
