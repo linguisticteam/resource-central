@@ -6,9 +6,8 @@ require_once(dirname(dirname(__FILE__)) . '/lib/config.php');
 require_once(dirname(dirname(__FILE__)) . '/controllers/error.php');
 
 class Database extends mysqli {
-    private $Error;
-    public $connection;
-    
+    protected $Error;
+
     public function __construct(Error $Error) {
         parent::__construct(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         //pass the Error class so that we can use it
@@ -25,75 +24,105 @@ class AddEntry extends Database {
     private $authors;
     private $keywords;
     private $description;
-    
-    //
+
+    public function Commit() {
+        $duplicate_title = $this->IsTitleDuplicate($title);
+
+        if($duplicate_title) {
+            global $Error;
+            $Error->raise('TitleAlreadyExists');
+            return false;
+        }
+
+        $this->AddResource();
+        $this->AddKeywords();
+        $this->AddAuthors();
+
+        echo "Resource added successfully";
+
+        return true;
+    }
+
+    public function SetTitle($title) {
+        $this->title = $title;
+    }
+
+    public function SetResourceType($resource_type) {
+        $this->resource_type = $resource_type;
+    }
+
+    public function SetKeywords($keywords) {
+        $this->keywords = $keywords;
+    }
+
+    public function SetAuthors($authors) {
+        $this->authors = $authors;
+    }
+
+    public function SetURL($url) {
+        $this->url = $url;
+    }
+
+    public function SetDescription($description) {
+        $this->description = $description;
+    }
     
     //Check whether resource title already exist
-    public function TitleExists($title) {  
-        $sql = "SELECT COUNT(title) FROM resource WHERE title LIKE '{$title}'";
+    protected function IsTitleDuplicate() {
+        $sql = "SELECT COUNT(title) FROM resource WHERE title LIKE '{$this->title}'";
         $result = $this->query($sql);
         $row = $result->fetch_array();
+        
         if($row[0] > 0) {
             //Title exists, return true
             $this->raise('TitleAlreadyExists');
             return true;
-        } else {
-            //Title does not exist, return false
-            return false;
         }
-    }
-}
 
-$AddEntry = new AddEntry($Error);
-$AddEntry->TitleExists('title');
+        //Title does not exist, return false
+        return false;
+    }
 
-function add_entry($connection, $title, $resource_type, $url, $authors, $keywords, $description) {
-    //Return with error if resource title already exist
-    $sql = "SELECT COUNT(title) FROM resource WHERE title LIKE '{$title}'";
-    $result = mysqli_query($connection, $sql);
-    $row = mysqli_fetch_array($result);
-    if($row[0] > 0) {
-        echo 'A resource with this title already exists';
-        return;
-    }
+    protected function AddResource () {
+        $sql = "CALL insert_resource ('{$this->title}', '{$this->resource_type}', '{$this->url}', '{$this->description}')";
+        $result = $this->query($sql);
+        $affected_rows = $this->affected_rows();
     
-    //Add resource
-    $sql = "CALL insert_resource ('{$title}', '{$resource_type}', '{$url}', '{$description}')";
-    $result = mysqli_query($connection, $sql);
-    if(($rows = mysqli_affected_rows($connection)) == 0) {
-        // ToDo: output message probably through SESSION
-        echo "insert_resource procedure failed";
-        return;
-    }
-    
-    //Add keywords
-    $pieces = explode(",", $keywords);
-    foreach($pieces as $piece) {
-        $piece = trim($piece);
-        //Add the keyword name if it's a new keyword
-        $sql = "CALL insert_keyword ('{$piece}')";
-        mysqli_query($connection, $sql);
-        //Add the keyword-resource relations
-        $sql = "CALL insert_keyword_xref ('{$title}', '{$piece}')";
-        $result = mysqli_query($connection, $sql);
-        if(!$result) {
-            echo "Could not add keywords for the resource";
+        if($affected_rows == 0) {
+            // ToDo: output message probably through SESSION
+            echo "insert_resource procedure failed";
             return;
         }
     }
-    
-    //Add authors
-    $sql ="CALL insert_authors('{$authors}', '{$title}')";
-    $result = mysqli_query($connection, $sql);
-    if(!$result) {
-        echo "Could not add authors to the database";
-        return;
+
+    protected function AddKeywords () {
+        $pieces = explode(",", $this->keywords);
+        
+        foreach($pieces as $piece) {
+            
+            $piece = trim($piece);
+            
+            //Add the keyword name if it's a new keyword
+            $sql = "CALL insert_keyword ('{$piece}')";
+            $this->query($sql);
+            
+            //Add the keyword-resource relations
+            $sql = "CALL insert_keyword_xref ('{$this->title}', '{$piece}')";
+            $result = $this->query($sql);
+            
+            if(!$result) {
+                echo "Could not add keywords for the resource";
+                return;
+            }
+        }
     }
-    
-       echo "Resource added successfully";
 
-    //$video_id = get_video_id($title);
-
-    //add_part($connection,$title,$url,"NULL");
+    protected AddAuthors () {
+        $sql ="CALL insert_authors('{$this->authors}', '{$this->$title}')";
+        $result = $this->query($sql);
+        if(!$result) {
+            echo "Could not add authors to the database";
+            return;
+        }
+    }
 }
-
