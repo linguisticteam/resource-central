@@ -11,225 +11,194 @@ USE `content_reference_central`;
 /*----   TABLES AND INSERTS   ----*/
 /*--------------------------------*/
 
-CREATE TABLE `source` (
+CREATE TABLE `resource` (
 	`id` INT AUTO_INCREMENT,
-	`content_id` INT REFERENCES `content` (`id`),
-	`source_type_id` INT REFERENCES `source_type` (`id`),
-	`name` TINYTEXT,
+	`resource_type_id` INT REFERENCES `resource_type` (`id`),
+	`title` TEXT,
+	`description` TEXT,
 	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
-
-CREATE TABLE `source_type` (
-	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT,
-	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
-
-INSERT INTO `source_type` (name) VALUES (
-	'INTERNET SITE'
 );
 
-CREATE TABLE `creditee_role` (
+CREATE TABLE `element` (
 	`id` INT AUTO_INCREMENT,
-	`creditee_id` INT REFERENCES `creditee` (`id`),
-	`creditee_role_type_id` INT REFERENCES `creditee_role_type` (`id`),
-	`content_id` INT REFERENCES `content` (`id`),
+	`resource_id` INT REFERENCES `resource` (`id`),
+	`element_type_id` INT REFERENCES `element_type` (`id`),
+	`title` TEXT,
+	`index` INT,
+	`url` TEXT,
 	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
+);
 
-CREATE TABLE `creditee_role_type` (
+CREATE TABLE `keyword_xref` (
+	`id` INT AUTO_INCREMENT,
+	`resource_id` INT REFERENCES `resource` (`id`),
+	`keyword_id` INT REFERENCES `keyword` (`id`),
+	PRIMARY KEY(id)
+);
+
+CREATE TABLE `keyword` (
+	`id` INT AUTO_INCREMENT,
+	`name` TINYTEXT,
+	PRIMARY KEY(id)
+);
+
+CREATE TABLE `entity` (
+	`id` INT AUTO_INCREMENT,
+	`resource_id` INT REFERENCES `resource` (`id`),
+	`entity_type_id` INT REFERENCES `entity_type` (`id`),
+	`full_name` TEXT,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE `entity_type` (
 	`id` INT AUTO_INCREMENT,
 	`name` TINYTEXT,
 	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
+);
 
-INSERT INTO `role_type` (name) VALUES
-	('Author'),
-	('Co-Author'),
-	('Editor'),
-	('Producer'),
-	('Director')
+INSERT INTO `entity_type` (name) VALUES
+	('PERSON'),
+	('ORGANIZATION')
 ;
 
-CREATE TABLE `creditee` (
-	`id` INT AUTO_INCREMENT,
-	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
-
-CREATE TABLE `creditee_attribute` (
-	`id` INT AUTO_INCREMENT,
-	`creditee_id` INT REFERENCES `creditee` (`id`),
-	`creditee_attribute_type_id` INT REFERENCES `creditee_attribute_type` (`id`),
-	`value` TINYTEXT,
-	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
-
-CREATE TABLE `creditee_attribute_type` (
+CREATE TABLE `resource_type` (
 	`id` INT AUTO_INCREMENT,
 	`name` TINYTEXT,
 	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
+);
 
-INSERT INTO `creditee_attribute_type` (name) VALUES
-	('FIRST NAME'),
-	('MIDDLE NAME'),
-	('LAST NAME')
-;
-
-CREATE TABLE `content` (
-	`id` INT AUTO_INCREMENT,
-	`parent_id` INT REFERENCES `content` (`id`),
-	`child_index` INT,
-	`content_base_type_id` INT REFERENCES `content_base_type` (`id`),
-	`content_purpose_id` INT REFERENCES `content_purpose` (`id`),
-	`content_medium_id` INT REFERENCES `content_medium` (`id`),
-	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
-
-CREATE TABLE `content_base_type` (
-	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT,
-	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
-
-INSERT INTO `content_base_type` (name) VALUES
-	('AUDIO'),
-	('VIDEO'),
-	('TEXT')
-;
-
-CREATE TABLE `content_info` (
-	`id` INT AUTO_INCREMENT,
-	`content_info_type_id` INT REFERENCES `content_info_type` (`id`),
-	`value` MEDIUMTEXT,
-	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
-
-CREATE TABLE `content_info_type` (
-	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT
-)
-ENGINE=MyISAM;
-
-INSERT INTO `content_info_type` (name) VALUES
-	('TITLE'),
-	('DESCRIPTION')
-;
-
-CREATE TABLE `content_purpose` (
-	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT,
-	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
-
-INSERT INTO `content_purpose` (name) VALUES
+INSERT INTO `resource_type` (name) VALUES
 	('TUTORIAL'),
 	('DOCUMENTATION')
 ;
 
-CREATE TABLE `content_medium` (
+CREATE TABLE `element_type` (
 	`id` INT AUTO_INCREMENT,
 	`name` TINYTEXT,
-	`content_type_match` INT,
 	PRIMARY KEY (id)
-)
-ENGINE=MyISAM;
+);
 
-INSERT INTO `content_medium` (name,content_type_match) VALUES
-	('VIDEO STREAM',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO')),
-	('VIDEO FILE',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'VIDEO')),
-	('AUDIO STREAM',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO')),
-	('AUDIO FILE',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'AUDIO')),
-	('PDF',
-		(SELECT `id` FROM `content_type` WHERE `name` LIKE 'TEXT'))
+INSERT INTO `element_type` (name) VALUES
+	('PRIMARY'),
+	('PART'),
+	('LESSON'),
+	('CHAPTER')
 ;
 
 /*-------------------*/
 /*----   VIEWS   ----*/
 /*-------------------*/
 
-CREATE VIEW view_all_creditees AS
-	SELECT
-		`creditee`.`id` AS 'Creditee ID',
-		(SELECT `value`
-			FROM `creditee_attribute`
-			WHERE `creditee_attribute_type_id` LIKE
-				(SELECT `id` FROM `creditee_attribute_type` WHERE `name` LIKE 'FIRST NAME')
-			AND `creditee_id` LIKE `creditee`.`id`) AS 'First Name',
-		(SELECT `value`
-			FROM `creditee_attribute`
-			WHERE `creditee_attribute_type_id` LIKE
-				(SELECT `id` FROM `creditee_attribute_type` WHERE `name` LIKE 'LAST NAME')
-			AND `creditee_id` LIKE `creditee`.`id`) AS 'Last Name'
-	FROM
-		`creditee`;
+/*-------------------*/
+/*---  FUNCTIONS  ---*/
+/*-------------------*/
+
+/* Function which splits a string based on a supplied delimiter and string position */
+
+CREATE FUNCTION SPLIT_STR(
+  string TEXT,
+  delim VARCHAR(12),
+  string_position INT
+)
+RETURNS VARCHAR(255)
+RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(string, delim, string_position),
+       LENGTH(SUBSTRING_INDEX(string, delim, string_position -1)) + 1),
+       delim, '');
+
 
 /*-------------------------------*/
 /*----   STORED PROCEDURES   ----*/
 /*-------------------------------*/
 
-DELIMITER $
+DELIMITER $$
 
-CREATE FUNCTION stfc_get_creditee_attribute_type_id (
-	param_attribute_name TINYTEXT)
-RETURNS INT
+
+
+/* Stored procedure to insert an single-element resource */
+CREATE PROCEDURE insert_resource (IN param_title TEXT, IN param_resource_type TEXT, IN param_url TEXT, IN param_description TEXT)
 BEGIN
-	RETURN (SELECT `id` FROM `creditee_attribute_type` WHERE `name` LIKE param_attribute_name);
-END $
+                INSERT INTO `resource` (
+                    `resource_type_id`,
+                    `title`,
+                    `description`
+                )
+                VALUES (
+                    (SELECT `id` FROM `resource_type` WHERE `name` = param_resource_type),
+                    param_title,
+                    param_description
+                );
 
-CREATE PROCEDURE stpc_insert_new_creditee_attribute (
-	IN param_creditee_id INT,
-	IN param_creditee_attribute_name TINYTEXT,
-	IN param_value TINYTEXT)
+                INSERT INTO `element` (
+                    `url`
+                )
+                VALUES (
+                    param_url
+                );
+END $$
+
+/* Stored procedure to check if the keyword is a new one and insert it if so */
+CREATE PROCEDURE insert_keyword (IN param_keyword TINYTEXT)
 BEGIN
-	INSERT INTO `creditee_attribute` (
-		creditee_id,
-		creditee_attribute_type_id,
-		value)
-	VALUES (
-		param_creditee_id,
-		stfc_get_creditee_attribute_type_id(param_creditee_attribute_name),
-		param_value
-	);
-END $
+        IF
+            (SELECT COUNT(`name`) FROM `keyword` WHERE `name` = param_keyword) = 0
+        THEN
+            INSERT INTO `keyword` (`name`) VALUES (param_keyword);
+        END IF;
+END $$
 
-CREATE PROCEDURE stpc_insert_new_creditee (
-	IN param_first_name TINYTEXT,
-	IN param_last_name TINYTEXT)
+/* Stored procedure to insert into keyword_xref */
+CREATE PROCEDURE insert_keyword_xref (IN param_resource_title TEXT, IN param_keyword_name TINYTEXT)
 BEGIN
-	DECLARE local_current_insert_id INT;
+        INSERT INTO `keyword_xref` (
+            `resource_id`,
+            `keyword_id`)
+        VALUES (
+        (SELECT `id` FROM `resource` WHERE `title` = param_resource_title),
+        (SELECT `id` FROM `keyword` WHERE `name` = param_keyword_name)
+        );
+END $$
 
-	INSERT INTO `creditee` () VALUES ();
 
-	SET local_current_insert_id = LAST_INSERT_ID();
+/* Stored procedure to insert authors */
+CREATE PROCEDURE insert_authors(IN param_authors VARCHAR(255), IN param_resource_title TEXT)
+BEGIN
+    DECLARE string_position INT;
+    DECLARE author_array VARCHAR(255);
+    DECLARE resource_author VARCHAR(255);
+    DECLARE author_type VARCHAR(255);
 
-	CALL stpc_insert_new_creditee_attribute(
-		local_current_insert_id,
-		'FIRST NAME',
-		param_first_name
-	);
+    SET string_position = 1;
 
-	CALL stpc_insert_new_creditee_attribute(
-		local_current_insert_id,
-		'LAST NAME',
-		param_last_name
-	);
-END $
+    author_loop: LOOP
+            /* Divide the author_array in sections,
+            where each section is a Resource Author-Author Type couple
+            Note: SPLIT_STR() is a user defined function which splits
+            a string on a supplied delimiter and position */
+            SET author_array = SPLIT_STR(param_authors, '|', string_position);
+
+            IF author_array = ''
+                    THEN LEAVE author_loop;
+            ELSE
+                    /* Separate the Resource Author-Author Type couple */
+                    SET resource_author = SPLIT_STR(author_array, ',', 1);
+                    SET author_type = SPLIT_STR(author_array, ',', 2);
+
+                    /* Insert the separated values in the table */
+                    INSERT INTO `entity`(
+                            `resource_id`,
+                            `entity_type_id`,
+                            `full_name`
+                    )
+                    VALUES (
+                            (SELECT `id` FROM `resource` WHERE `title` = param_resource_title),
+                            (SELECT `id` FROM `entity_type` WHERE `name` = author_type),
+                            resource_author
+                    );
+
+                    SET string_position = string_position + 1;
+            END IF;
+    END LOOP author_loop;
+END $$
 
 DELIMITER ;
 
