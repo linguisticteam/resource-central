@@ -9,9 +9,9 @@ class FormProcessor {
     //arrays to hold the inputted Resource Author(s) and Author Type(s)
     private $authors_array = array();
 
-    public function __construct (Error $Error, Database $Database) {
+    public function __construct (Database $Database) {
         //pass the Error class so that we can use it
-        $this->Error = $Error;
+        //$this->Error = $Error;
         $this->Database = $Database;
     }
 
@@ -27,7 +27,7 @@ class FormProcessor {
         
         //Resouce Author cannot contain any commas
         if ($this->containsComma($tempResourceAuthor) == true) {
-            $this->Error->raise('ContainsComma');
+            Error::raise('ContainsComma');
         }
 
         //ToDo: make sure that Author Type is one of the values that we have predetermined
@@ -53,12 +53,12 @@ class FormProcessor {
             elseif( $resource_author_exists &&
                    !$author_type_exists) {
                 // Only author name exists.
-                $Error->raise('SelectAuthorType');
+                Error::raise('SelectAuthorType');
             }
             elseif(!$resource_author_exists &&
                     $author_type_exists) {
                 // Only author type exists.
-                $Error->raise('SpecifyResourceAuthor');
+                Error::raise('SpecifyResourceAuthor');
             }
             elseif( $resource_author_exists &&
                 $author_type_exists) {
@@ -114,4 +114,4 @@ class FormProcessor {
     }
 }
 
-$FormProcessor = new FormProcessor($Error, $Database);
+$FormProcessor = new FormProcessor($Database);

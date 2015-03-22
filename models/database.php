@@ -6,16 +6,14 @@ require_once(dirname(dirname(__FILE__)) . '/lib/config.php');
 require_once(dirname(dirname(__FILE__)) . '/controllers/error.php');
 
 class Database extends mysqli {
-    protected $Error;
 
-    public function __construct(Error $Error) {
+    public function __construct() {
         parent::__construct(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-        //pass the Error class so that we can use it
-        $this->Error = $Error;
     }
 }
 
-$Database = new Database($Error);
+$Database = new Database();
+
 
 class AddEntry extends Database {
     private $title;
@@ -24,13 +22,22 @@ class AddEntry extends Database {
     private $authors;
     private $keywords;
     private $description;
+    
+    public function SetProperties($title, $resource_type, $url, $authors, $keywords, $description) {
+        //Call the setter methods one by one
+        $this->SetTitle($title);
+        $this->SetResourceType($resource_type);
+        $this->SetURL($url);
+        $this->SetAuthors($authors);
+        $this->SetKeywords($keywords);
+        $this->SetDescription($description);
+    }
 
-    public function Commit() {
+    public function InsertToDb() {
         $duplicate_title = $this->IsTitleDuplicate($title);
 
         if($duplicate_title) {
-            global $Error;
-            $Error->raise('TitleAlreadyExists');
+            Error::raise('TitleAlreadyExists');
             return false;
         }
 
@@ -75,7 +82,7 @@ class AddEntry extends Database {
         
         if($row[0] > 0) {
             //Title exists, return true
-            $this->raise('TitleAlreadyExists');
+            Error::raise('TitleAlreadyExists');
             return true;
         }
 
@@ -86,9 +93,9 @@ class AddEntry extends Database {
     protected function AddResource () {
         $sql = "CALL insert_resource ('{$this->title}', '{$this->resource_type}', '{$this->url}', '{$this->description}')";
         $result = $this->query($sql);
-        $affected_rows = $this->affected_rows();
+        $affected_rows = $this->affected_rows;
     
-        if($affected_rows == 0) {
+        if($affected_rows < 1) {
             // ToDo: output message probably through SESSION
             echo "insert_resource procedure failed";
             return;
@@ -96,6 +103,7 @@ class AddEntry extends Database {
     }
 
     protected function AddKeywords () {
+        //ToDo: Keywords cannot contain commas, we need to check for that
         $pieces = explode(",", $this->keywords);
         
         foreach($pieces as $piece) {
@@ -118,7 +126,7 @@ class AddEntry extends Database {
     }
 
     protected function AddAuthors () {
-        $sql ="CALL insert_authors('{$this->authors}', '{$this->$title}')";
+        $sql ="CALL insert_authors('{$this->authors}', '{$this->title}')";
         $result = $this->query($sql);
         if(!$result) {
             echo "Could not add authors to the database";
@@ -126,3 +134,5 @@ class AddEntry extends Database {
         }
     }
 }
+
+$AddEntry = new AddEntry;
