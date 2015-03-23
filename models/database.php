@@ -95,7 +95,7 @@ class AddEntry extends Database {
 
         $affected_rows = $this->affected_rows;
 
-        if($affected_rows == 0) {
+        if($affected_rows < 1) {
             Error::raise('spf_insert_resource');
             return false;
         }
