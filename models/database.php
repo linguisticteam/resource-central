@@ -12,8 +12,7 @@ class Database extends mysqli {
     }
 }
 
-$Database = new Database();
-
+$Database = new Database;
 
 class AddEntry extends Database {
     private $title;
@@ -34,9 +33,9 @@ class AddEntry extends Database {
     }
 
     public function InsertToDb() {
-        $duplicate_title = $this->IsTitleDuplicate($title);
+        $unique_title = $this->IsTitleUnique($title);
 
-        if($duplicate_title) {
+        if(!$unique_title) {
             Error::raise('TitleAlreadyExists');
             return false;
         }
@@ -74,32 +73,34 @@ class AddEntry extends Database {
         $this->description = $description;
     }
     
-    //Check whether resource title already exist
-    protected function IsTitleDuplicate() {
+    protected function IsTitleUnique() {
         $sql = "SELECT COUNT(title) FROM resource WHERE title LIKE '{$this->title}'";
         $result = $this->query($sql);
+
         $row = $result->fetch_array();
-        
+
         if($row[0] > 0) {
-            //Title exists, return true
+            //Title exists, return false
             Error::raise('TitleAlreadyExists');
-            return true;
+            return false;
         }
 
-        //Title does not exist, return false
-        return false;
+        //Title does not already exist in the database, return true
+        return true;
     }
 
     protected function AddResource () {
         $sql = "CALL insert_resource ('{$this->title}', '{$this->resource_type}', '{$this->url}', '{$this->description}')";
         $result = $this->query($sql);
+
         $affected_rows = $this->affected_rows;
-    
-        if($affected_rows < 1) {
-            // ToDo: output message probably through SESSION
-            echo "insert_resource procedure failed";
-            return;
+
+        if($affected_rows == 0) {
+            Error::raise('spf_insert_resource');
+            return false;
         }
+
+        return true;
     }
 
     protected function AddKeywords () {
@@ -112,26 +113,36 @@ class AddEntry extends Database {
             
             //Add the keyword name if it's a new keyword
             $sql = "CALL insert_keyword ('{$piece}')";
-            $this->query($sql);
+            $result = $this->query($sql);
             
+            if(!$result) {
+                Error::raise('spf_insert_keyword');
+                return false;
+            }
+
             //Add the keyword-resource relations
             $sql = "CALL insert_keyword_xref ('{$this->title}', '{$piece}')";
             $result = $this->query($sql);
             
             if(!$result) {
-                echo "Could not add keywords for the resource";
-                return;
+                Error::raise('spf_insert_keyword_xref');
+                return false;
             }
         }
+
+        return true;
     }
 
     protected function AddAuthors () {
         $sql ="CALL insert_authors('{$this->authors}', '{$this->title}')";
         $result = $this->query($sql);
+        
         if(!$result) {
-            echo "Could not add authors to the database";
-            return;
+            $Error::raise('spf_insert_authors');
+            return false;
         }
+
+        return true;
     }
 }
 
