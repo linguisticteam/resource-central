@@ -15,7 +15,7 @@ class Database extends mysqli {
 $Database = new Database();
 
 
-class AddEntry extends Database {
+class AddingEntry extends Database {
     private $title;
     private $resource_type;
     private $url;
@@ -50,6 +50,8 @@ class AddEntry extends Database {
         return true;
     }
 
+    /* Setter methods */
+    
     public function SetTitle($title) {
         $this->title = $title;
     }
@@ -73,22 +75,7 @@ class AddEntry extends Database {
     public function SetDescription($description) {
         $this->description = $description;
     }
-    
-    //Check whether resource title already exist
-    protected function IsTitleDuplicate() {
-        $sql = "SELECT COUNT(title) FROM resource WHERE title LIKE '{$this->title}'";
-        $result = $this->query($sql);
-        $row = $result->fetch_array();
-        
-        if($row[0] > 0) {
-            //Title exists, return true
-            Error::raise('TitleAlreadyExists');
-            return true;
-        }
 
-        //Title does not exist, return false
-        return false;
-    }
 
     protected function AddResource () {
         $sql = "CALL insert_resource ('{$this->title}', '{$this->resource_type}', '{$this->url}', '{$this->description}')";
@@ -106,6 +93,7 @@ class AddEntry extends Database {
         //ToDo: Keywords cannot contain commas, we need to check for that
         $pieces = explode(",", $this->keywords);
         
+        //ToDo: Instead of making a query in a loop, we might use the same approach as with the authors
         foreach($pieces as $piece) {
             
             $piece = trim($piece);
@@ -133,6 +121,23 @@ class AddEntry extends Database {
             return;
         }
     }
+    
+    /* Static methods */
+    
+    //Check whether resource title already exists
+    public function IsTitleDuplicate($title) {
+        $sql = "SELECT COUNT(title) FROM resource WHERE title LIKE '{$title}'";
+        $result = $this->query($sql);
+        $row = $result->fetch_array();
+        
+        if($row[0] > 0) {
+            //Title exists, return true
+            return true;
+        }
+
+        //Title does not exist, return false
+        return false;
+    }
 }
 
-$AddEntry = new AddEntry;
+$AddingEntry = new AddingEntry;

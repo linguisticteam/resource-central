@@ -3,40 +3,45 @@ require_once('error.php');
 require_once(dirname(dirname(__FILE__)) . '/models/database.php');
 
 class FormProcessor {
-    //the instantiation of the Error class
-    private $Error;
+    //Dependencies
     private $Database;
-    //arrays to hold the inputted Resource Author(s) and Author Type(s)
+    private $AddingEntry;
+    //array to hold the inputted Resource Author(s) and Author Type(s)
     private $authors_array = array();
 
-    public function __construct (Database $Database) {
-        //pass the Error class so that we can use it
-        //$this->Error = $Error;
+    public function __construct (Database $Database, AddingEntry $AddingEntry) {
         $this->Database = $Database;
-    }
-
-    public function AddAuthorToArray ($Index) {
-
-        //Get the values in temporary variables so we can then do checking and concatenate them
-        $tempResourceAuthor = $this->getEscapedField('resource_author_' . $Index);
-        $tempAuthorType = $this->getEscapedField('author_' . $Index . '_type');
-        
-        //Remove whitespace
-        $tempResourceAuthor = trim($tempResourceAuthor);
-        $tempAuthorType = trim($tempAuthorType);
-        
-        //Resouce Author cannot contain any commas
-        if ($this->containsComma($tempResourceAuthor) == true) {
-            Error::raise('ContainsComma');
-        }
-
-        //ToDo: make sure that Author Type is one of the values that we have predetermined
-        
-        //Concatenate the values and put them together in the array,
-        //so as to preserve the relationship between the two
-        $this->authors_array[$Index] = $tempResourceAuthor . ',' . $tempAuthorType;
+        $this->AddingEntry = $AddingEntry;
     }
     
+    /* Methods to get and process values supplied through an HTML form */
+    
+    public function GetTitle() {
+        $title_exists = $this->isFieldPresent('title');
+        
+        if(!$title_exists) {
+            Error::raise('TitleNotSpecified');
+            return;
+        }
+        
+        $title = $this->getEscapedField('title');   
+        $is_duplicate = $this->AddingEntry->IsTitleDuplicate($title);
+        
+        if($is_duplicate) {
+            Error::raise('TitleAlreadyExists');
+            return;
+        }
+        
+        return $title;
+    }
+    
+    public function GetResourceType() {
+        
+    }
+    
+    public function GetUrl() {
+        
+    }
 
     public function GetAuthors () {
         //Loop and on each iteration, check for values present
@@ -75,21 +80,48 @@ class FormProcessor {
         $authors = implode('|', $this->authors_array);
         return $authors;
     }
-
     
-    /* Static Functions */
+    public function GetKeywords() {
+        
+    }
+
+    public function GetDescription() {
+        
+    }
+    
+    public function AddAuthorToArray ($Index) {
+
+        //Get the values in temporary variables so we can then do checking and concatenate them
+        $tempResourceAuthor = $this->getEscapedField('resource_author_' . $Index);
+        $tempAuthorType = $this->getEscapedField('author_' . $Index . '_type');
+        
+        //Remove whitespace
+        $tempResourceAuthor = trim($tempResourceAuthor);
+        $tempAuthorType = trim($tempAuthorType);
+        
+        //Resouce Author cannot contain any commas
+        if ($this->containsComma($tempResourceAuthor) == true) {
+            Error::raise('ContainsComma');
+        }
+
+        //ToDo: make sure that Author Type is one of the values that we have predetermined
+        
+        //Concatenate the values and put them together in the array,
+        //so as to preserve the relationship between the two
+        $this->authors_array[$Index] = $tempResourceAuthor . ',' . $tempAuthorType;
+    }
 
     public function isFieldPresent ($Field) {
         return !empty($_POST[$Field]);
     }
 
-    public function getField ($Field) {
-        return $_POST[$Field];
-    }
-
     public function getEscapedField ($Field) {
-        $tempField = $this->getField($Field);
-        return $this->escapeString($tempField);
+        $trimmedField = $this->getTrimmedField($Field);
+        return $this->escapeString($trimmedField);
+    }
+    
+    public function getTrimmedField ($Field) {
+        return trim($_POST[$Field]);
     }
 
     public function escapeString ($String) {
@@ -114,4 +146,4 @@ class FormProcessor {
     }
 }
 
-$FormProcessor = new FormProcessor($Database);
+$FormProcessor = new FormProcessor($Database, $AddingEntry);

@@ -8,19 +8,20 @@ require_once('form_processor.php');
 //ToDo: check whether these are empty one by one and output appropriate error message if so
 if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['url']) && !empty($_POST['keywords']) && !empty($_POST['description'])) {
  
+   $title = $FormProcessor->GetTitle();
    $authors = $FormProcessor->GetAuthors();
     
     //ToDo: Check for raised errors, cancel operation if found
     
-    $AddEntry->SetProperties(
-            $FormProcessor->escapeString($_POST['title']),
+    $AddingEntry->SetProperties(
+            $title,
             $FormProcessor->escapeString($_POST['resource_type']),
             $FormProcessor->escapeString($_POST['url']),
             $authors,
             $FormProcessor->escapeString($_POST['keywords']),
             $FormProcessor->escapeString($_POST['description']));
     
-    $AddEntry->InsertToDb();
+    $AddingEntry->InsertToDb();
 }
 
 
