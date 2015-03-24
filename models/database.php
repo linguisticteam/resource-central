@@ -76,7 +76,7 @@ class AddingEntry extends Database {
         $affected_rows = $this->affected_rows;
 
         if($affected_rows < 1) {
-            Error::raise('spf_insert_resource');
+            Error::raise(__FILE__,__LINE__,'spf_insert_resource');
             return false;
         }
 
@@ -88,25 +88,26 @@ class AddingEntry extends Database {
         $pieces = explode(",", $this->keywords);
         
         //ToDo: Instead of making a query in a loop, we might use the same approach as with the authors
+
         foreach($pieces as $piece) {
-            
+
             $piece = trim($piece);
-            
+
             //Add the keyword name if it's a new keyword
             $sql = "CALL insert_keyword ('{$piece}')";
             $result = $this->query($sql);
-            
+
             if(!$result) {
-                Error::raise('spf_insert_keyword');
+                Error::raise(__FILE__,__LINE__,'spf_insert_keyword');
                 return false;
             }
 
             //Add the keyword-resource relations
             $sql = "CALL insert_keyword_xref ('{$this->title}', '{$piece}')";
             $result = $this->query($sql);
-            
+
             if(!$result) {
-                Error::raise('spf_insert_keyword_xref');
+                Error::raise(__FILE__,__LINE__,'spf_insert_keyword_xref');
                 return false;
             }
         }
@@ -117,9 +118,9 @@ class AddingEntry extends Database {
     protected function AddAuthors () {
         $sql ="CALL insert_authors('{$this->authors}', '{$this->title}')";
         $result = $this->query($sql);
-        
+
         if(!$result) {
-            $Error::raise('spf_insert_authors');
+            $Error::raise(__FILE__,__LINE__,'spf_insert_authors');
             return false;
         }
 

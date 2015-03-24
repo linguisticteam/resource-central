@@ -28,7 +28,7 @@ class FormProcessor {
         $is_duplicate = $this->AddingEntry->IsTitleDuplicate($title);
         
         if($is_duplicate) {
-            Error::raise('TitleAlreadyExists');
+            Error::raise(__FILE__,__LINE__,'TitleAlreadyExists');
             return;
         }
         

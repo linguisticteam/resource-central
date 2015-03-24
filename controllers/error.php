@@ -1,31 +1,115 @@
 <?php
 
+class ErrorTemplate {
+    private $category;    // Category number
+    private $number;      // Number in category
+    private $technical;   // Short technical information
+    private $description; // Expanded information for user
+
+    private $file;        // File name where error occurred
+    private $line;        // Line number in file where error occurred
+
+    /* Constructors */
+
+    public function __construct($category,$number,$technical,$description) {
+        $this->category    = $category;
+        $this->number      = $number;
+        $this->technical   = $technical;
+        $this->description = $description;
+        $this->file        = "";
+        $this->line        = 0;
+    }
+
+    /* Set Functions */
+
+    public function SetFile($file) {
+        $this->file = $file;
+    }
+
+    public function SetLine($line) {
+        $this->line = $line;
+    }
+
+    /* Get Functions */
+
+    public function GetCategory() {
+        return $this->category;
+    }
+
+    public function GetNumber() {
+        return $this->number;
+    }
+
+    public function GetTechnical() {
+        return $this->technical;
+    }
+
+    public function GetDescription() {
+        return $this->description;
+    }
+
+    public function GetFile() {
+        return $this->file;
+    }
+    
+    public function GetLine() {
+        return $this->line;
+    }
+
+    /* Printing Functions */
+
+    public function PrintTechnical() {
+        echo("Error#" .
+            $this->category .
+            "-" .
+            $this->number .
+            ":" .
+            $this->technical .
+            "\n" .
+            "File: '" .
+            $this->file .
+            "'\n" .
+            "Line: " .
+            $this->line .
+            "\n");
+    }
+
+    public function PrintDescription() {
+        echo($this->description);
+    }
+}
+
 class Error {
-    private static $error_descriptions = array();
-    public static $raised_errors = array();
+    private static $templates = array();
+    private static $raised_errors = array();
 
     public function __construct() {
         // Errors in PHP (Category#00):
-
+        
         // Errors in data convention (Category#01):
-        self::$error_descriptions['ContainsComma']           = "Error#01-01: Resource Author Name contains reserved character: ','";
-        self::$error_descriptions['SelectAuthorType']        = "Error#01-02: Please select an Author Type";
-        self::$error_descriptions['SpecifyResourceAuthor']   = "Error#01-03: Please specify a Resource Author";
-        self::$error_descriptions['TitleAlreadyExists']      = "Error#01-04: A resource with this title already exists";
-
+        self::$templates['ContainsComma']           = new ErrorTemplate(01,01,"TECHNICAL","Resource Author Name contains reserved character: ','");
+        self::$templates['SelectAuthorType']        = new ErrorTemplate(01,02,"TECHNICAL","Please select an Author Type");
+        self::$templates['SpecifyResourceAuthor']   = new ErrorTemplate(01,03,"TECHNICAL","Please specify a Resource Author");
+        self::$templates['TitleAlreadyExists']      = new ErrorTemplate(01,04,"TECHNICAL","A resource with this title already exists");
+        
         // Errors when interacting with database (Category#02):
-        //self::$error_descriptions['CannotConnectToDB'] = "Error#02-01: Could not connect to database: " . mysqli_errno($connection);
-
+        //self::$templates['CannotConnectToDB']       = new ErrorTemplate(02,01,"TECHNICAL","Could not connect to database: " . mysqli_errno($connection));
+        
         // Errors when calling stored procedure in database (Category#03):
-        self::$error_descriptions['spf_insert_authors']      = "Error#03-01: Stored Procedure Failed: insert_authors";
-        self::$error_descriptions['spf_insert_resource']     = "Error#03-02: Stored Procedure Failed: insert_resource";
-        self::$error_descriptions['spf_insert_keyword']      = "Error#03-03: Stored Procedure Failed: insert_keyword";
-        self::$error_descriptions['spf_insert_keyword_xref'] = "Error#03-04: Stored Procedure Failed: insert_keyword_xref";
+        self::$templates['spf_insert_authors']      = new ErrorTemplate(03,01,"Stored Procedure Failed: insert_authors","DESCRIPTION");
+        self::$templates['spf_insert_resource']     = new ErrorTemplate(03,02,"Stored Procedure Failed: insert_resource","DESCRIPTION");
+        self::$templates['spf_insert_keyword']      = new ErrorTemplate(03,03,"Stored Procedure Failed: insert_keyword","DESCRIPTION");
+        self::$templates['spf_insert_keyword_xref'] = new ErrorTemplate(03,04,"Stored Procedure Failed: insert_keyword_xref","DESCRIPTION");
     }
 
-    public static function raise($error_label) {
-        // Add error to list
-        self::$raised_errors[] = self::$error_descriptions[$error_label];
+    public static function raise($file,$line,$error_key) {
+
+        $error = self::$templates[$error_key];
+
+        $error->SetFile($file);
+        $error->SetLine($line);
+
+        self::$raised_errors[] = $error;
     }
 
     public static function clear_all() {
@@ -34,6 +118,13 @@ class Error {
 
     public static function count() {
         return count(self::$raised_errors);
+    }
+
+    public static function print_all() {
+        foreach ($raised_errors as $error) {
+            $error->PrintTechnical();
+            $error->PrintDescription();
+        }
     }
 }
 
