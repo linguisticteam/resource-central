@@ -20,7 +20,7 @@ class FormProcessor {
         $title_exists = $this->isFieldPresent('title');
         
         if(!$title_exists) {
-            Error::raise('TitleNotSpecified');
+            Error::raise(__FILE__,__LINE__,'TitleNotSpecified');
             return;
         }
         
@@ -58,12 +58,12 @@ class FormProcessor {
             elseif( $resource_author_exists &&
                    !$author_type_exists) {
                 // Only author name exists.
-                Error::raise('SelectAuthorType');
+                Error::raise(__FILE__,__LINE__,'SelectAuthorType');
             }
             elseif(!$resource_author_exists &&
                     $author_type_exists) {
                 // Only author type exists.
-                Error::raise('SpecifyResourceAuthor');
+                Error::raise(__FILE__,__LINE__,'SpecifyResourceAuthor');
             }
             elseif( $resource_author_exists &&
                 $author_type_exists) {
@@ -95,13 +95,9 @@ class FormProcessor {
         $tempResourceAuthor = $this->getEscapedField('resource_author_' . $Index);
         $tempAuthorType = $this->getEscapedField('author_' . $Index . '_type');
         
-        //Remove whitespace
-        $tempResourceAuthor = trim($tempResourceAuthor);
-        $tempAuthorType = trim($tempAuthorType);
-        
         //Resouce Author cannot contain any commas
         if ($this->containsComma($tempResourceAuthor) == true) {
-            Error::raise('ContainsComma');
+            Error::raise(__FILE__,__LINE__,'ContainsComma');
         }
 
         //ToDo: make sure that Author Type is one of the values that we have predetermined
