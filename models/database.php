@@ -36,7 +36,7 @@ class AddEntry extends Database {
         $unique_title = $this->IsTitleUnique($title);
 
         if(!$unique_title) {
-            Error::raise('TitleAlreadyExists');
+            Error::raise(__FILE__,__LINE__,'TitleAlreadyExists');
             return false;
         }
 
@@ -81,7 +81,7 @@ class AddEntry extends Database {
 
         if($row[0] > 0) {
             //Title exists, return false
-            Error::raise('TitleAlreadyExists');
+            Error::raise(__FILE__,__LINE__,'TitleAlreadyExists');
             return false;
         }
 
@@ -96,7 +96,7 @@ class AddEntry extends Database {
         $affected_rows = $this->affected_rows;
 
         if($affected_rows < 1) {
-            Error::raise('spf_insert_resource');
+            Error::raise(__FILE__,__LINE__,'spf_insert_resource');
             return false;
         }
 
@@ -106,26 +106,26 @@ class AddEntry extends Database {
     protected function AddKeywords () {
         //ToDo: Keywords cannot contain commas, we need to check for that
         $pieces = explode(",", $this->keywords);
-        
+
         foreach($pieces as $piece) {
-            
+
             $piece = trim($piece);
-            
+
             //Add the keyword name if it's a new keyword
             $sql = "CALL insert_keyword ('{$piece}')";
             $result = $this->query($sql);
-            
+
             if(!$result) {
-                Error::raise('spf_insert_keyword');
+                Error::raise(__FILE__,__LINE__,'spf_insert_keyword');
                 return false;
             }
 
             //Add the keyword-resource relations
             $sql = "CALL insert_keyword_xref ('{$this->title}', '{$piece}')";
             $result = $this->query($sql);
-            
+
             if(!$result) {
-                Error::raise('spf_insert_keyword_xref');
+                Error::raise(__FILE__,__LINE__,'spf_insert_keyword_xref');
                 return false;
             }
         }
@@ -136,9 +136,9 @@ class AddEntry extends Database {
     protected function AddAuthors () {
         $sql ="CALL insert_authors('{$this->authors}', '{$this->title}')";
         $result = $this->query($sql);
-        
+
         if(!$result) {
-            $Error::raise('spf_insert_authors');
+            $Error::raise(__FILE__,__LINE__,'spf_insert_authors');
             return false;
         }
 
