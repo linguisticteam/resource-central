@@ -12,7 +12,11 @@ if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['
    $authors = $FormProcessor->GetAuthors();
    $keywords = $FormProcessor->GetValidatedKeywords();
     
-    //ToDo: Check for raised errors, cancel operation if found
+    //Check for raised errors, cancel operation if found
+   if(Error::count() > 0) {
+       Error::print_all();
+       exit;
+   }
     
     $AddingEntry->SetProperties(
             $title,
