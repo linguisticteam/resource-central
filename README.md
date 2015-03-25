@@ -13,3 +13,7 @@ Work in process:
 * US1: As an administrator, I can add new resources to the system. Importance = 40
 
 Done:
+* ---
+
+###[PUNCH SHEET](https://github.com/linguisticteam/content-reference-central/issues/17)
+Before you do any work, click the link above to go directly to the PUNCH SHEET. If your name is not in the list, then add it. Below your name Write a description of what you intend to work on, including if you are going to add something completely new. Replace the description with "None" when you're done.
