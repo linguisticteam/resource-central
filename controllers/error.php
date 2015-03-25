@@ -123,7 +123,7 @@ class Error {
     }
 
     public static function print_all() {
-        foreach ($raised_errors as $error) {
+        foreach (self::$raised_errors as $error) {
             $error->PrintTechnical();
             $error->PrintDescription();
         }

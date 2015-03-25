@@ -84,7 +84,6 @@ class AddingEntry extends Database {
     }
 
     protected function AddKeywords () {
-        //ToDo: Keywords cannot contain commas, we need to check for that
         $pieces = explode(",", $this->keywords);
         
         //ToDo: Instead of making a query in a loop, we might use the same approach as with the authors
