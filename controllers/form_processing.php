@@ -10,6 +10,7 @@ if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['
  
    $title = $FormProcessor->GetTitle();
    $authors = $FormProcessor->GetAuthors();
+   $keywords = $FormProcessor->GetValidatedKeywords();
     
     //ToDo: Check for raised errors, cancel operation if found
     
@@ -18,7 +19,7 @@ if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['
             $FormProcessor->escapeString($_POST['resource_type']),
             $FormProcessor->escapeString($_POST['url']),
             $authors,
-            $FormProcessor->escapeString($_POST['keywords']),
+            $keywords,
             $FormProcessor->escapeString($_POST['description']));
     
     $AddingEntry->InsertToDb();
