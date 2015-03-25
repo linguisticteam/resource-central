@@ -81,8 +81,33 @@ class FormProcessor {
         return $authors;
     }
     
-    public function GetKeywords() {
+    public function GetValidatedKeywords() {
+        $keywords_exist = $this->isFieldPresent('keywords');
         
+        if(!$keywords_exist) {
+            Error::raise(__FILE__, __LINE__, 'KeywordsAreRequired');
+            return;
+        }
+        
+        $keywords = $this->getEscapedField('keywords');
+        
+        //Trim each individual keyword
+        $trimmed_keywords = array();
+        $pieces = explode(',', $keywords);
+        
+        foreach($pieces as $piece) {
+            $piece = trim($piece);
+            
+            //Keyword cannot be empty
+            if(!empty($piece)) {
+                $trimmed_keywords[] = $piece;
+            }
+        }
+        
+        //Put the trimmed keywords back into a string
+        $keywords = implode(',', $trimmed_keywords);
+        
+        return $keywords;
     }
 
     public function GetDescription() {
