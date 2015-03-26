@@ -84,31 +84,13 @@ class AddingEntry extends Database {
     }
 
     protected function AddKeywords () {
-        $pieces = explode(",", $this->keywords);
-        
-        //ToDo: Instead of making a query in a loop, we might use the same approach as with the authors
+            
+        $sql = "CALL insert_keywords ('{$this->keywords}', '{$this->title}')";
+        $result = $this->query($sql);
 
-        foreach($pieces as $piece) {
-
-            $piece = trim($piece);
-
-            //Add the keyword name if it's a new keyword
-            $sql = "CALL insert_keyword ('{$piece}')";
-            $result = $this->query($sql);
-
-            if(!$result) {
-                Error::raise(__FILE__,__LINE__,'spf_insert_keyword');
-                return false;
-            }
-
-            //Add the keyword-resource relations
-            $sql = "CALL insert_keyword_xref ('{$this->title}', '{$piece}')";
-            $result = $this->query($sql);
-
-            if(!$result) {
-                Error::raise(__FILE__,__LINE__,'spf_insert_keyword_xref');
-                return false;
-            }
+        if(!$result) {
+            Error::raise(__FILE__,__LINE__,'spf_insert_keywords');
+            return false;
         }
 
         return true;

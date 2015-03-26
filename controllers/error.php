@@ -100,8 +100,7 @@ class Error {
         // Errors when calling stored procedure in database (Category#03):
         self::$templates['spf_insert_authors']      = new ErrorTemplate(03,01,"Stored Procedure Failed: insert_authors","DESCRIPTION");
         self::$templates['spf_insert_resource']     = new ErrorTemplate(03,02,"Stored Procedure Failed: insert_resource","DESCRIPTION");
-        self::$templates['spf_insert_keyword']      = new ErrorTemplate(03,03,"Stored Procedure Failed: insert_keyword","DESCRIPTION");
-        self::$templates['spf_insert_keyword_xref'] = new ErrorTemplate(03,04,"Stored Procedure Failed: insert_keyword_xref","DESCRIPTION");
+        self::$templates['spf_insert_keywords']      = new ErrorTemplate(03,03,"Stored Procedure Failed: insert_keywords","DESCRIPTION");
     }
 
     public static function raise($file,$line,$error_key) {
