@@ -38,6 +38,13 @@ class AddingEntry extends Database {
         $this->AddKeywords();
         $this->AddAuthors();
 
+        //Check for raised errors, cancel operation if found
+        if(Error::count() > 0) {
+            Error::print_all();
+            exit;
+        }
+        
+        //If there are no raised errors, resource is added successfully
         echo "Resource added successfully";
 
         return true;
