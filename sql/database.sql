@@ -136,28 +136,45 @@ BEGIN
                 );
 END $$
 
-/* Stored procedure to check if the keyword is a new one and insert it if so */
-CREATE PROCEDURE insert_keyword (IN param_keyword TINYTEXT)
+/* Procedure to insert new keywords and keyword-resource relationships */
+CREATE PROCEDURE insert_keywords (IN param_keywords TINYTEXT, IN param_resource_title TEXT)
 BEGIN
-        IF
-            (SELECT COUNT(`name`) FROM `keyword` WHERE `name` = param_keyword) = 0
-        THEN
-            INSERT INTO `keyword` (`name`) VALUES (param_keyword);
-        END IF;
-END $$
+        DECLARE string_position INT;
+        DECLARE single_keyword VARCHAR(255);
 
-/* Stored procedure to insert into keyword_xref */
-CREATE PROCEDURE insert_keyword_xref (IN param_resource_title TEXT, IN param_keyword_name TINYTEXT)
-BEGIN
-        INSERT INTO `keyword_xref` (
-            `resource_id`,
-            `keyword_id`)
-        VALUES (
-        (SELECT `id` FROM `resource` WHERE `title` = param_resource_title),
-        (SELECT `id` FROM `keyword` WHERE `name` = param_keyword_name)
-        );
-END $$
+        SET string_position = 1;
+        
+        keywords_loop: LOOP
 
+            /* Split the keywords string on commas */
+            SET single_keyword = SPLIT_STR(param_keywords, ',', string_position);
+            
+            IF single_keyword = ''
+                THEN LEAVE keywords_loop;
+            ELSE
+
+                /* Check if the keyword is a new one and insert it if so */
+                IF
+                    (SELECT COUNT(`name`) FROM `keyword` WHERE `name` = single_keyword) = 0
+                THEN
+                    INSERT INTO `keyword` (`name`) VALUES (single_keyword);
+                END IF;
+
+                    /* Insert the keyword-resource relationship */
+                    INSERT INTO `keyword_xref` (
+                        `resource_id`,
+                        `keyword_id`)
+                    VALUES (
+                        (SELECT `id` FROM `resource` WHERE `title` = param_resource_title),
+                        (SELECT `id` FROM `keyword` WHERE `name` = single_keyword)
+                    );
+
+                    /* Increment the string position for SPLIT_STR() */
+                    SET string_position = string_position + 1;
+            END IF;
+
+        END LOOP keywords_loop;
+END $$
 
 /* Stored procedure to insert authors */
 CREATE PROCEDURE insert_authors(IN param_authors VARCHAR(255), IN param_resource_title TEXT)
