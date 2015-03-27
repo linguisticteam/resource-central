@@ -8,6 +8,7 @@ class FormProcessor {
     private $AddingEntry;
     //array to hold the inputted Resource Author(s) and Author Type(s)
     private $authors_array = array();
+    private $author_types = array();
 
     public function __construct (Database $Database, AddingEntry $AddingEntry) {
         $this->Database = $Database;
@@ -43,7 +44,7 @@ class FormProcessor {
         
     }
 
-    public function GetAuthors () {
+    public function GetValidatedAuthors () {
         //Loop and on each iteration, check for values present
         //in the Resource Author and Author Type fields 
         for($i = 0; true; $i++) {
@@ -125,7 +126,16 @@ class FormProcessor {
             Error::raise(__FILE__,__LINE__,'ContainsComma');
         }
 
-        //ToDo: make sure that Author Type is one of the values that we have predetermined
+        //Get the predetermined Author Types if we haven't already
+        if(!$this->author_types) {
+            $this->author_types = $this->Database->GetTypes('entity_type', 'name');
+        }
+        
+        //Make sure that Author Type is one of the values that we have predetermined
+        if(!in_array($tempAuthorType, $this->author_types, true)) {
+            Error::raise(__FILE__, __LINE__, 'AuthorTypeIncorrectValue');
+            return;
+        }
         
         //Concatenate the values and put them together in the array,
         //so as to preserve the relationship between the two

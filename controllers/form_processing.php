@@ -9,7 +9,7 @@ require_once('form_processor.php');
 if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['url']) && !empty($_POST['keywords']) && !empty($_POST['description'])) {
  
    $title = $FormProcessor->GetTitle();
-   $authors = $FormProcessor->GetAuthors();
+   $authors = $FormProcessor->GetValidatedAuthors();
    $keywords = $FormProcessor->GetValidatedKeywords();
     
     //Check for raised errors, cancel operation if found

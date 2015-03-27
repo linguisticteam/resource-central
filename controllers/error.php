@@ -93,6 +93,7 @@ class Error {
         self::$templates['TitleAlreadyExists']      = new ErrorTemplate(01,04,"TECHNICAL","A resource with this title already exists");
         self::$templates['TitleNotSpecified']   = new ErrorTemplate(01,05,"TECHNICAL", "Resource title is not specified");
         self::$templates['KeywordsAreRequired'] = new ErrorTemplate(01,06,"TECHNICAL", "Please specify some keywords");
+        self::$templates['AuthorTypeIncorrectValue'] = new ErrorTemplate(01,07,"TECHNICAL", "Author Type is an incorrect value");
         
         // Errors when interacting with database (Category#02):
         //self::$templates['CannotConnectToDB']       = new ErrorTemplate(02,01,"TECHNICAL","Could not connect to database: " . mysqli_errno($connection));
