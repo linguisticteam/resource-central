@@ -129,9 +129,11 @@ BEGIN
                 );
 
                 INSERT INTO `element` (
+                    `resource_id`,
                     `url`
                 )
                 VALUES (
+                    (SELECT `id` FROM `resource` WHERE `title` = param_title),
                     param_url
                 );
 END $$

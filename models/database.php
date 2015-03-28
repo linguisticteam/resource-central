@@ -100,10 +100,8 @@ class AddingEntry extends Database {
     protected function AddResource () {
         $sql = "CALL insert_resource ('{$this->title}', '{$this->resource_type}', '{$this->url}', '{$this->description}')";
         $result = $this->query($sql);
-
-        $affected_rows = $this->affected_rows;
-
-        if($affected_rows < 1) {
+        
+        if($result != true) {
             Error::raise(__FILE__,__LINE__,'spf_insert_resource');
             return false;
         }
