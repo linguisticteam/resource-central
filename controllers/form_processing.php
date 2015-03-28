@@ -9,6 +9,7 @@ require_once('form_processor.php');
 if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['url']) && !empty($_POST['keywords']) && !empty($_POST['description'])) {
  
    $title = $FormProcessor->GetTitle();
+   $resource_type = $FormProcessor->GetValidatedResourceType();
    $authors = $FormProcessor->GetValidatedAuthors();
    $keywords = $FormProcessor->GetValidatedKeywords();
     
@@ -20,7 +21,7 @@ if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['
     
     $AddingEntry->SetProperties(
             $title,
-            $FormProcessor->escapeString($_POST['resource_type']),
+            $resource_type,
             $FormProcessor->escapeString($_POST['url']),
             $authors,
             $keywords,

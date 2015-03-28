@@ -94,6 +94,8 @@ class Error {
         self::$templates['TitleNotSpecified']   = new ErrorTemplate(01,05,"TECHNICAL", "Resource title is not specified");
         self::$templates['KeywordsAreRequired'] = new ErrorTemplate(01,06,"TECHNICAL", "Please specify some keywords");
         self::$templates['AuthorTypeIncorrectValue'] = new ErrorTemplate(01,07,"TECHNICAL", "Author Type is an incorrect value");
+        self::$templates['SelectResourceType'] = new ErrorTemplate(01,08,"TECHNICAL", "Please select a Resource Type");
+        self::$templates['ResourceTypeIncorrectValue'] = new ErrorTemplate(01,09,"TECHNICAL", "Resource Type is an incorrect value");
         
         // Errors when interacting with database (Category#02):
         //self::$templates['CannotConnectToDB']       = new ErrorTemplate(02,01,"TECHNICAL","Could not connect to database: " . mysqli_errno($connection));

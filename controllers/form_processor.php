@@ -6,6 +6,7 @@ class FormProcessor {
     //Dependencies
     private $Database;
     private $AddingEntry;
+    
     //array to hold the inputted Resource Author(s) and Author Type(s)
     private $authors_array = array();
     private $author_types = array();
@@ -36,8 +37,24 @@ class FormProcessor {
         return $title;
     }
     
-    public function GetResourceType() {
+    public function GetValidatedResourceType() {
+        $resource_type_exists = $this->isFieldPresent('resource_type');
         
+        if(!$resource_type_exists) {
+            Error::raise(__FILE__, __LINE__, 'SelectResourceType');
+            return;
+        }
+        
+        $resource_type = $this->getEscapedField('resource_type');
+        $resource_types = $this->Database->GetTypes('resource_type', 'name');
+        
+        //Make sure that the Resource Type is one of the predetermined values
+        if(!in_array($resource_type, $resource_types, true)) {
+            Error::raise(__FILE__, __LINE__, 'ResourceTypeIncorrectValue');
+            return;
+        }
+        
+        return $resource_type;
     }
     
     public function GetUrl() {
