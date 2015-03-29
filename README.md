@@ -8,6 +8,7 @@ ToDo:
 * US2: As an administrator, I can update the details of existing resources. Importance = 10
 * US3: As a guest, I can search for resources based on title, author, keywords, etc. Importance = 10
 * US4: As a guest, I can see all existing resources in a paginated view. Importance = 10
+* US5: As a developer, I can see a log file which has all the errors related to the system's operation (not errors related to data validation), so that I can be aware of problems and more easily debug them. Importance = 20
 
 Work in process:
 * US1: As an administrator, I can add new resources to the system. Importance = 40
