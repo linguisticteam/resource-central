@@ -4,12 +4,12 @@
 require_once(dirname(dirname(__FILE__)) . '/models/database.php');
 require_once('error.php');
 require_once('form_processor.php');
-
-//ToDo: check whether these are empty one by one and output appropriate error message if so
-if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['url']) && !empty($_POST['keywords']) && !empty($_POST['description'])) {
  
+
+    //Get and validate all user-suppled values from the form
    $title = $FormProcessor->GetTitle();
    $resource_type = $FormProcessor->GetValidatedResourceType();
+   $url = $FormProcessor->GetValidatedUrl();
    $authors = $FormProcessor->GetValidatedAuthors();
    $keywords = $FormProcessor->GetValidatedKeywords();
     
@@ -22,13 +22,12 @@ if(!empty($_POST['title']) && !empty($_POST['resource_type']) && !empty($_POST['
     $AddingEntry->SetProperties(
             $title,
             $resource_type,
-            $FormProcessor->escapeString($_POST['url']),
+            $url,
             $authors,
             $keywords,
             $FormProcessor->escapeString($_POST['description']));
     
     $AddingEntry->InsertToDb();
-}
 
 
 for($i = 2; true; $i++) {

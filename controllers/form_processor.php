@@ -57,8 +57,16 @@ class FormProcessor {
         return $resource_type;
     }
     
-    public function GetUrl() {
+    public function GetValidatedUrl() {
+        $url_exists = $this->isFieldPresent('url');
         
+        if(!$url_exists) {
+            Error::raise(__FILE__, __LINE__, 'SpecifyResourceURL');
+            return;
+        }
+        
+        $url = $this->getEscapedField('url');
+        return $url;
     }
 
     public function GetValidatedAuthors () {
