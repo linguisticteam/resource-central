@@ -97,6 +97,7 @@ class Error {
         self::$templates['SelectResourceType'] = new ErrorTemplate(01,08,"TECHNICAL", "Please select a Resource Type");
         self::$templates['ResourceTypeIncorrectValue'] = new ErrorTemplate(01,09,"TECHNICAL", "Resource Type is an incorrect value");
         self::$templates['SpecifyResourceURL'] = new ErrorTemplate(01,10,"TECHNICAL", "Please specify a URL for the Resource");
+        self::$templates['ProvideDescription'] = new ErrorTemplate(01,11,"TECHNICAL", "Please provide a description");
         
         // Errors when interacting with database (Category#02):
         //self::$templates['CannotConnectToDB']       = new ErrorTemplate(02,01,"TECHNICAL","Could not connect to database: " . mysqli_errno($connection));

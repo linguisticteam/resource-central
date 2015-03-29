@@ -127,7 +127,7 @@ class AddingEntry extends Database {
         $result = $this->query($sql);
 
         if(!$result) {
-            $Error::raise(__FILE__,__LINE__,'spf_insert_authors');
+            Error::raise(__FILE__,__LINE__,'spf_insert_authors');
             return false;
         }
 

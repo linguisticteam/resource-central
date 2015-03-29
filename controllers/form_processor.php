@@ -18,7 +18,7 @@ class FormProcessor {
     
     /* Methods to get and process values supplied through an HTML form */
     
-    public function GetTitle() {
+    public function GetValidatedTitle() {
         $title_exists = $this->isFieldPresent('title');
         
         if(!$title_exists) {
@@ -136,8 +136,16 @@ class FormProcessor {
         return $keywords;
     }
 
-    public function GetDescription() {
+    public function GetValidatedDescription() {
+        $description_exists = $this->isFieldPresent('description');
         
+        if(!$description_exists) {
+            Error::raise(__FILE__, __LINE__, 'ProvideDescription');
+            return;
+        }
+        
+        $description = $this->getEscapedField('description');
+        return $description;
     }
     
     public function AddAuthorToArray ($Index) {

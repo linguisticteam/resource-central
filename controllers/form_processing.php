@@ -7,11 +7,12 @@ require_once('form_processor.php');
  
 
     //Get and validate all user-suppled values from the form
-   $title = $FormProcessor->GetTitle();
+   $title = $FormProcessor->GetValidatedTitle();
    $resource_type = $FormProcessor->GetValidatedResourceType();
    $url = $FormProcessor->GetValidatedUrl();
    $authors = $FormProcessor->GetValidatedAuthors();
    $keywords = $FormProcessor->GetValidatedKeywords();
+   $description = $FormProcessor->GetValidatedDescription();
     
     //Check for raised errors, cancel operation if found
    if(Error::count() > 0) {
@@ -19,14 +20,16 @@ require_once('form_processor.php');
        exit;
    }
     
+   //Put the values into the AddingEntry object
     $AddingEntry->SetProperties(
             $title,
             $resource_type,
             $url,
             $authors,
             $keywords,
-            $FormProcessor->escapeString($_POST['description']));
+            $description);
     
+    //Insert the values to the database
     $AddingEntry->InsertToDb();
 
 
