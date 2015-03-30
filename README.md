@@ -9,12 +9,13 @@ ToDo:
 * US3: As a guest, I can search for resources based on title, author, keywords, etc. Importance = 10
 * US4: As a guest, I can see all existing resources in a paginated view. Importance = 10
 * US5: As a developer, I can see a log file which has all the errors related to the system's operation (not errors related to data validation), so that I can be aware of problems and more easily debug them. Importance = 20
+* US6: As an administrator, I can add multiple-element resources to the system. Importance = 10
 
 Work in process:
-* US1: As an administrator, I can add new resources to the system. Importance = 40
+* US1: As an administrator, I can add single-element resources to the system. Importance = 40
 
 Done:
-* ---
+* US7: As an administrator, I can see specific error messages telling me if the data I tried to enter into the system are not compliant with the requirements.
 
 ###[PUNCH SHEET](https://github.com/linguisticteam/content-reference-central/issues/17)
 Before you do any work, click the link above to go directly to the PUNCH SHEET. If your name is not in the list, then add it. Below your name Write a description of what you intend to work on, including if you are going to add something completely new. Replace the description with "None" when you're done.
