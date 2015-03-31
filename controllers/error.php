@@ -87,26 +87,28 @@ class Error {
         // Errors in PHP (Category#00):
         
         // Errors in data convention (Category#01):
-        self::$templates['ContainsComma']           = new ErrorTemplate(01,01,"TECHNICAL","Resource Author Name contains reserved character: ','");
-        self::$templates['SelectAuthorType']        = new ErrorTemplate(01,02,"TECHNICAL","Please select an Author Type");
-        self::$templates['SpecifyResourceAuthor']   = new ErrorTemplate(01,03,"TECHNICAL","Please specify a Resource Author");
-        self::$templates['TitleAlreadyExists']      = new ErrorTemplate(01,04,"TECHNICAL","A resource with this title already exists");
-        self::$templates['TitleNotSpecified']   = new ErrorTemplate(01,05,"TECHNICAL", "Resource title is not specified");
-        self::$templates['KeywordsAreRequired'] = new ErrorTemplate(01,06,"TECHNICAL", "Please specify some keywords");
-        self::$templates['AuthorTypeIncorrectValue'] = new ErrorTemplate(01,07,"TECHNICAL", "Author Type is an incorrect value");
-        self::$templates['SelectResourceType'] = new ErrorTemplate(01,08,"TECHNICAL", "Please select a Resource Type");
+        self::$templates['ContainsComma']              = new ErrorTemplate(01,01,"TECHNICAL","Resource Author Name contains reserved character: ','");
+        self::$templates['SelectAuthorType']           = new ErrorTemplate(01,02,"TECHNICAL","Please select an Author Type");
+        self::$templates['SpecifyResourceAuthor']      = new ErrorTemplate(01,03,"TECHNICAL","Please specify a Resource Author");
+        self::$templates['TitleAlreadyExists']         = new ErrorTemplate(01,04,"TECHNICAL","A resource with this title already exists");
+        self::$templates['TitleNotSpecified']          = new ErrorTemplate(01,05,"TECHNICAL", "Resource title is not specified");
+        self::$templates['KeywordsAreRequired']        = new ErrorTemplate(01,06,"TECHNICAL", "Please specify some keywords");
+        self::$templates['AuthorTypeIncorrectValue']   = new ErrorTemplate(01,07,"TECHNICAL", "Author Type is an incorrect value");
+        self::$templates['SelectResourceType']         = new ErrorTemplate(01,08,"TECHNICAL", "Please select a Resource Type");
         self::$templates['ResourceTypeIncorrectValue'] = new ErrorTemplate(01,09,"TECHNICAL", "Resource Type is an incorrect value");
-        self::$templates['SpecifyResourceURL'] = new ErrorTemplate(01,10,"TECHNICAL", "Please specify a URL for the Resource");
-        self::$templates['ProvideDescription'] = new ErrorTemplate(01,11,"TECHNICAL", "Please provide a description");
+        self::$templates['SpecifyResourceURL']         = new ErrorTemplate(01,10,"TECHNICAL", "Please specify a URL for the Resource");
+        self::$templates['ProvideDescription']         = new ErrorTemplate(01,11,"TECHNICAL", "Please provide a description");
         
         // Errors when interacting with database (Category#02):
-        //self::$templates['CannotConnectToDB']       = new ErrorTemplate(02,01,"TECHNICAL","Could not connect to database: " . mysqli_errno($connection));
-        self::$templates['GetTypesMethodFailed']    = new ErrorTemplate(02,01,"Database->GetTypes() failed", "DESCRIPTION");
+        //self::$templates['CannotConnectToDB']        = new ErrorTemplate(02,01,"TECHNICAL","Could not connect to database: " . mysqli_errno($connection));
+        self::$templates['GetTypesMethodFailed']       = new ErrorTemplate(02,01,"Database->GetTypes() failed", "DESCRIPTION");
+        self::$templates['BeginTransactionFailed']     = new ErrorTemplate(02,02,"Database->BeginTransaction() failed", "DESCRIPTION");
+        self::$templates['EndTransactionFailed']       = new ErrorTemplate(02,03,"Database->EndTransaction() failed", "DESCRIPTION");
         
         // Errors when calling stored procedure in database (Category#03):
-        self::$templates['spf_insert_authors']      = new ErrorTemplate(03,01,"Stored Procedure Failed: insert_authors","DESCRIPTION");
-        self::$templates['spf_insert_resource']     = new ErrorTemplate(03,02,"Stored Procedure Failed: insert_resource","DESCRIPTION");
-        self::$templates['spf_insert_keywords']      = new ErrorTemplate(03,03,"Stored Procedure Failed: insert_keywords","DESCRIPTION");
+        self::$templates['spf_insert_authors']         = new ErrorTemplate(03,01,"Stored Procedure Failed: insert_authors","DESCRIPTION");
+        self::$templates['spf_insert_resource']        = new ErrorTemplate(03,02,"Stored Procedure Failed: insert_resource","DESCRIPTION");
+        self::$templates['spf_insert_keywords']        = new ErrorTemplate(03,03,"Stored Procedure Failed: insert_keywords","DESCRIPTION");
     }
 
     public static function raise($file,$line,$error_key) {
