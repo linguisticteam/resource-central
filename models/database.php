@@ -31,6 +31,30 @@ class Database extends mysqli {
         
         return $types_array;
     }
+
+    public function BeginTransaction() {
+        $sql = "START TRANSACTION";
+        $result = $this->query($sql);
+
+        if(!$result) {
+            Error::raise(__FILE__, __LINE__, 'BeginTransactionFailed');
+            return false;
+        }
+
+        return true;
+    }
+
+    public function EndTransaction() {
+        $sql = "COMMIT";
+        $result = $this->query($sql);
+
+        if(!$result) {
+            Error::raise(__FILE__, __LINE__, 'EndTransactionFailed');
+            return false;
+        }
+
+        return true;
+    }
 }
 
 $Database = new Database;
@@ -42,7 +66,7 @@ class AddingEntry extends Database {
     private $authors;
     private $keywords;
     private $description;
-    
+
     public function SetProperties($title, $resource_type, $url, $authors, $keywords, $description) {
         //Call the setter methods one by one
         $this->SetTitle($title);
@@ -55,9 +79,11 @@ class AddingEntry extends Database {
 
     public function InsertToDb() {
 
+        $this->BeginTransaction();
         $this->AddResource();
         $this->AddKeywords();
         $this->AddAuthors();
+        $this->EndTransaction();
 
         //Check for raised errors, cancel operation if found
         if(Error::count() > 0) {
@@ -133,8 +159,7 @@ class AddingEntry extends Database {
 
         return true;
     }
-    
-    
+
     //Check whether resource title already exists
     public function IsTitleDuplicate($title) {
         $sql = "SELECT COUNT(title) FROM resource WHERE title LIKE '{$title}'";
