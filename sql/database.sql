@@ -12,77 +12,77 @@ USE `content_reference_central`;
 /*--------------------------------*/
 
 CREATE TABLE `resource` (
-	`id` INT AUTO_INCREMENT,
-	`resource_type_id` INT REFERENCES `resource_type` (`id`),
-	`title` TEXT,
-	`description` TEXT,
-	PRIMARY KEY (id)
+    `id` INT AUTO_INCREMENT,
+    `resource_type_id` INT REFERENCES `resource_type` (`id`),
+    `title` TEXT,
+    `description` TEXT,
+    PRIMARY KEY (id)
 );
-
-CREATE TABLE `element` (
-	`id` INT AUTO_INCREMENT,
-	`resource_id` INT REFERENCES `resource` (`id`),
-	`element_type_id` INT REFERENCES `element_type` (`id`),
-	`title` TEXT,
-	`index` INT,
-	`url` TEXT,
-	PRIMARY KEY (id)
-);
-
-CREATE TABLE `keyword_xref` (
-	`id` INT AUTO_INCREMENT,
-	`resource_id` INT REFERENCES `resource` (`id`),
-	`keyword_id` INT REFERENCES `keyword` (`id`),
-	PRIMARY KEY(id)
-);
-
-CREATE TABLE `keyword` (
-	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT,
-	PRIMARY KEY(id)
-);
-
-CREATE TABLE `author` (
-	`id` INT AUTO_INCREMENT,
-	`resource_id` INT REFERENCES `resource` (`id`),
-	`author_type_id` INT REFERENCES `author_type` (`id`),
-	`full_name` TEXT,
-	PRIMARY KEY (id)
-);
-
-CREATE TABLE `author_type` (
-	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT,
-	PRIMARY KEY (id)
-);
-
-INSERT INTO `author_type` (name) VALUES
-	('PERSON'),
-	('ORGANIZATION')
-;
 
 CREATE TABLE `resource_type` (
-	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT,
-	PRIMARY KEY (id)
+    `id` INT AUTO_INCREMENT,
+    `name` TINYTEXT,
+    PRIMARY KEY (id)
 );
 
 INSERT INTO `resource_type` (name) VALUES
-	('TUTORIAL'),
-	('DOCUMENTATION')
+    ('TUTORIAL'),
+    ('DOCUMENTATION')
 ;
 
+CREATE TABLE `element` (
+    `id` INT AUTO_INCREMENT,
+    `resource_id` INT REFERENCES `resource` (`id`),
+    `element_type_id` INT REFERENCES `element_type` (`id`),
+    `title` TEXT,
+    `index` INT,
+    `url` TEXT,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE `element_type` (
-	`id` INT AUTO_INCREMENT,
-	`name` TINYTEXT,
-	PRIMARY KEY (id)
+    `id` INT AUTO_INCREMENT,
+    `name` TINYTEXT,
+    PRIMARY KEY (id)
 );
 
 INSERT INTO `element_type` (name) VALUES
-	('PRIMARY'),
-	('PART'),
-	('LESSON'),
-	('CHAPTER')
+    ('PRIMARY'),
+    ('PART'),
+    ('LESSON'),
+    ('CHAPTER')
+;
+
+CREATE TABLE `keyword_xref` (
+    `id` INT AUTO_INCREMENT,
+    `resource_id` INT REFERENCES `resource` (`id`),
+    `keyword_id` INT REFERENCES `keyword` (`id`),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE `keyword` (
+    `id` INT AUTO_INCREMENT,
+    `name` TINYTEXT,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE `author` (
+    `id` INT AUTO_INCREMENT,
+    `resource_id` INT REFERENCES `resource` (`id`),
+    `author_type_id` INT REFERENCES `author_type` (`id`),
+    `full_name` TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE `author_type` (
+    `id` INT AUTO_INCREMENT,
+    `name` TINYTEXT,
+    PRIMARY KEY (id)
+);
+
+INSERT INTO `author_type` (name) VALUES
+    ('PERSON'),
+    ('ORGANIZATION')
 ;
 
 /*-------------------*/
