@@ -161,7 +161,7 @@ class FormProcessor {
 
         //Get the predetermined Author Types if we haven't already
         if(!$this->author_types) {
-            $this->author_types = $this->Database->GetTypes('entity_type', 'name');
+            $this->author_types = $this->Database->GetTypes('author_type', 'name');
         }
         
         //Make sure that Author Type is one of the values that we have predetermined
