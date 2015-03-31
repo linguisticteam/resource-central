@@ -23,9 +23,9 @@ Before you do any work, click the link above to go directly to the PUNCH SHEET. 
 
 ###How we label versions
 
-The version numbers follow the system x.y.z, where:
-x = a completely new version of the application where a new approach/interface or whatever is implemented
-y = an added single feature or a group of features, usually written in the form of user stories
+The version numbers follow the system x.y.z, where:  
+x = a completely new version of the application where a new approach/interface or whatever is implemented  
+y = an added single feature or a group of features, usually written in the form of user stories  
 z = a bug fix
 
 For example, version 1.0.0 might be released. Then version 1.1.0 would be released when a new user story is completed, immediately making available the new functionality to users. But then a bug is found. Version 1.1.1 would be released when the bug is fixed.
