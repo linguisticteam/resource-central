@@ -31,30 +31,6 @@ class Database extends mysqli {
         
         return $types_array;
     }
-
-    public function BeginTransaction() {
-        $sql = "START TRANSACTION";
-        $result = $this->query($sql);
-
-        if(!$result) {
-            Error::raise(__FILE__, __LINE__, 'BeginTransactionFailed');
-            return false;
-        }
-
-        return true;
-    }
-
-    public function EndTransaction() {
-        $sql = "COMMIT";
-        $result = $this->query($sql);
-
-        if(!$result) {
-            Error::raise(__FILE__, __LINE__, 'EndTransactionFailed');
-            return false;
-        }
-
-        return true;
-    }
 }
 
 $Database = new Database;
@@ -79,20 +55,24 @@ class AddingEntry extends Database {
 
     public function InsertToDb() {
 
-        $this->BeginTransaction();
+        //Start transaction
+        $this->autocommit(FALSE);
+        
         $this->AddResource();
         $this->AddKeywords();
         $this->AddAuthors();
-        $this->EndTransaction();
-
-        //Check for raised errors, cancel operation if found
-        if(Error::count() > 0) {
-            Error::print_all();
-            exit;
-        }
         
-        //If there are no raised errors, resource is added successfully
-        echo "Resource added successfully";
+        //Roll back changes if there were any raised errors
+        if(Error::count() > 0) {
+            $this->rollback();
+            return false;
+        } 
+            
+        //If there were no raised errors, commit
+        $this->commit();
+        
+        //End transaction
+        $this->autocommit(TRUE);
 
         return true;
     }
