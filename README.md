@@ -19,3 +19,15 @@ Done:
 
 ###[PUNCH SHEET](https://github.com/linguisticteam/content-reference-central/issues/17)
 Before you do any work, click the link above to go directly to the PUNCH SHEET. If your name is not in the list, then add it. Below your name Write a description of what you intend to work on, including if you are going to add something completely new. Replace the description with "None" when you're done.
+
+
+###How we label versions
+
+The version numbers follow the system x.y.z, where:
+x = a completely new version of the application where a new approach/interface or whatever is implemented
+y = an added single feature or a group of features, usually written in the form of user stories
+z = a bug fix
+
+For example, version 1.0.0 might be released. Then version 1.1.0 would be released when a new user story is completed, immediately making available the new functionality to users. But then a bug is found. Version 1.1.1 would be released when the bug is fixed.
+
+When y is incremented z is reset to zero. When x is incremented both y and z are set to zero.
