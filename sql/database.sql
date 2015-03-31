@@ -42,21 +42,21 @@ CREATE TABLE `keyword` (
 	PRIMARY KEY(id)
 );
 
-CREATE TABLE `entity` (
+CREATE TABLE `author` (
 	`id` INT AUTO_INCREMENT,
 	`resource_id` INT REFERENCES `resource` (`id`),
-	`entity_type_id` INT REFERENCES `entity_type` (`id`),
+	`author_type_id` INT REFERENCES `author_type` (`id`),
 	`full_name` TEXT,
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE `entity_type` (
+CREATE TABLE `author_type` (
 	`id` INT AUTO_INCREMENT,
 	`name` TINYTEXT,
 	PRIMARY KEY (id)
 );
 
-INSERT INTO `entity_type` (name) VALUES
+INSERT INTO `author_type` (name) VALUES
 	('PERSON'),
 	('ORGANIZATION')
 ;
@@ -203,14 +203,14 @@ BEGIN
                     SET author_type = SPLIT_STR(author_array, ',', 2);
 
                     /* Insert the separated values in the table */
-                    INSERT INTO `entity`(
+                    INSERT INTO `author`(
                             `resource_id`,
-                            `entity_type_id`,
+                            `author_type_id`,
                             `full_name`
                     )
                     VALUES (
                             (SELECT `id` FROM `resource` WHERE `title` = param_resource_title),
-                            (SELECT `id` FROM `entity_type` WHERE `name` = author_type),
+                            (SELECT `id` FROM `author_type` WHERE `name` = author_type),
                             resource_author
                     );
 
