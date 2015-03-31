@@ -13,9 +13,9 @@ USE `content_reference_central`;
 
 CREATE TABLE `resource` (
     `id` INT AUTO_INCREMENT,
-    `resource_type_id` INT REFERENCES `resource_type` (`id`),
-    `title` TEXT,
-    `description` TEXT,
+    `resource_type_id` INT NOT NULL REFERENCES `resource_type` (`id`),
+    `title` TEXT NOT NULL,
+    `description` TEXT NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -36,7 +36,7 @@ CREATE TABLE `element` (
     `element_type_id` INT REFERENCES `element_type` (`id`),
     `title` TEXT,
     `index` INT,
-    `url` TEXT,
+    `url` TEXT NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -55,22 +55,22 @@ INSERT INTO `element_type` (name) VALUES
 
 CREATE TABLE `keyword_xref` (
     `id` INT AUTO_INCREMENT,
-    `resource_id` INT REFERENCES `resource` (`id`),
-    `keyword_id` INT REFERENCES `keyword` (`id`),
+    `resource_id` INT NOT NULL REFERENCES `resource` (`id`),
+    `keyword_id` INT NOT NULL REFERENCES `keyword` (`id`),
     PRIMARY KEY(id)
 );
 
 CREATE TABLE `keyword` (
     `id` INT AUTO_INCREMENT,
-    `name` TINYTEXT,
+    `name` TINYTEXT NOT NULL,
     PRIMARY KEY(id)
 );
 
 CREATE TABLE `author` (
     `id` INT AUTO_INCREMENT,
-    `resource_id` INT REFERENCES `resource` (`id`),
-    `author_type_id` INT REFERENCES `author_type` (`id`),
-    `full_name` TEXT,
+    `resource_id` INT NOT NULL REFERENCES `resource` (`id`),
+    `author_type_id` INT NOT NULL REFERENCES `author_type` (`id`),
+    `full_name` TEXT NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -114,7 +114,7 @@ DELIMITER $$
 
 
 
-/* Stored procedure to insert an single-element resource */
+/* Stored procedure to insert a single-element resource */
 CREATE PROCEDURE insert_resource (IN param_title TEXT, IN param_resource_type TEXT, IN param_url TEXT, IN param_description TEXT)
 BEGIN
                 INSERT INTO `resource` (
