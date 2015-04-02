@@ -102,8 +102,6 @@ class Error {
         // Errors when interacting with database (Category#02):
         //self::$templates['CannotConnectToDB']        = new ErrorTemplate(02,01,"TECHNICAL","Could not connect to database: " . mysqli_errno($connection));
         self::$templates['GetTypesMethodFailed']       = new ErrorTemplate(02,01,"Database->GetTypes() failed", "DESCRIPTION");
-        self::$templates['BeginTransactionFailed']     = new ErrorTemplate(02,02,"Database->BeginTransaction() failed", "DESCRIPTION");
-        self::$templates['EndTransactionFailed']       = new ErrorTemplate(02,03,"Database->EndTransaction() failed", "DESCRIPTION");
         
         // Errors when calling stored procedure in database (Category#03):
         self::$templates['spf_insert_authors']         = new ErrorTemplate(03,01,"Stored Procedure Failed: insert_authors","DESCRIPTION");
