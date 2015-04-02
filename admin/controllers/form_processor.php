@@ -1,19 +1,24 @@
 <?php
-require_once('error.php');
-require_once(dirname(dirname(__FILE__)) . '/models/database.php');
+//require_once('error.php');
+//require_once(dirname(dirname(__FILE__)) . '/models/database.php');
+//require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
+
+
+
 
 class FormProcessor {
     //Dependencies
     private $Database;
     private $AddingEntry;
+    private $ClassLoader;
     
     //array to hold the inputted Resource Author(s) and Author Type(s)
     private $authors_array = array();
     private $author_types = array();
 
-    public function __construct (Database $Database, AddingEntry $AddingEntry) {
-        $this->Database = $Database;
-        $this->AddingEntry = $AddingEntry;
+    public function __construct (ClassLoader $ClassLoader) {
+        $this->ClassLoader = $ClassLoader;
     }
     
     /* Methods to get and process values supplied through an HTML form */
@@ -27,7 +32,7 @@ class FormProcessor {
         }
         
         $title = $this->getEscapedField('title');   
-        $is_duplicate = $this->AddingEntry->IsTitleDuplicate($title);
+        $is_duplicate = $this->ClassLoader->AddingEntry->IsTitleDuplicate($title);
         
         if($is_duplicate) {
             Error::raise(__FILE__,__LINE__,'TitleAlreadyExists');
@@ -189,8 +194,8 @@ class FormProcessor {
     }
 
     public function escapeString ($String) {
-        $db = $this->Database;
-        return $db->real_escape_string($String);
+       // $db = $this->Database;
+        return $this->ClassLoader->Database->real_escape_string($String);
     }
     
     
@@ -210,4 +215,4 @@ class FormProcessor {
     }
 }
 
-$FormProcessor = new FormProcessor($Database, $AddingEntry);
+//$FormProcessor = new FormProcessor($Database, $AddingEntry);

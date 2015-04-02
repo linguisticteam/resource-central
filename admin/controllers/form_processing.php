@@ -1,13 +1,11 @@
 <?php
 /* Don't allow direct access */
 //defined('START') or die();
-require_once(dirname(dirname(__FILE__)) . '/models/database.php');
-require_once('error.php');
-require_once('form_processor.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
  
 
 //Get and validate all user-suppled values from the form
-$title = $FormProcessor->GetValidatedTitle();
+$title = $ClassLoader->FormProcessor->GetValidatedTitle();
 $resource_type = $FormProcessor->GetValidatedResourceType();
 $url = $FormProcessor->GetValidatedUrl();
 $authors = $FormProcessor->GetValidatedAuthors();
