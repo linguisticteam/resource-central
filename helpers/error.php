@@ -135,4 +135,4 @@ class Error {
     }
 }
 
-$Error = new Error();
+//$Error = new Error();

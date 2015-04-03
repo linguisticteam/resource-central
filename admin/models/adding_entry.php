@@ -121,4 +121,4 @@ class AddingEntry extends Database {
     }
 }
 
-$AddingEntry = new AddingEntry;
+//$AddingEntry = new AddingEntry;

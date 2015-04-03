@@ -5,7 +5,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
  
 
 //Get and validate all user-suppled values from the form
-$title = $ClassLoader->FormProcessor->GetValidatedTitle();
+$title = $FormProcessor->GetValidatedTitle();
 $resource_type = $FormProcessor->GetValidatedResourceType();
 $url = $FormProcessor->GetValidatedUrl();
 $authors = $FormProcessor->GetValidatedAuthors();

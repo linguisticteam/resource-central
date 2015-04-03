@@ -1,6 +1,18 @@
 <?php
 
-class ClassLoader {
+require_once(dirname(dirname(__FILE__)) . '/models/database.php');
+require_once(dirname(dirname(__FILE__)) . '/admin/controllers/form_processor.php');
+require_once(dirname(dirname(__FILE__)) . '/admin/models/adding_entry.php');
+require_once(dirname(__FILE__) . '/error.php');
+//require_once(dirname(dirname(__FILE__)). '/admin/views/add_resource.php');
+
+$Database = new Database;
+$AddingEntry = new AddingEntry;
+$FormProcessor = new FormProcessor($Database, $AddingEntry);
+$Error = new Error();
+
+
+/*class ClassLoader {
     public $Database;
     public $FormProcessor;
     public $AddingEntry;
@@ -42,4 +54,4 @@ $ClassLoader = new ClassLoader;
 //$Database = $ClassLoader->load_Database();
 $Error = $ClassLoader->load_Error(); //instantiating might not be necessary here
 //$AddingEntry = $ClassLoader->load_AddingEntry();
-//$FormProcessor = $ClassLoader->load_FormProcessor();
+//$FormProcessor = $ClassLoader->load_FormProcessor();*/

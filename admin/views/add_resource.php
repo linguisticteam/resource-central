@@ -1,7 +1,6 @@
 <?php
 define('START', true);
 require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
-$Database = $ClassLoader->load_Database();
 
 
 class ViewAddResource {

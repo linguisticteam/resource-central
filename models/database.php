@@ -2,7 +2,7 @@
 /* Don't allow direct access */
 //defined('START') or die();
 
-require_once(dirname(dirname(__FILE__)) . '/lib/config.php');
+require_once(dirname(dirname(__FILE__)) . '/admin/config.php');
 //require_once(dirname(dirname(__FILE__)) . '/controllers/error.php');
 
 class Database extends mysqli {
@@ -33,4 +33,4 @@ class Database extends mysqli {
     }
 }
 
-$Database = new Database;
+//$Database = new Database;
