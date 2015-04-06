@@ -1,19 +1,23 @@
 <?php
 
 class Logger {
+
 	private $log_name;
 	private $file_pointer;
-	private $error_prefix;
-	private $debug_prefix;
-	private $info_prefix;
+
+	private $error_prefix; // Error
+	private $debug_prefix; // Debug info
+	private $info_prefix;  // Info
+	private $userr_prefix; // User error
 
 	public function __construct() {
 
-		$log_name = "events.log";
+		$this->log_name = "events.log";
 
-		$error_prefix = "ERROR: ";
-		$debug_prefix = "DEBUG: ";
-		$info_prefix  = " INFO: ";
+		$this->error_prefix = "ERROR: ";
+		$this->debug_prefix = "DEBUG: ";
+		$this->info_prefix  = " INFO: ";
+		$this->userr_prefix = "USERR: ";
 	}
 
 	private function open() {
@@ -46,5 +50,10 @@ class Logger {
 	public function log_info($content_string) {
 		
 		$this->write($this->info_prefix,$content_string);
+	}
+
+	public function log_userr($content_string) {
+		
+		$this->write($this->userr_prefix,$content_string);
 	}
 }
