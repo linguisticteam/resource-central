@@ -3,7 +3,6 @@
 class Logger {
 
 	private $log_name;
-	private $file_pointer;
 
 	private $error_prefix; // Error
 	private $debug_prefix; // Debug info
@@ -24,21 +23,11 @@ class Logger {
 		$this->debug_mode_active = FALSE;
 	}
 
-	private function open() {
-		
-		$file_pointer = fopen($log_name,"a");
-	}
-
-	private function close() {
-		
-		fclose($this->file_pointer);
-	}
-
 	private function write($entry_type_string,$content_string) {
 
 		$string_to_write = date("Y-m-d H:i:s ") . $entry_type_string . $content_string . "\n";
 
-		fwrite($this->file_pointer,$string_to_write);
+		file_put_contents($this->log_name,$string_to_write,FILE_APPEND);
 	}
 
 	public function activate_debug_mode() {
