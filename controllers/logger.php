@@ -13,13 +13,23 @@ class Logger {
 
 	public function __construct() {
 
-		$this->log_name = "events.log";
+		$this->Initialize("events.log");
+	}
+	
+	public function __construct($log_name) {
+
+		$this->Initialize($log_name);
+	}
+
+	private function Initialize($log_name) {
+
+		$this->log_name = $log_name;
 
 		$this->error_prefix = "ERROR: ";
 		$this->debug_prefix = "DEBUG: ";
 		$this->info_prefix  = " INFO: ";
 		$this->userr_prefix = "USERR: ";
-
+		
 		$this->debug_mode_active = FALSE;
 	}
 
