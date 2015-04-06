@@ -56,10 +56,10 @@ class ErrorTemplate {
         return $this->line;
     }
 
-    /* Printing Functions */
+    /* Info Retrieving Functions */
 
-    public function PrintTechnical() {
-        echo("Error#" .
+    public function TechnicalDataToString() {
+        $compiled_string = "Error#" .
             $this->category .
             "-" .
             $this->number .
@@ -71,11 +71,13 @@ class ErrorTemplate {
             "'\n" .
             "Line: " .
             $this->line .
-            "\n");
+            "\n";
+
+        return $compiled_string;
     }
 
-    public function PrintDescription() {
-        echo($this->description);
+    public function GetDescription() {
+        return $this->description;
     }
 }
 
@@ -87,7 +89,7 @@ class Error {
     }
 
     public static function initialize() {
-	   	// Errors in PHP (Category#00):
+        // Errors in PHP (Category#00):
 
         // Errors in data convention (Category#01):
         self::$templates['ContainsComma']              = new ErrorTemplate(01,01,"TECHNICAL","Resource Author Name contains reserved character: ','");
@@ -132,8 +134,8 @@ class Error {
 
     public static function print_all() {
         foreach (self::$raised_errors as $error) {
-            $error->PrintTechnical();
-            $error->PrintDescription();
+            echo($error->TechnicalDataToString());
+            echo($error->GetDescription());
         }
     }
 }
