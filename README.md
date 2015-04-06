@@ -17,7 +17,7 @@ Work in process:
 Done:
 * US7: As an administrator, I can see specific error messages telling me if the data I tried to enter into the system are not compliant with the requirements.
 
-###[PUNCH SHEET](https://github.com/linguisticteam/content-reference-central/issues/17)
+###[PUNCH SHEET](https://github.com/linguisticteam/resource-central/issues/17)
 Before you do any work, click the link above to go directly to the PUNCH SHEET. If your name is not in the list, then add it. Below your name Write a description of what you intend to work on, including if you are going to add something completely new. Replace the description with "None" when you're done.
 
 
