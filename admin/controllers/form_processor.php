@@ -1,15 +1,21 @@
 <?php
-require_once('error.php');
-require_once(dirname(dirname(__FILE__)) . '/models/database.php');
+//require_once('error.php');
+//require_once(dirname(dirname(__FILE__)) . '/models/database.php');
+//require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
+
+
+
 
 class FormProcessor {
     //Dependencies
     private $Database;
     private $AddingEntry;
+    private $ClassLoader;
     
     //array to hold the inputted Resource Author(s) and Author Type(s)
     private $authors_array = array();
-    private $author_types = array();
+    private $predetermined_author_types = array();
 
     public function __construct (Database $Database, AddingEntry $AddingEntry) {
         $this->Database = $Database;
@@ -46,10 +52,10 @@ class FormProcessor {
         }
         
         $resource_type = $this->getEscapedField('resource_type');
-        $resource_types = $this->Database->GetTypes('resource_type', 'name');
+        $predetermined_resource_types = $this->Database->GetTypes('resource_type', 'name');
         
         //Make sure that the Resource Type is one of the predetermined values
-        if(!in_array($resource_type, $resource_types, true)) {
+        if(!in_array($resource_type, $predetermined_resource_types, true)) {
             Error::raise(__FILE__, __LINE__, 'ResourceTypeIncorrectValue');
             return;
         }
@@ -160,12 +166,12 @@ class FormProcessor {
         }
 
         //Get the predetermined Author Types if we haven't already
-        if(!$this->author_types) {
-            $this->author_types = $this->Database->GetTypes('author_type', 'name');
+        if(!$this->predetermined_author_types) {
+            $this->predetermined_author_types = $this->Database->GetTypes('author_type', 'name');
         }
         
         //Make sure that Author Type is one of the values that we have predetermined
-        if(!in_array($tempAuthorType, $this->author_types, true)) {
+        if(!in_array($tempAuthorType, $this->predetermined_author_types, true)) {
             Error::raise(__FILE__, __LINE__, 'AuthorTypeIncorrectValue');
             return;
         }
@@ -189,8 +195,7 @@ class FormProcessor {
     }
 
     public function escapeString ($String) {
-        $db = $this->Database;
-        return $db->real_escape_string($String);
+        return $this->Database->real_escape_string($String);
     }
     
     
@@ -210,4 +215,4 @@ class FormProcessor {
     }
 }
 
-$FormProcessor = new FormProcessor($Database, $AddingEntry);
+//$FormProcessor = new FormProcessor($Database, $AddingEntry);
