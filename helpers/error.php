@@ -82,13 +82,38 @@ class ErrorTemplate {
 }
 
 class Error {
+
+    /* Static Members */
+
     private static $templates = array();
     private static $raised_errors = array();
 
+    /* Constructors */
+
     public function __construct() {
+
+        if (!$this->is_initialized()) {
+
+            $this->create_templates();
+        }
     }
 
-    public static function initialize() {
+    /* Initialization Functions */
+
+    // Get count of templates to see if class is initialized
+    private function is_initialized() {
+
+        if (count(self::$templates)) {
+
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
+    // Create templates
+    private function create_templates() {
+
         // Errors in PHP (Category#00):
 
         // Errors in data convention (Category#01):
@@ -114,30 +139,34 @@ class Error {
         self::$templates['spf_insert_keywords']        = new ErrorTemplate(03,03,"Stored Procedure Failed: insert_keywords","DESCRIPTION");
     }
 
-    public static function raise($file,$line,$error_key) {
+    /* Public Functions */
 
-        $error = self::$templates[$error_key];
+    public function raise($file,$line,$error_key) {
 
-        $error->SetFile($file);
-        $error->SetLine($line);
+        $error_to_raise = self::$templates[$error_key];
 
-        self::$raised_errors[] = $error;
+        $error_to_raise->SetFile($file);
+        $error_to_raise->SetLine($line);
+
+        self::$raised_errors[] = $error_to_raise;
     }
 
-    public static function clear_all() {
+    public function clear_all() {
+
         self::$raised_errors = array();
     }
 
-    public static function count() {
+    public function count() {
+
         return count(self::$raised_errors);
     }
 
-    public static function print_all() {
+    public function print_all() {
+
         foreach (self::$raised_errors as $error) {
+
             echo($error->TechnicalDataToString());
             echo($error->GetDescription());
         }
     }
 }
-
-Error::initialize();
