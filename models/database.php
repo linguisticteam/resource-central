@@ -68,6 +68,22 @@ class Database extends mysqli {
         
         return $result;
     }
+    
+    //This method is to be expanded in the future, to include more than the URL
+    public function GetResourceURLs($resource_id) {
+        $sql = "SELECT url
+                FROM element
+                WHERE resource_id = " . (int) $resource_id;
+        
+        $result = $this->query($sql);
+        
+        if(!$result) {
+            Error::raise(__FILE__, __LINE__, 'GetResourceURLMethodFailed');
+            return false;
+        }
+        
+        return $result;
+    }
 }
 
 //$Database = new Database;

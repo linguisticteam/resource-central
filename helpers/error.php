@@ -105,6 +105,7 @@ class Error {
         self::$templates['GetTypesMethodFailed']       = new ErrorTemplate(02,01,"Database->GetTypes() failed","DESCRIPTION");
         self::$templates['GetResourcesMethodFailed'] = new ErrorTemplate(02, 02, "Database->GetResources() failed", "DESCRIPTION");
         self::$templates['GetKeywordsMethodFailed'] = new ErrorTemplate(02, 03, "Database->GetKeywords() failed", "DESCRIPTION");
+        self::$templates['GetResourceURLMethodFailed'] = new ErrorTemplate(02, 04, "Database->GetResourceURL() failed", "DESCRIPTION");
         
         // Errors when calling stored procedure in database (Category#03):
         self::$templates['spf_insert_authors']         = new ErrorTemplate(03,01,"Stored Procedure Failed: insert_authors","DESCRIPTION");

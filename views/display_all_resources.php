@@ -41,6 +41,22 @@ class ViewDisplayAllResources {
             }
             
             $output .= "</div>";
+        
+        
+            /* Get and display URLs (this is to be expanded to more than just URLs in the future) */
+
+            $urls_result = $this->Database->GetResourceURLs((int) $row['resource_id']);
+
+            $output .= "<div>URL: ";
+
+            while($urls_row = $urls_result->fetch_array()) {
+                $url = htmlspecialchars($urls_row['url']);
+                $output .= $url;
+            }
+
+            $output .= "</div>";
+
+            
         }
         
         echo $output;
