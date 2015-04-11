@@ -37,6 +37,7 @@ class ViewDisplayAllResources {
                
                 //Put a comma on every iteration after the first one
                 if($i != 0) {$output .= ", ";}
+                
                 $output .= $keyword;
             }
             
@@ -56,6 +57,26 @@ class ViewDisplayAllResources {
 
             $output .= "</div>";
 
+            
+            /* Get and display the authors */
+            
+            $authors_result = $this->Database->GetAuthors((int) $row['resource_id']);
+            $row_count = $authors_result->num_rows;
+            
+            $output .= "<div>Author(s): ";
+            
+            for($i = 0; $i < $row_count; $i++) {
+                $authors_row = $authors_result->fetch_array();
+                $author = htmlspecialchars($authors_row['full_name']);
+                $author_type = htmlspecialchars($authors_row['author_type']);
+                
+                //Put a comma on every iteration after the first one
+                if($i != 0) {$output .= ", ";}
+                
+                $output .= $author . ' (' . ucwords(strtolower($author_type)) . ')';
+            }
+            
+            $output .= "</div>";
             
         }
         

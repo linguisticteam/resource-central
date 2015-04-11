@@ -84,6 +84,25 @@ class Database extends mysqli {
         
         return $result;
     }
+    
+    public function GetAuthors($resource_id) {
+        $sql = "SELECT full_name, (
+                SELECT name
+                FROM author_type AS at
+                WHERE at.id = a.author_type_id
+                ) AS author_type
+                FROM author AS a
+                WHERE a.resource_id = " . (int) $resource_id;
+        
+        $result = $this->query($sql);
+        
+        if(!$result) {
+            Error::raise(__FILE__, __LINE__, 'GetAuthorsMethodFailed');
+            return false;
+        }
+        
+        return $result;
+    }
 }
 
 //$Database = new Database;
