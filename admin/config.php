@@ -6,7 +6,7 @@
 define('DB_HOST', 'localhost');
 
 /** The name of the MySQL database */
-define('DB_NAME', 'content_reference_central');
+define('DB_NAME', 'resource_central');
 
 /** MySQL database username **/
 define('DB_USER', 'root');
