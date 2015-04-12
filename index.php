@@ -1,8 +1,23 @@
-<?php
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+<html>
+    <head>
+        <title>Resource Central</title>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+    </head>
+    
+    <body>
+    <h1>Welcome to the Resource Central</h1>
+    <p>This site has a collection of useful resources that we have gathered over the years</p>
+    <?php
+    require_once(dirname(__FILE__) . '/views/display_all_resources.php');
+    ?>
+    <div id="resources_display">
+        <?php $ViewDisplayAllResources->DisplayAll(); ?>
+    </div>
+    <br>
+    <div id="footer">
+        <span><a href="//github.com/linguisticteam/resource-central/" target="_blank">View this project on github</a></span>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <span>Contact us</span>
+    </div>
+    </body>
+</html>
