@@ -1,11 +1,11 @@
 START TRANSACTION;
 
-DROP DATABASE IF EXISTS `content_reference_central`;
-CREATE DATABASE `content_reference_central`
+DROP DATABASE IF EXISTS `resource_central`;
+CREATE DATABASE `resource_central`
 DEFAULT CHARACTER SET 'utf8'
 DEFAULT COLLATE 'utf8_unicode_ci';
 
-USE `content_reference_central`;
+USE `resource_central`;
 
 /*--------------------------------*/
 /*----   TABLES AND INSERTS   ----*/
