@@ -23,7 +23,7 @@ class ViewDisplayAllResources {
             $description = htmlspecialchars($row['description']);
             $output .= "<h3>" . $title . "</h3>";
             $output .= "<table class='resource_info'><tbody><tr>Type: " . ucwords(strtolower($resource_type)) . '</tr>';
-            $output .= ' <tr>&nbsp;&nbsp;&nbsp;<a href="#" class="tooltip">'
+            $output .= ' <tr>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="tooltip">'
                     . '<img src="img/information-icon-small.png">'
                     . '<span><img class="callout" src="img/callout_black.gif" />'
                     . '<strong>Description</strong><br />' . $description
@@ -35,7 +35,7 @@ class ViewDisplayAllResources {
             $urls_result = $this->Database->GetResourceURLs((int) $row['resource_id']);
 
             $output .= "<tr>";
-            $output .= "&nbsp;&nbsp;&nbsp;";
+            $output .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
             while($urls_row = $urls_result->fetch_array()) {
                 $url = htmlspecialchars($urls_row['url']);
