@@ -78,66 +78,61 @@ class ErrorTemplate {
 }
 
 class Error {
-    private static $templates = array();
-    private static $raised_errors = array();
+    private $templates = array();
+    private $raised_errors = array();
 
     public function __construct() {
-    }
-
-    public static function initialize() {
         // Errors in PHP (Category#00):
 
         // Errors in data convention (Category#01):
-        self::$templates['ContainsComma']              = new ErrorTemplate(01,01,"TECHNICAL","Resource Author Name contains reserved character: ','");
-        self::$templates['SelectAuthorType']           = new ErrorTemplate(01,02,"TECHNICAL","Please select an Author Type");
-        self::$templates['SpecifyResourceAuthor']      = new ErrorTemplate(01,03,"TECHNICAL","Please specify a Resource Author");
-        self::$templates['TitleAlreadyExists']         = new ErrorTemplate(01,04,"TECHNICAL","A resource with this title already exists");
-        self::$templates['TitleNotSpecified']          = new ErrorTemplate(01,05,"TECHNICAL","Resource title is not specified");
-        self::$templates['KeywordsAreRequired']        = new ErrorTemplate(01,06,"TECHNICAL","Please specify some keywords");
-        self::$templates['AuthorTypeIncorrectValue']   = new ErrorTemplate(01,07,"TECHNICAL","Author Type is an incorrect value");
-        self::$templates['SelectResourceType']         = new ErrorTemplate(01,08,"TECHNICAL","Please select a Resource Type");
-        self::$templates['ResourceTypeIncorrectValue'] = new ErrorTemplate(01,09,"TECHNICAL","Resource Type is an incorrect value");
-        self::$templates['SpecifyResourceURL']         = new ErrorTemplate(01,10,"TECHNICAL","Please specify a URL for the Resource");
-        self::$templates['ProvideDescription']         = new ErrorTemplate(01,11,"TECHNICAL","Please provide a description");
+        $this->templates['ContainsComma']              = new ErrorTemplate(01,01,"TECHNICAL","Resource Author Name contains reserved character: ','");
+        $this->templates['SelectAuthorType']           = new ErrorTemplate(01,02,"TECHNICAL","Please select an Author Type");
+        $this->templates['SpecifyResourceAuthor']      = new ErrorTemplate(01,03,"TECHNICAL","Please specify a Resource Author");
+        $this->templates['TitleAlreadyExists']         = new ErrorTemplate(01,04,"TECHNICAL","A resource with this title already exists");
+        $this->templates['TitleNotSpecified']          = new ErrorTemplate(01,05,"TECHNICAL","Resource title is not specified");
+        $this->templates['KeywordsAreRequired']        = new ErrorTemplate(01,06,"TECHNICAL","Please specify some keywords");
+        $this->templates['AuthorTypeIncorrectValue']   = new ErrorTemplate(01,07,"TECHNICAL","Author Type is an incorrect value");
+        $this->templates['SelectResourceType']         = new ErrorTemplate(01,08,"TECHNICAL","Please select a Resource Type");
+        $this->templates['ResourceTypeIncorrectValue'] = new ErrorTemplate(01,09,"TECHNICAL","Resource Type is an incorrect value");
+        $this->templates['SpecifyResourceURL']         = new ErrorTemplate(01,10,"TECHNICAL","Please specify a URL for the Resource");
+        $this->templates['ProvideDescription']         = new ErrorTemplate(01,11,"TECHNICAL","Please provide a description");
         
         // Errors when interacting with database (Category#02):
-        //self::$templates['CannotConnectToDB']        = new ErrorTemplate(02,01,"TECHNICAL","Could not connect to database: " . mysqli_errno($connection));
-        self::$templates['GetTypesMethodFailed']       = new ErrorTemplate(02,01,"Database->GetTypes() failed","DESCRIPTION");
-        self::$templates['GetResourcesMethodFailed'] = new ErrorTemplate(02, 02, "Database->GetResources() failed", "DESCRIPTION");
-        self::$templates['GetKeywordsMethodFailed'] = new ErrorTemplate(02, 03, "Database->GetKeywords() failed", "DESCRIPTION");
-        self::$templates['GetResourceURLMethodFailed'] = new ErrorTemplate(02, 04, "Database->GetResourceURL() failed", "DESCRIPTION");
-        self::$templates['GetAuthorsMethodFailed'] = new ErrorTemplate(02, 05, "Database->Authors() failed", "DESCRIPTION");
+        //$this->templates['CannotConnectToDB']        = new ErrorTemplate(02,01,"TECHNICAL","Could not connect to database: " . mysqli_errno($connection));
+        $this->templates['GetTypesMethodFailed']       = new ErrorTemplate(02,01,"Database->GetTypes() failed","DESCRIPTION");
+        $this->templates['GetResourcesMethodFailed'] = new ErrorTemplate(02, 02, "Database->GetResources() failed", "DESCRIPTION");
+        $this->templates['GetKeywordsMethodFailed'] = new ErrorTemplate(02, 03, "Database->GetKeywords() failed", "DESCRIPTION");
+        $this->templates['GetResourceURLMethodFailed'] = new ErrorTemplate(02, 04, "Database->GetResourceURL() failed", "DESCRIPTION");
+        $this->templates['GetAuthorsMethodFailed'] = new ErrorTemplate(02, 05, "Database->Authors() failed", "DESCRIPTION");
         
         // Errors when calling stored procedure in database (Category#03):
-        self::$templates['spf_insert_authors']         = new ErrorTemplate(03,01,"Stored Procedure Failed: insert_authors","DESCRIPTION");
-        self::$templates['spf_insert_resource']        = new ErrorTemplate(03,02,"Stored Procedure Failed: insert_resource","DESCRIPTION");
-        self::$templates['spf_insert_keywords']        = new ErrorTemplate(03,03,"Stored Procedure Failed: insert_keywords","DESCRIPTION");
+        $this->templates['spf_insert_authors']         = new ErrorTemplate(03,01,"Stored Procedure Failed: insert_authors","DESCRIPTION");
+        $this->templates['spf_insert_resource']        = new ErrorTemplate(03,02,"Stored Procedure Failed: insert_resource","DESCRIPTION");
+        $this->templates['spf_insert_keywords']        = new ErrorTemplate(03,03,"Stored Procedure Failed: insert_keywords","DESCRIPTION");
     }
 
-    public static function raise($file,$line,$error_key) {
+    public function raise($file,$line,$error_key) {
 
-        $error = self::$templates[$error_key];
+        $error = $this->templates[$error_key];
 
         $error->SetFile($file);
         $error->SetLine($line);
 
-        self::$raised_errors[] = $error;
+        $this->raised_errors[] = $error;
     }
 
-    public static function clear_all() {
-        self::$raised_errors = array();
+    public function clear_all() {
+        $this->raised_errors = array();
     }
 
-    public static function count() {
-        return count(self::$raised_errors);
+    public function count() {
+        return count($this->raised_errors);
     }
 
-    public static function print_all() {
-        foreach (self::$raised_errors as $error) {
+    public function print_all() {
+        foreach ($this->raised_errors as $error) {
             echo($error->TechnicalDataToString());
             echo($error->GetDescription());
         }
     }
 }
-
-Error::initialize();

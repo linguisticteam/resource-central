@@ -12,14 +12,16 @@ class FormProcessor {
     private $Database;
     private $AddingEntry;
     private $ClassLoader;
+    private $Error;
     
     //array to hold the inputted Resource Author(s) and Author Type(s)
     private $authors_array = array();
     private $predetermined_author_types = array();
 
-    public function __construct (Database $Database, AddingEntry $AddingEntry) {
+    public function __construct (Database $Database, AddingEntry $AddingEntry, Error $Error) {
         $this->Database = $Database;
         $this->AddingEntry = $AddingEntry;
+        $this->Error = $Error;
     }
     
     /* Methods to get and process values supplied through an HTML form */
@@ -28,7 +30,7 @@ class FormProcessor {
         $title_exists = $this->isFieldPresent('title');
         
         if(!$title_exists) {
-            Error::raise(__FILE__,__LINE__,'TitleNotSpecified');
+            $this->Error->raise(__FILE__,__LINE__,'TitleNotSpecified');
             return;
         }
         
@@ -36,7 +38,7 @@ class FormProcessor {
         $is_duplicate = $this->AddingEntry->IsTitleDuplicate($title);
         
         if($is_duplicate) {
-            Error::raise(__FILE__,__LINE__,'TitleAlreadyExists');
+            $this->Error->raise(__FILE__,__LINE__,'TitleAlreadyExists');
             return;
         }
         
@@ -47,7 +49,7 @@ class FormProcessor {
         $resource_type_exists = $this->isFieldPresent('resource_type');
         
         if(!$resource_type_exists) {
-            Error::raise(__FILE__, __LINE__, 'SelectResourceType');
+            $this->Error->raise(__FILE__, __LINE__, 'SelectResourceType');
             return;
         }
         
@@ -56,7 +58,7 @@ class FormProcessor {
         
         //Make sure that the Resource Type is one of the predetermined values
         if(!in_array($resource_type, $predetermined_resource_types, true)) {
-            Error::raise(__FILE__, __LINE__, 'ResourceTypeIncorrectValue');
+            $this->Error->raise(__FILE__, __LINE__, 'ResourceTypeIncorrectValue');
             return;
         }
         
@@ -67,7 +69,7 @@ class FormProcessor {
         $url_exists = $this->isFieldPresent('url');
         
         if(!$url_exists) {
-            Error::raise(__FILE__, __LINE__, 'SpecifyResourceURL');
+            $this->Error->raise(__FILE__, __LINE__, 'SpecifyResourceURL');
             return;
         }
         
@@ -90,12 +92,12 @@ class FormProcessor {
             elseif( $resource_author_exists &&
                    !$author_type_exists) {
                 // Only author name exists.
-                Error::raise(__FILE__,__LINE__,'SelectAuthorType');
+                $this->Error->raise(__FILE__,__LINE__,'SelectAuthorType');
             }
             elseif(!$resource_author_exists &&
                     $author_type_exists) {
                 // Only author type exists.
-                Error::raise(__FILE__,__LINE__,'SpecifyResourceAuthor');
+                $this->Error->raise(__FILE__,__LINE__,'SpecifyResourceAuthor');
             }
             elseif( $resource_author_exists &&
                 $author_type_exists) {
@@ -117,7 +119,7 @@ class FormProcessor {
         $keywords_exist = $this->isFieldPresent('keywords');
         
         if(!$keywords_exist) {
-            Error::raise(__FILE__, __LINE__, 'KeywordsAreRequired');
+            $this->Error->raise(__FILE__, __LINE__, 'KeywordsAreRequired');
             return;
         }
         
@@ -146,7 +148,7 @@ class FormProcessor {
         $description_exists = $this->isFieldPresent('description');
         
         if(!$description_exists) {
-            Error::raise(__FILE__, __LINE__, 'ProvideDescription');
+            $this->Error->raise(__FILE__, __LINE__, 'ProvideDescription');
             return;
         }
         
@@ -162,7 +164,7 @@ class FormProcessor {
         
         //Resouce Author cannot contain any commas
         if ($this->containsComma($tempResourceAuthor) == true) {
-            Error::raise(__FILE__,__LINE__,'ContainsComma');
+            $this->Error->raise(__FILE__,__LINE__,'ContainsComma');
         }
 
         //Get the predetermined Author Types if we haven't already
@@ -172,7 +174,7 @@ class FormProcessor {
         
         //Make sure that Author Type is one of the values that we have predetermined
         if(!in_array($tempAuthorType, $this->predetermined_author_types, true)) {
-            Error::raise(__FILE__, __LINE__, 'AuthorTypeIncorrectValue');
+            $this->Error->raise(__FILE__, __LINE__, 'AuthorTypeIncorrectValue');
             return;
         }
         

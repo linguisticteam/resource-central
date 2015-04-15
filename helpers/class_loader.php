@@ -6,10 +6,11 @@ require_once(dirname(dirname(__FILE__)) . '/admin/models/adding_entry.php');
 require_once(dirname(__FILE__) . '/error.php');
 //require_once(dirname(dirname(__FILE__)). '/admin/views/add_resource.php');
 
-$Database = new Database;
-$AddingEntry = new AddingEntry;
-$FormProcessor = new FormProcessor($Database, $AddingEntry);
 $Error = new Error();
+$Database = new Database($Error);
+$AddingEntry = new AddingEntry($Error);
+$FormProcessor = new FormProcessor($Database, $AddingEntry, $Error);
+
 
 
 /*class ClassLoader {

@@ -13,8 +13,8 @@ $keywords = $FormProcessor->GetValidatedKeywords();
 $description = $FormProcessor->GetValidatedDescription();
 
 //Check for raised errors, cancel operation if found
-if(Error::count() > 0) {
-   Error::print_all();
+if($Error->count() > 0) {
+   $Error->print_all();
    exit;
 }
 
@@ -31,8 +31,8 @@ $AddingEntry->SetProperties(
 $AddingEntry->InsertToDb();
 
 //Check for raised errors
-    if(Error::count() > 0) {
-        Error::print_all();
+    if($Error->count() > 0) {
+        $Error->print_all();
         exit;
     }
 

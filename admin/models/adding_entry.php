@@ -1,6 +1,9 @@
 <?php
 
 class AddingEntry extends Database {
+    //Dependencies
+    private $Error;
+    
     private $title;
     private $resource_type;
     private $url;
@@ -8,6 +11,11 @@ class AddingEntry extends Database {
     private $keywords;
     private $description;
 
+    public function __construct(Error $Error) {
+        parent::__construct($Error);
+        $this->Error = $Error;
+    }
+    
     public function SetProperties($title, $resource_type, $url, $authors, $keywords, $description) {
         //Call the setter methods one by one
         $this->SetTitle($title);
@@ -28,7 +36,7 @@ class AddingEntry extends Database {
         $this->AddAuthors();
         
         //Roll back changes if there were any raised errors
-        if(Error::count() > 0) {
+        if($this->Error->count() > 0) {
             $this->rollback();
             return false;
         } 
@@ -73,7 +81,7 @@ class AddingEntry extends Database {
         $result = $this->query($sql);
         
         if($result != true) {
-            Error::raise(__FILE__,__LINE__,'spf_insert_resource');
+            $this->Error->raise(__FILE__,__LINE__,'spf_insert_resource');
             return false;
         }
 
@@ -86,7 +94,7 @@ class AddingEntry extends Database {
         $result = $this->query($sql);
 
         if(!$result) {
-            Error::raise(__FILE__,__LINE__,'spf_insert_keywords');
+            $this->Error->raise(__FILE__,__LINE__,'spf_insert_keywords');
             return false;
         }
 
@@ -98,7 +106,7 @@ class AddingEntry extends Database {
         $result = $this->query($sql);
 
         if(!$result) {
-            Error::raise(__FILE__,__LINE__,'spf_insert_authors');
+            $this->Error->raise(__FILE__,__LINE__,'spf_insert_authors');
             return false;
         }
 
