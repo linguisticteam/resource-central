@@ -11,11 +11,11 @@ class ErrorTemplate {
 
     /* Constructors */
 
-    public function __construct($category,$number,$technical,$description) {
+    public function __construct($category,$number,$technical = null,$description = null) {
         $this->category    = $category;
         $this->number      = $number;
-        $this->technical   = $technical;
-        $this->description = $description;
+        $technical == null ? $this->technical = '' : $this->technical = $technical;
+        $description == null ? $this->description = '' : $this->description = $description;
         $this->file        = "";
         $this->line        = 0;
     }
@@ -94,30 +94,30 @@ class Error {
         // Errors in PHP (Category#00):
 
         // Errors in data convention (Category#01):
-        $this->templates['ContainsComma']              = new ErrorTemplate(01,01,"TECHNICAL","Resource Author Name contains reserved character: ','");
-        $this->templates['SelectAuthorType']           = new ErrorTemplate(01,02,"TECHNICAL","Please select an Author Type");
-        $this->templates['SpecifyResourceAuthor']      = new ErrorTemplate(01,03,"TECHNICAL","Please specify a Resource Author");
-        $this->templates['TitleAlreadyExists']         = new ErrorTemplate(01,04,"TECHNICAL","A resource with this title already exists");
-        $this->templates['TitleNotSpecified']          = new ErrorTemplate(01,05,"TECHNICAL","Resource title is not specified");
-        $this->templates['KeywordsAreRequired']        = new ErrorTemplate(01,06,"TECHNICAL","Please specify some keywords");
-        $this->templates['AuthorTypeIncorrectValue']   = new ErrorTemplate(01,07,"TECHNICAL","Author Type is an incorrect value");
-        $this->templates['SelectResourceType']         = new ErrorTemplate(01,08,"TECHNICAL","Please select a Resource Type");
-        $this->templates['ResourceTypeIncorrectValue'] = new ErrorTemplate(01,09,"TECHNICAL","Resource Type is an incorrect value");
-        $this->templates['SpecifyResourceURL']         = new ErrorTemplate(01,10,"TECHNICAL","Please specify a URL for the Resource");
-        $this->templates['ProvideDescription']         = new ErrorTemplate(01,11,"TECHNICAL","Please provide a description");
+        $this->templates['ContainsComma']              = new ErrorTemplate(01,01,null,"Resource Author Name contains reserved character: ','");
+        $this->templates['SelectAuthorType']           = new ErrorTemplate(01,02,null,"Please select an Author Type");
+        $this->templates['SpecifyResourceAuthor']      = new ErrorTemplate(01,03,null,"Please specify a Resource Author");
+        $this->templates['TitleAlreadyExists']         = new ErrorTemplate(01,04,null,"A resource with this title already exists");
+        $this->templates['TitleNotSpecified']          = new ErrorTemplate(01,05,null,"Resource title is not specified");
+        $this->templates['KeywordsAreRequired']        = new ErrorTemplate(01,06,null,"Please specify some keywords");
+        $this->templates['AuthorTypeIncorrectValue']   = new ErrorTemplate(01,07,null,"Author Type is an incorrect value");
+        $this->templates['SelectResourceType']         = new ErrorTemplate(01,08,null,"Please select a Resource Type");
+        $this->templates['ResourceTypeIncorrectValue'] = new ErrorTemplate(01,09,null,"Resource Type is an incorrect value");
+        $this->templates['SpecifyResourceURL']         = new ErrorTemplate(01,10,null,"Please specify a URL for the Resource");
+        $this->templates['ProvideDescription']         = new ErrorTemplate(01,11,null,"Please provide a description");
         
         // Errors when interacting with database (Category#02):
         //$this->templates['CannotConnectToDB']        = new ErrorTemplate(02,01,"TECHNICAL","Could not connect to database: " . mysqli_errno($connection));
-        $this->templates['GetTypesMethodFailed']       = new ErrorTemplate(02,01,"Database->GetTypes() failed","DESCRIPTION");
-        $this->templates['GetResourcesMethodFailed'] = new ErrorTemplate(02, 02, "Database->GetResources() failed", "DESCRIPTION");
-        $this->templates['GetKeywordsMethodFailed'] = new ErrorTemplate(02, 03, "Database->GetKeywords() failed", "DESCRIPTION");
-        $this->templates['GetResourceURLMethodFailed'] = new ErrorTemplate(02, 04, "Database->GetResourceURL() failed", "DESCRIPTION");
-        $this->templates['GetAuthorsMethodFailed'] = new ErrorTemplate(02, 05, "Database->Authors() failed", "DESCRIPTION");
+        $this->templates['GetTypesMethodFailed']       = new ErrorTemplate(02,01,"Database->GetTypes() failed");
+        $this->templates['GetResourcesMethodFailed'] = new ErrorTemplate(02, 02, "Database->GetResources() failed");
+        $this->templates['GetKeywordsMethodFailed'] = new ErrorTemplate(02, 03, "Database->GetKeywords() failed");
+        $this->templates['GetResourceURLMethodFailed'] = new ErrorTemplate(02, 04, "Database->GetResourceURL() failed");
+        $this->templates['GetAuthorsMethodFailed'] = new ErrorTemplate(02, 05, "Database->Authors() failed");
         
         // Errors when calling stored procedure in database (Category#03):
-        $this->templates['spf_insert_authors']         = new ErrorTemplate(03,01,"Stored Procedure Failed: insert_authors","DESCRIPTION");
-        $this->templates['spf_insert_resource']        = new ErrorTemplate(03,02,"Stored Procedure Failed: insert_resource","DESCRIPTION");
-        $this->templates['spf_insert_keywords']        = new ErrorTemplate(03,03,"Stored Procedure Failed: insert_keywords","DESCRIPTION");
+        $this->templates['spf_insert_authors']         = new ErrorTemplate(03,01,"Stored Procedure Failed: insert_authors");
+        $this->templates['spf_insert_resource']        = new ErrorTemplate(03,02,"Stored Procedure Failed: insert_resource");
+        $this->templates['spf_insert_keywords']        = new ErrorTemplate(03,03,"Stored Procedure Failed: insert_keywords");
     }
 
     public function raise($file,$line,$error_key) {
@@ -145,8 +145,8 @@ class Error {
 
     public function print_all() {
         foreach ($this->raised_errors as $error) {
-            echo($error->TechnicalDataToString());
-            echo($error->GetDescription());
+            //echo($error->TechnicalDataToString());
+            echo($error->GetDescription() . '<br>');
         }
     }
 }
