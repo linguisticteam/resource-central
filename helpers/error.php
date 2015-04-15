@@ -1,13 +1,13 @@
 <?php
 
 class ErrorTemplate {
-    private $category;    // Category number
-    private $number;      // Number in category
-    private $technical;   // Short technical information
-    private $description; // Expanded information for user
+    public $category;    // Category number
+    public $number;      // Number in category
+    public $technical;   // Short technical information
+    public $description; // Expanded information for user
 
-    private $file;        // File name where error occurred
-    private $line;        // Line number in file where error occurred
+    public $file;        // File name where error occurred
+    public $line;        // Line number in file where error occurred
 
     /* Constructors */
 
@@ -78,10 +78,19 @@ class ErrorTemplate {
 }
 
 class Error {
+    //Dependencies
+    private $Logger;
+    
     private $templates = array();
     private $raised_errors = array();
 
-    public function __construct() {
+    public function __construct(Logger $Logger) {
+        //Inject Dependencies
+        $this->Logger = $Logger;
+        
+        
+        /* Initialize error templates */
+        
         // Errors in PHP (Category#00):
 
         // Errors in data convention (Category#01):
@@ -119,6 +128,11 @@ class Error {
         $error->SetLine($line);
 
         $this->raised_errors[] = $error;
+        
+        //Log to file if it's an internal error
+        if($error->category == 02 || $error->category == 03) {
+            $this->Logger->log_error($error->technical, $error->file, $error->line);
+        }
     }
 
     public function clear_all() {

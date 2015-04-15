@@ -13,12 +13,7 @@ class Logger {
 
 	public function __construct() {
 
-		$this->Initialize("events.log");
-	}
-	
-	public function __construct($log_name) {
-
-		$this->Initialize($log_name);
+		$this->Initialize(dirname(dirname(__FILE__)) . "/admin/logs/events.log");
 	}
 
 	private function Initialize($log_name) {
@@ -35,7 +30,7 @@ class Logger {
 
 	private function write($entry_type_string,$content_string) {
 
-		$string_to_write = date("Y-m-d H:i:s ") . $entry_type_string . $content_string . "\n";
+		$string_to_write = date("Y-m-d H:i:s") . ", " . $entry_type_string . $content_string . "\n";
 
 		file_put_contents($this->log_name,$string_to_write,FILE_APPEND);
 	}
@@ -55,8 +50,8 @@ class Logger {
 		return $this->debug_mode_active;
 	}
 
-	public function log_error($content_string) {
-		
+	public function log_error($content_string, $file, $line) {
+		$content_string = $content_string . ', FILE: ' . $file . ', LINE: ' . $line;
 		$this->write($this->error_prefix,$content_string);
 	}
 
