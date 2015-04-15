@@ -6,9 +6,12 @@ require_once(dirname(dirname(__FILE__)) . '/admin/config.php');
 //require_once(dirname(dirname(__FILE__)) . '/controllers/error.php');
 
 class Database extends mysqli {
+    //Dependencies
+    private $Error;
 
-    public function __construct() {
+    public function __construct(Error $Error) {
         parent::__construct(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        $this->Error = $Error;
     }
     
     public function GetTypes($table_name, $column_name) {
@@ -18,7 +21,7 @@ class Database extends mysqli {
         $result = $this->query($sql);
         
         if(!$result) {
-            Error::raise(__FILE__, __LINE__, 'GetTypesMethodFailed');
+            $this->Error->raise(__FILE__, __LINE__, 'GetTypesMethodFailed');
             return;
         }
         
@@ -43,7 +46,7 @@ class Database extends mysqli {
         $result = $this->query($sql);
         
         if(!$result) {
-            Error::raise(__FILE__, __LINE__, 'GetResourcesMethodFailed');
+            $this->Error->raise(__FILE__, __LINE__, 'GetResourcesMethodFailed');
             return false;
         }
         
@@ -62,7 +65,7 @@ class Database extends mysqli {
         $result = $this->query($sql);
         
         if(!$result) {
-            Error::raise(__FILE__, __LINE__, 'GetKeywordsMethodFailed');
+            $this->Error->raise(__FILE__, __LINE__, 'GetKeywordsMethodFailed');
             return false;
         }
         
@@ -78,7 +81,7 @@ class Database extends mysqli {
         $result = $this->query($sql);
         
         if(!$result) {
-            Error::raise(__FILE__, __LINE__, 'GetResourceURLMethodFailed');
+            $this->Error->raise(__FILE__, __LINE__, 'GetResourceURLMethodFailed');
             return false;
         }
         
@@ -97,7 +100,7 @@ class Database extends mysqli {
         $result = $this->query($sql);
         
         if(!$result) {
-            Error::raise(__FILE__, __LINE__, 'GetAuthorsMethodFailed');
+            $this->Error->raise(__FILE__, __LINE__, 'GetAuthorsMethodFailed');
             return false;
         }
         
