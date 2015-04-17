@@ -39,7 +39,7 @@ class ViewDisplayAllResources {
 
             while($urls_row = $urls_result->fetch_array()) {
                 $url = htmlspecialchars($urls_row['url']);
-                $output .= '<a href="' . $url . ' target="_blank">See it!</a>';
+                $output .= '<a href="' . $url . '" target="_blank">See it!</a>';
             }
 
             $output .= "</tr></tbody></table>";
