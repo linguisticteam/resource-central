@@ -5,7 +5,6 @@ class FormProcessor {
     //Dependencies
     private $Database;
     private $AddingEntry;
-    private $ClassLoader;
     private $Error;
     
     //array to hold the inputted Resource Author(s) and Author Type(s)
