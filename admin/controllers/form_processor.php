@@ -209,5 +209,3 @@ class FormProcessor {
         return true;
     }
 }
-
-//$FormProcessor = new FormProcessor($Database, $AddingEntry);
