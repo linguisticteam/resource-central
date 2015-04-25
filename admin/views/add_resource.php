@@ -9,6 +9,7 @@ class ViewAddResource {
     public $author_types = array();
     
     public function __construct(Database $Database) {
+        $this->database = $Database;
         $this->resource_types = $Database->GetTypes('resource_type', 'name');
         $this->author_types = $Database->GetTypes('author_type', 'name');
     }
