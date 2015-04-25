@@ -1,11 +1,5 @@
 <?php
-//require_once('error.php');
-//require_once(dirname(dirname(__FILE__)) . '/models/database.php');
-//require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
-
-
-
 
 class FormProcessor {
     //Dependencies
