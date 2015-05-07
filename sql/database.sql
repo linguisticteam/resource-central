@@ -15,6 +15,7 @@ CREATE TABLE `resource` (
     `id` INT AUTO_INCREMENT,
     `resource_type_id` INT NOT NULL REFERENCES `resource_type` (`id`),
     `title` TEXT NOT NULL,
+    `url` TEXT NOT NULL,
     `description` TEXT NOT NULL,
     PRIMARY KEY (id)
 );
@@ -120,22 +121,15 @@ BEGIN
                 INSERT INTO `resource` (
                     `resource_type_id`,
                     `title`,
+                    `url`,
                     `description`
                 )
                 VALUES (
                     (SELECT `id` FROM `resource_type` WHERE `name` = param_resource_type),
                     param_title,
+                    param_url,
                     param_description
-                );
-
-                INSERT INTO `element` (
-                    `resource_id`,
-                    `url`
-                )
-                VALUES (
-                    (SELECT `id` FROM `resource` WHERE `title` = param_title),
-                    param_url
-                );
+                );             
 END $$
 
 /* Procedure to insert new keywords and keyword-resource relationships */
