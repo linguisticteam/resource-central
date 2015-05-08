@@ -2,17 +2,23 @@
 require_once(dirname(dirname(__FILE__)) . '/helpers/class_loader.php');
 
 class ViewDisplayAllResources {
-    public $Database;
+    private $Database;
+    private $CPagination;
     
-    public function __construct(Database $Database) {
+    public function __construct(Database $Database, CPagination $CPagination) {
         $this->Database = $Database;
+        $this->CPagination = $CPagination;
     }
     
     public function DisplayAll() {
         
         /* Get and display the resources */
         
-        $result = $this->Database->GetResources();
+        //Variables for the pagination
+        $limit_start = $this->CPagination->limit_start;
+        $limit_end = $this->CPagination->limit_end;
+        
+        $result = $this->Database->GetResources((int) $limit_start, (int) $limit_end);
         $output = '';
         
         while($row = $result->fetch_array()) {
@@ -95,6 +101,3 @@ class ViewDisplayAllResources {
         echo $output;
     }
 }
-
-$ViewDisplayAllResources = new ViewDisplayAllResources($Database);
-?>

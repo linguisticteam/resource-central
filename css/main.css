@@ -10,8 +10,8 @@
 /* Frontend Resource Display */
 
 div#resources_display {
-    margin-left: 100px;
-    margin-right: 100px;
+    margin-left: 300px;
+    margin-right: 300px;
 }
 
 div.resource:hover {
@@ -30,6 +30,32 @@ div.clear {
     clear: both;
 }
 
+
+/* Pagination */
+
+.pagination {
+    margin-top: 10px;
+}
+
+.pagination_left {
+    float: left;
+}
+
+.pagination_right {
+    float: right;
+}
+
+.pagination_center {
+     margin-left: 100px;
+}
+
+.first_page {
+    margin-right: 10px;
+}
+
+.last_page {
+    margin-left: 10px;
+}
 
 /* Footer */
 
