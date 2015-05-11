@@ -11,12 +11,13 @@ ToDo:
 * US8: As a guest, I can contact the site maintainers/developers. Importance = 10
 
 Work in process:
-* US4: As a guest, I can see all existing resources in a paginated view. Importance = 20
+
 
 Done:
 * US7: As an administrator, I can see specific error messages telling me if the data I tried to enter into the system are not compliant with the requirements.
 * US1: As an administrator, I can add single-element resources to the system. Importance = 40
 * US5: As a developer, I can see a log file which has all the errors related to the system's operation (not errors related to data validation), so that I can be aware of problems and more easily debug them. Importance = 20
+* US4: As a guest, I can see all existing resources in a paginated view. Importance = 20
 
 ###[PUNCH SHEET](https://github.com/linguisticteam/resource-central/issues/17)
 Before you do any work, click the link above to go directly to the PUNCH SHEET. If your name is not in the list, then add it. Below your name Write a description of what you intend to work on, including if you are going to add something completely new. Replace the description with "None" when you're done.
