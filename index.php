@@ -1,3 +1,7 @@
+<?php
+    require_once(dirname(__FILE__) . '/helpers/class_loader.php');
+?>
+
 <html>
     <head>
         <title>Resource Central</title>
@@ -7,11 +11,14 @@
     <body>
     <h1>Welcome to the Resource Central</h1>
     <p>This site has a collection of useful resources that we have gathered over the years</p>
-    <?php
-    require_once(dirname(__FILE__) . '/views/display_all_resources.php');
-    ?>
+    
     <div id="resources_display">
         <?php $ViewDisplayAllResources->DisplayAll(); ?>
+        
+        <div class="pagination">
+            <?php $VPagination->DisplayPagination(); ?>
+        </div>
+        <div class="clear"></div>
     </div>
     <br>
     <div id="footer">

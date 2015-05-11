@@ -35,13 +35,14 @@ class Database extends mysqli {
         return $types_array;
     }
     
-    public function GetResources() {
+    public function GetResources($limit_offset, $limit_maxNumRows) {
         $sql = "SELECT resource.id AS resource_id, title, (
                 SELECT resource_type.name
                 FROM resource_type
                 WHERE resource_type.id = resource.resource_type_id
                 ) AS resource_type, description
-                FROM resource";
+                FROM resource
+                LIMIT " . (int) $limit_offset . ", " . (int) $limit_maxNumRows;
         
         $result = $this->query($sql);
         
@@ -106,6 +107,23 @@ class Database extends mysqli {
         
         return $result;
     }
+    
+    public function GetTotalNumResources() {
+        $sql = "SELECT COUNT(*) AS total_num FROM resource";
+        $result = $this->query($sql);
+        
+        if(!$result) {
+            $this->Error->raise(__FILE__, __LINE__, 'GetTotalNumResourcesMethodFailed');
+            return false;
+        }
+        
+        $total_rows = $result->num_rows;
+        
+        for($i = 0; $i < $total_rows; $i++) {
+            $row = $result->fetch_array(MYSQLI_ASSOC);
+            $total_num_resources = $row['total_num'];
+        }
+        
+        return (int) $total_num_resources;
+    }
 }
-
-//$Database = new Database;
