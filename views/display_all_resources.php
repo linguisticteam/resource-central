@@ -15,10 +15,10 @@ class ViewDisplayAllResources {
         /* Get and display the resources */
         
         //Variables for the pagination
-        $limit_start = $this->CPagination->limit_start;
-        $limit_end = $this->CPagination->limit_end;
+        $limit_offset = $this->CPagination->limit_offset;
+        $limit_maxNumRows = $this->CPagination->limit_maxNumRows;
         
-        $result = $this->Database->GetResources((int) $limit_start, (int) $limit_end);
+        $result = $this->Database->GetResources((int) $limit_offset, (int) $limit_maxNumRows);
         $output = '';
         
         while($row = $result->fetch_array()) {

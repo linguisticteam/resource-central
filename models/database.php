@@ -35,14 +35,14 @@ class Database extends mysqli {
         return $types_array;
     }
     
-    public function GetResources($limit_start, $limit_end) {
+    public function GetResources($limit_offset, $limit_maxNumRows) {
         $sql = "SELECT resource.id AS resource_id, title, (
                 SELECT resource_type.name
                 FROM resource_type
                 WHERE resource_type.id = resource.resource_type_id
                 ) AS resource_type, description
                 FROM resource
-                LIMIT " . (int) $limit_start . ", " . (int) $limit_end;
+                LIMIT " . (int) $limit_offset . ", " . (int) $limit_maxNumRows;
         
         $result = $this->query($sql);
         

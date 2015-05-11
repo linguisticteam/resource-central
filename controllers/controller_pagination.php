@@ -11,8 +11,8 @@ class CPagination {
     public $resources_per_page;
     
     //Variables for using the MySQL LIMIT
-    public $limit_start;
-    public $limit_end;
+    public $limit_offset;
+    public $limit_maxNumRows;
     
     public function __construct(Database $Database) {
         $this->Database = $Database;
@@ -30,8 +30,6 @@ class CPagination {
         //If current page is above zero, sanitize and accept that value
         if(!empty($_GET['page']) && $_GET['page'] > 0) {
             $this->current_page = (int) $_GET['page'];
-            $this->next_page = $this->current_page + 1;
-            $this->previous_page = $this->current_page - 1;
         }
 
         //If current page is zero or negative (i.e. invalid value), set current page to 1
@@ -47,8 +45,14 @@ class CPagination {
     }
     
     private function SetTotalPages() {
+        //Get the number of all resources in the database
         $total_num_resources = (int) $this->Database->GetTotalNumResources();
-        $this->total_pages = $total_num_resources / $this->resources_per_page;
+        
+        //Divide the above by how many resources per page will be shown
+        $absolute_value = $total_num_resources / $this->resources_per_page;
+        
+        //Round up and have the last page constitute the remainder (if any) of the division above
+        $this->total_pages = ceil($absolute_value);
     }
     
     /* Set the next page */
@@ -68,10 +72,10 @@ class CPagination {
     }
     
     private function SetMysqlLimits() {
-        //The LIMIT start is the current page minus 1 times the number of resources per page
-        $this->limit_start = ($this->current_page -1) * $this->resources_per_page;
+        //The LIMIT offset is the current page minus 1 times the number of resources per page
+        $this->limit_offset = ($this->current_page -1) * $this->resources_per_page;
         
-        //The LIMIT end is the current page times the number of resources per page
-        $this->limit_end = $this->current_page * $this->resources_per_page;
+        //The LIMIT maximum number of returned rows is the same as resources per page
+        $this->limit_maxNumRows = $this->resources_per_page;
     }
 }
