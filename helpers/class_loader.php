@@ -1,4 +1,6 @@
 <?php
+//Libraries
+require_once(dirname(dirname(__FILE__)) . '/lib/Parsedown.php');
 
 require_once(dirname(dirname(__FILE__)) . '/models/database.php');
 require_once(dirname(dirname(__FILE__)) . '/admin/controllers/form_processor.php');
@@ -9,6 +11,9 @@ require_once(dirname(dirname((__FILE__))) . '/views/display_all_resources.php');
 require_once(dirname(dirname(__FILE__)). '/controllers/controller_pagination.php');
 require_once(dirname(dirname(__FILE__)). '/views/view_pagination.php');
 
+//Libraries
+$Parsedown = new Parsedown();
+
 $Logger = new Logger();
 $Error = new Error($Logger);
 $Database = new Database($Error);
@@ -17,7 +22,7 @@ $FormProcessor = new FormProcessor($Database, $AddingEntry, $Error);
 
 $CPagination = new CPagination($Database);
 $VPagination = new VPagination($CPagination);
-$ViewDisplayAllResources = new ViewDisplayAllResources($Database, $CPagination);
+$ViewDisplayAllResources = new ViewDisplayAllResources($Database, $CPagination, $Parsedown);
 
 
 /* Previous approach
