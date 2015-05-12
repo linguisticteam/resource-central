@@ -53,7 +53,7 @@ $ViewAddResource = new ViewAddResource($Database);
     <br><br><br>
     Keywords*: <em>(separate them with commas)</em><br>
     <textarea name="keywords" rows="2" cols="50"></textarea>  <br><br> 
-    Description*: <br>
+    Description*: <em>(you can use <a href="//help.github.com/articles/markdown-basics/" target="_blank">Github-flavoured markdown</a>)</em><br>
     <textarea name="description" rows="8" cols="50"></textarea>
     <br><br>
     <input type="submit" value="submit">

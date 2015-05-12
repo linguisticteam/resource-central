@@ -4,10 +4,12 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/class_loader.php');
 class ViewDisplayAllResources {
     private $Database;
     private $CPagination;
+    private $Parsedown;
     
-    public function __construct(Database $Database, CPagination $CPagination) {
+    public function __construct(Database $Database, CPagination $CPagination, Parsedown $Parsedown) {
         $this->Database = $Database;
         $this->CPagination = $CPagination;
+        $this->Parsedown = $Parsedown;
     }
     
     public function DisplayAll() {
@@ -32,7 +34,7 @@ class ViewDisplayAllResources {
             $output .= ' <tr>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="tooltip">'
                     . '<img src="img/information-icon-small.png">'
                     . '<span><img class="callout" src="img/callout_black.gif" />'
-                    . '<strong>Description</strong><br />' . $description
+                    . '<strong>Description</strong><br />' . $this->Parsedown->text($description)
                     . '</span></a></tr>';
             
                         
