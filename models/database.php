@@ -10,8 +10,16 @@ class Database extends mysqli {
     private $Error;
 
     public function __construct(Error $Error) {
-        parent::__construct(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        //Dependencies
         $this->Error = $Error;
+        
+        //Establish database connection
+        parent::__construct(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        
+        //Set the connection encoding
+        if(!$this->set_charset("utf8")) {
+            echo 'not charse';
+        }
     }
     
     public function GetTypes($table_name, $column_name) {

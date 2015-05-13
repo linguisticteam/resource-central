@@ -14,15 +14,15 @@ USE `resource_central`;
 CREATE TABLE `resource` (
     `id` INT AUTO_INCREMENT,
     `resource_type_id` INT NOT NULL REFERENCES `resource_type` (`id`),
-    `title` TEXT NOT NULL,
-    `url` TEXT NOT NULL,
-    `description` TEXT NOT NULL,
+    `title` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `url` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `description` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE `resource_type` (
     `id` INT AUTO_INCREMENT,
-    `name` TINYTEXT,
+    `name` TINYTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci,
     PRIMARY KEY (id)
 );
 
@@ -30,22 +30,23 @@ INSERT INTO `resource_type` (name) VALUES
     ('TUTORIAL'),
     ('DOCUMENTATION'),
     ('BOOK'),
-    ('PLAYLIST')
+    ('PLAYLIST'),
+    ('ARTICLE')
 ;
 
 CREATE TABLE `element` (
     `id` INT AUTO_INCREMENT,
     `resource_id` INT REFERENCES `resource` (`id`),
     `element_type_id` INT REFERENCES `element_type` (`id`),
-    `title` TEXT,
+    `title` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci,
     `index` INT,
-    `url` TEXT NOT NULL,
+    `url` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE `element_type` (
     `id` INT AUTO_INCREMENT,
-    `name` TINYTEXT,
+    `name` TINYTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci,
     PRIMARY KEY (id)
 );
 
@@ -65,7 +66,7 @@ CREATE TABLE `keyword_xref` (
 
 CREATE TABLE `keyword` (
     `id` INT AUTO_INCREMENT,
-    `name` TINYTEXT NOT NULL,
+    `name` TINYTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     PRIMARY KEY(id)
 );
 
@@ -73,13 +74,13 @@ CREATE TABLE `author` (
     `id` INT AUTO_INCREMENT,
     `resource_id` INT NOT NULL REFERENCES `resource` (`id`),
     `author_type_id` INT NOT NULL REFERENCES `author_type` (`id`),
-    `full_name` TEXT NOT NULL,
+    `full_name` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE `author_type` (
     `id` INT AUTO_INCREMENT,
-    `name` TINYTEXT,
+    `name` TINYTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci,
     PRIMARY KEY (id)
 );
 

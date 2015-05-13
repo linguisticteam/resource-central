@@ -1,5 +1,8 @@
 <?php
-    require_once(dirname(__FILE__) . '/helpers/class_loader.php');
+require_once(dirname(__FILE__) . '/helpers/class_loader.php');
+
+//Specify the encoding
+header('Content-Type: text/html; charset=utf-8');
 ?>
 
 <html>
