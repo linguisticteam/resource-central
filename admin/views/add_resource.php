@@ -2,6 +2,9 @@
 define('START', true);
 require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
 
+//Specify the encoding
+header('Content-Type: text/html; charset=utf-8');
+
 
 class ViewAddResource {
     private $database;
@@ -20,7 +23,7 @@ $ViewAddResource = new ViewAddResource($Database);
 
 <link rel="stylesheet" type="text/css" href="../../../css/main.css">
 <h2>Add a new resource:</h2>
-<form method="post" action="../controllers/form_processing.php" name="add_resource">
+<form method="post" action="../controllers/form_processing.php" name="add_resource" accept-charset="utf-8">
     <div style="display:none;">Is this a resource with multiple elements? <br>
     <input type="radio" name="multi_element" value="yes"> Yes
     <input type="radio" name="multi_element" value="no"> No
