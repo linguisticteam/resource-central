@@ -29,7 +29,8 @@ CREATE TABLE `resource_type` (
 INSERT INTO `resource_type` (name) VALUES
     ('TUTORIAL'),
     ('DOCUMENTATION'),
-    ('BOOK')
+    ('BOOK'),
+    ('PLAYLIST')
 ;
 
 CREATE TABLE `element` (
