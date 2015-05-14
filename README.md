@@ -6,12 +6,11 @@ The User Stories are descriptions of functionality from the point of view of the
 
 ToDo:
 * US2: As an administrator, I can update the details of existing resources. Importance = 10
-* US3: As a guest, I can search for resources based on title, author, keywords, etc. Importance = 10
 * US6: As an administrator, I can add multiple-element resources to the system. Importance = 10
 * US8: As a guest, I can contact the site maintainers/developers. Importance = 10
 
 Work in process:
-
+* US3: As a guest, I can search for resources based on title, author, keywords, etc. Importance = 20
 
 Done:
 * US7: As an administrator, I can see specific error messages telling me if the data I tried to enter into the system are not compliant with the requirements.
