@@ -82,18 +82,17 @@ class ViewDisplayAllResources {
             $keywords_result = $this->Database->GetKeywords((int) $row['resource_id']);
             $row_count = $keywords_result->num_rows;
             
-            $output .= "<div class='keywords'>Keywords: ";
+            $output .= "<div class='keywords'>";
+            $output .= "<ul class='tags-list'><span class='tags-text'>Keywords:</span>  ";
             
             for($i = 0; $i < $row_count; $i++) {
                 $keywords_row = $keywords_result->fetch_array();
-                $keyword = htmlspecialchars($keywords_row['keyword']);
-               
-                //Put a comma on every iteration after the first one
-                if($i != 0) {$output .= ", ";}
+                $keyword = htmlspecialchars($keywords_row['keyword']);          
                 
-                $output .= $keyword;
+                $output .= "<li><a href='#' class='tag'>{$keyword}</a></li>";
             }
             
+            $output .= "</ul>";
             $output .= "</div>";
             
             
