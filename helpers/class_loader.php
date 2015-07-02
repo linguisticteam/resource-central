@@ -7,7 +7,7 @@ require_once(dirname(dirname(__FILE__)) . '/admin/controllers/form_processor.php
 require_once(dirname(dirname(__FILE__)) . '/admin/models/adding_entry.php');
 require_once(dirname(__FILE__) . '/error.php');
 require_once(dirname(__FILE__) . '/logger.php');
-require_once(dirname(dirname((__FILE__))) . '/views/display_all_resources.php');
+require_once(dirname(dirname((__FILE__))) . '/views/display_resources.php');
 require_once(dirname(dirname(__FILE__)). '/controllers/controller_pagination.php');
 require_once(dirname(dirname(__FILE__)). '/views/view_pagination.php');
 
@@ -22,7 +22,7 @@ $FormProcessor = new FormProcessor($Database, $AddingEntry, $Error);
 
 $CPagination = new CPagination($Database);
 $VPagination = new VPagination($CPagination);
-$ViewDisplayAllResources = new ViewDisplayAllResources($Database, $CPagination, $Parsedown);
+$ViewDisplayResources = new ViewDisplayResources($Database, $CPagination, $Parsedown);
 
 
 /* Previous approach
