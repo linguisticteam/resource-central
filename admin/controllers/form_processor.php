@@ -175,7 +175,7 @@ class FormProcessor {
         //so as to preserve the relationship between the two
         $this->authors_array[$Index] = $tempResourceAuthor . ',' . $tempAuthorType;
     }
-
+    
     public function isFieldPresent ($Field) {
         return !empty($_POST[$Field]);
     }

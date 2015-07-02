@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(dirname(__FILE__)) . '/helpers/class_loader.php');
 
-class ViewDisplayAllResources {
+class ViewDisplayResources {
     private $Database;
     private $CPagination;
     private $Parsedown;
@@ -12,7 +12,7 @@ class ViewDisplayAllResources {
         $this->Parsedown = $Parsedown;
     }
     
-    public function DisplayAll() {
+    public function DisplayResources($search_query) {
         
         /* Get and display the resources */
         
@@ -20,6 +20,10 @@ class ViewDisplayAllResources {
         $limit_offset = $this->CPagination->limit_offset;
         $limit_maxNumRows = $this->CPagination->limit_maxNumRows;
         
+        //if $search_query is set, grab resources for that query
+        //...
+        
+        //If $search_query is not set, grab all resources
         $result = $this->Database->GetResources((int) $limit_offset, (int) $limit_maxNumRows);
         $output = '';
         
@@ -40,7 +44,7 @@ class ViewDisplayAllResources {
                         
             /* Get and display URLs (this is to be expanded to more than just URLs in the future) */
 
-            $urls_result = $this->Database->GetResourceURLs((int) $row['resource_id']);
+            $urls_result = $this->Database->GetURLsForResource((int) $row['resource_id']);
 
             $output .= "<tr>";
             $output .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -58,7 +62,7 @@ class ViewDisplayAllResources {
             
             /* Get and display the authors */
             
-            $authors_result = $this->Database->GetAuthors((int) $row['resource_id']);
+            $authors_result = $this->Database->GetAuthorsForResource((int) $row['resource_id']);
             $row_count = $authors_result->num_rows;
             
             $output .= "<div class='authors'>Author(s): ";
@@ -79,7 +83,7 @@ class ViewDisplayAllResources {
             
             /* Get and display the keywords */
             
-            $keywords_result = $this->Database->GetKeywords((int) $row['resource_id']);
+            $keywords_result = $this->Database->GetKeywordsForResource((int) $row['resource_id']);
             $row_count = $keywords_result->num_rows;
             
             $output .= "<div class='keywords'>";

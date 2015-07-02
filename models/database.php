@@ -43,6 +43,7 @@ class Database extends mysqli {
         return $types_array;
     }
     
+    //Get all existing resources. Limit the number of results for pagination purposes.
     public function GetResources($limit_offset, $limit_maxNumRows) {
         $sql = "SELECT resource.id AS resource_id, title, (
                 SELECT resource_type.name
@@ -62,7 +63,8 @@ class Database extends mysqli {
         return $result;
     }
     
-    public function GetKeywords($resource_id) {
+    ////Get the keywords for a specified resource_id
+    public function GetKeywordsForResource($resource_id) {
         $sql = "SELECT (
                 SELECT name
                 FROM keyword
@@ -81,8 +83,9 @@ class Database extends mysqli {
         return $result;
     }
     
+    ////Get the URLs for a specified resource_id
     //This method is to be expanded in the future, to include more than the URL
-    public function GetResourceURLs($resource_id) {
+    public function GetURLsForResource($resource_id) {
         $sql = "SELECT url
                 FROM resource
                 WHERE id = " . (int) $resource_id;
@@ -97,7 +100,8 @@ class Database extends mysqli {
         return $result;
     }
     
-    public function GetAuthors($resource_id) {
+    //Get the authors for a specified resource_id
+    public function GetAuthorsForResource($resource_id) {
         $sql = "SELECT full_name, (
                 SELECT name
                 FROM author_type AS at
@@ -133,5 +137,12 @@ class Database extends mysqli {
         }
         
         return (int) $total_num_resources;
+    }
+    
+    //Get the resources that match a search query
+    public function GetResourcesForSearchQuery($search_query) {
+        $sql = "SELECT * FROM `resource` WHERE `id` IN ("
+                . "SELECT `resource_id` FROM `keyword_xref` WHERE `keyword_id` IN ("
+                . "SELECT `id` FROM `keyword` WHERE `name` LIKE '%" . $search_query . "%'))";
     }
 }
