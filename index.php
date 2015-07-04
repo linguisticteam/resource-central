@@ -1,25 +1,11 @@
 <?php
+//Load all the classes
 require_once(dirname(__FILE__) . '/helpers/class_loader.php');
+//require_once(dirname(__FILE__) . '/controllers/display_resources.php');
 
-//Specify the encoding
-header('Content-Type: text/html; charset=utf-8');
-
-//If there is a search query specified, assign it to $search_query
-if(!empty($_GET['q'])) {
-    $search_query = $_GET['q'];
-}
-?>
-
-<html>
-    <head>
-        <title>Resource Central</title>
-        <link rel="stylesheet" type="text/css" href="css/main.css">
-    </head>
-    
-    <body>
-    <h1>Welcome to the Resource Central</h1>
-    <p>This site has a collection of useful resources that we have gathered over the years</p>
-    
+//Display the header
+$VHeader->DisplayHeader();
+?>    
     <div id="right_hand_side">
     
     <div id="search">
@@ -31,7 +17,28 @@ if(!empty($_GET['q'])) {
     
     <div id="resources_display">
         
-        <?php $ViewDisplayResources->DisplayResources($search_query); ?>
+        <?php 
+        //If there is a search query specified
+        if(!empty($_GET['q'])) {
+            
+            //Get resource IDs that match the search query
+            $resource_IDs = $CDisplayResources->ReturnResourceIDsForSearch();
+        
+            //If there are matching resource IDs, display those resources
+            if($resource_IDs) {
+                $ViewDisplayResources->DisplayResources($resource_IDs);
+            }
+            //Else if nothing is returned, say so
+            else {
+                 echo 'No results.';
+            }
+        }
+        
+        //If there is no search query specified, just display all the resources
+        else {
+            $ViewDisplayResources->DisplayResources($resource_IDs); 
+        }
+        ?>
         
         <div class="pagination">
             <?php $VPagination->DisplayPagination(); ?>

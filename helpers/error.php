@@ -114,6 +114,7 @@ class Error {
         $this->templates['GetResourceURLMethodFailed'] = new ErrorTemplate(02, 04, "Database->GetResourceURL() failed");
         $this->templates['GetAuthorsMethodFailed'] = new ErrorTemplate(02, 05, "Database->Authors() failed");
         $this->templates['GetTotalNumResourcesMethodFailed'] = new ErrorTemplate(02, 06, "Database->GetTotalNumResources() failed");
+        $this->templates['GetResourceIDsForSearchMethodFailed'] = new ErrorTemplate(02, 06, "Database->GetResourceIDsForSearch() failed");
         
         // Errors when calling stored procedure in database (Category#03):
         $this->templates['spf_insert_authors']         = new ErrorTemplate(03,01,"Stored Procedure Failed: insert_authors");
