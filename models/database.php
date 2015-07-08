@@ -56,7 +56,7 @@ class Database extends mysqli {
         
         //If there are specified resource_IDs, get only them
         if($resource_IDs !== NULL) {
-                $sql .= " WHERE `resource_id` IN (" . $resource_IDs . ")";
+                $sql .= " WHERE resource.id IN (" . $resource_IDs . ")";
         }
         
         $sql .= " LIMIT " . (int) $limit_offset . ", " . (int) $limit_maxNumRows;

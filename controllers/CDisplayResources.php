@@ -30,7 +30,7 @@ class CDisplayResources {
             }
 
             //Trim the last comma since we don't need it
-            rtrim($resource_IDs, ',');
+            $resource_IDs = rtrim($resource_IDs, ',');
 
             //Return a comma-separated string of the resource IDs 
             return $resource_IDs;  

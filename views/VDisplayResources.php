@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(dirname(__FILE__)) . '/helpers/class_loader.php');
 
-class ViewDisplayResources {
+class VDisplayResources {
     private $Database;
     private $CPagination;
     private $Parsedown;
@@ -12,17 +12,23 @@ class ViewDisplayResources {
         $this->Parsedown = $Parsedown;
     }
     
+    /* Get and display the resources */
     public function DisplayResources($resource_IDs) {
-        
-        /* Get and display the resources */
         
         //Variables for the pagination
         $limit_offset = $this->CPagination->limit_offset;
         $limit_maxNumRows = $this->CPagination->limit_maxNumRows;
         
-        
-        //If $search_query is not set, grab all resources
+        //Get resources
         $result = $this->Database->GetResources((int) $limit_offset, (int) $limit_maxNumRows, $resource_IDs);
+        
+        //If nothing is returned, say so and end here
+        if(!$result) {
+            echo 'No results.';
+            return;
+        }
+        
+        //Initiate the variable that will contain all the output
         $output = '';
         
         //Display the resources one by one

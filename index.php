@@ -26,17 +26,13 @@ $VHeader->DisplayHeader();
         
             //If there are matching resource IDs, display those resources
             if($resource_IDs) {
-                $ViewDisplayResources->DisplayResources($resource_IDs);
-            }
-            //Else if nothing is returned, say so
-            else {
-                 echo 'No results.';
+                $VDisplayResources->DisplayResources($resource_IDs);
             }
         }
         
         //If there is no search query specified, just display all the resources
         else {
-            $ViewDisplayResources->DisplayResources($resource_IDs); 
+            $VDisplayResources->DisplayResources($resource_IDs); 
         }
         ?>
         

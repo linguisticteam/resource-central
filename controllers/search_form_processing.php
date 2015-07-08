@@ -4,7 +4,7 @@ $protocol = empty($_SERVER['HTTPS']) ? 'http://' : 'https://';
 
 //If there is something entered in the Search field, sanitize it, set GET and return to index page
 if(!empty($_POST['search_query'])) {
-    //do sanitization - what kind of?
+    //ToDo: do sanitization - what kind of?
     $search_query = $_POST['search_query'];
 
     header('Location: ' . $protocol . $_SERVER['SERVER_NAME'] . '?q=' . $search_query);
