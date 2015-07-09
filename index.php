@@ -21,13 +21,14 @@ $VHeader->DisplayHeader();
         //If there is a search query specified
         if(!empty($_GET['q'])) {
             
+            //Sanitize it and assign it to $search_query
+            $search_query = $Database->real_escape_string($_GET['q']);
+            
             //Get resource IDs that match the search query
-            $resource_IDs = $CDisplayResources->ReturnResourceIDsForSearch();
+            $resource_IDs = $CDisplayResources->ReturnResourceIDsForSearch($search_query);
         
-            //If there are matching resource IDs, display those resources
-            if($resource_IDs) {
-                $VDisplayResources->DisplayResources($resource_IDs);
-            }
+            //Display the resources that have those IDs
+            $VDisplayResources->DisplayResources($resource_IDs);
         }
         
         //If there is no search query specified, just display all the resources
@@ -37,7 +38,13 @@ $VHeader->DisplayHeader();
         ?>
         
         <div class="pagination">
-            <?php $VPagination->DisplayPagination(); ?>
+            <?php 
+            //Update the variables for the pagination
+            $CPagination->__construct($Database, $search_query);
+            
+            //Display the pagination
+            $VPagination->DisplayPagination(); 
+            ?>
         </div>
         <div class="clear"></div>
     </div>

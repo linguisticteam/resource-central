@@ -8,8 +8,8 @@ require_once(dirname(dirname(__FILE__)) . '/admin/config.php');
 class Database extends mysqli {
     //Dependencies
     private $Error;
-    
-    private $search_query_resource_ids;
+   
+    public $num_resources_found;
 
     public function __construct(Error $Error) {
         //Dependencies
@@ -147,6 +147,19 @@ class Database extends mysqli {
         return (int) $total_num_resources;
     }
     
+    //Get the number of resources that match a search query
+    public function GetTotalNumResourcesForSearchQuery($search_query) {
+       
+        //Check if the number of resources for the search query has already been found 
+        if(!$this->num_resources_found) {
+            
+            //If not, call this method which sets it
+            $this->GetResourceIDsForSearchQuery($search_query);
+        }
+        
+        return $this->num_resources_found;
+    }
+    
     //Get the resource IDs that match a search query
     public function GetResourceIDsForSearchQuery($search_query) {
         $sql = "SELECT * FROM `resource` WHERE `id` IN ("
@@ -160,6 +173,9 @@ class Database extends mysqli {
             $this->Error->raise(__FILE__, __LINE__, 'GetResourceIDsForSearchMethodFailed');
             return false;
         }
+        
+        //Set the number of resources found for the search query
+        $this->num_resources_found = $result->num_rows;
         
         return $result;
     }
