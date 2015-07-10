@@ -7,9 +7,11 @@ require_once(dirname(dirname(__FILE__)) . '/admin/controllers/form_processor.php
 require_once(dirname(dirname(__FILE__)) . '/admin/models/adding_entry.php');
 require_once(dirname(__FILE__) . '/error.php');
 require_once(dirname(__FILE__) . '/logger.php');
-require_once(dirname(dirname((__FILE__))) . '/views/display_resources.php');
-require_once(dirname(dirname(__FILE__)). '/controllers/controller_pagination.php');
-require_once(dirname(dirname(__FILE__)). '/views/view_pagination.php');
+require_once(dirname(dirname((__FILE__))) . '/views/VDisplayResources.php');
+require_once(dirname(dirname(__FILE__)). '/controllers/CPagination.php');
+require_once(dirname(dirname(__FILE__)). '/views/VPagination.php');
+require_once(dirname(dirname((__FILE__))) . '/views/header.php');
+require_once(dirname(dirname(__FILE__)). '/controllers/CDisplayResources.php');
 
 //Libraries
 $Parsedown = new Parsedown();
@@ -20,9 +22,11 @@ $Database = new Database($Error);
 $AddingEntry = new AddingEntry($Error);
 $FormProcessor = new FormProcessor($Database, $AddingEntry, $Error);
 
+$VHeader = new VHeader();
 $CPagination = new CPagination($Database);
 $VPagination = new VPagination($CPagination);
-$ViewDisplayResources = new ViewDisplayResources($Database, $CPagination, $Parsedown);
+$VDisplayResources = new VDisplayResources($Database, $CPagination, $Parsedown);
+$CDisplayResources = new CDisplayResources($Database);
 
 
 /* Previous approach

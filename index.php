@@ -1,40 +1,50 @@
 <?php
+//Load all the classes
 require_once(dirname(__FILE__) . '/helpers/class_loader.php');
 
-//Specify the encoding
-header('Content-Type: text/html; charset=utf-8');
-
-//If there is a search query specified, assign it to $search_query
-if(!empty($_GET['q'])) {
-    $search_query = $_GET['q'];
-}
-?>
-
-<html>
-    <head>
-        <title>Resource Central</title>
-        <link rel="stylesheet" type="text/css" href="css/main.css">
-    </head>
-    
-    <body>
-    <h1>Welcome to the Resource Central</h1>
-    <p>This site has a collection of useful resources that we have gathered over the years</p>
-    
+//Display the header
+$VHeader->DisplayHeader();
+?>    
     <div id="right_hand_side">
     
     <div id="search">
             <form action="controllers/search_form_processing.php" method="post" name="search" accept-charset="utf-8">
-                <input type="text" size="50" name="search_query" placeholder="Search...">
+                <input type="text" size="50" name="search_query" placeholder="Search..." 
+                    <?php echo !empty($_GET['q']) ? "value='" . htmlspecialchars($_GET['q']) . "'" : ""; ?>>
                 <input type="submit" value="Search">
             </form>
     </div>
     
     <div id="resources_display">
         
-        <?php $ViewDisplayResources->DisplayResources($search_query); ?>
+        <?php 
+        //If there is a search query specified
+        if(!empty($_GET['q'])) {
+            
+            //Sanitize it for MySQL use and assign it to $search_query
+            $search_query = $Database->real_escape_string($_GET['q']);
+            
+            //Get resource IDs that match the search query
+            $resource_IDs = $CDisplayResources->ReturnResourceIDsForSearch($search_query);
+        
+            //Display the resources that have those IDs
+            $VDisplayResources->DisplayResources($resource_IDs);
+        }
+        
+        //If there is no search query specified, just display all the resources
+        else {
+            $VDisplayResources->DisplayResources($resource_IDs); 
+        }
+        ?>
         
         <div class="pagination">
-            <?php $VPagination->DisplayPagination(); ?>
+            <?php 
+            //Update the variables for the pagination
+            $CPagination->__construct($Database, $search_query);
+            
+            //Display the pagination
+            $VPagination->DisplayPagination(); 
+            ?>
         </div>
         <div class="clear"></div>
     </div>

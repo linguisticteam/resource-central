@@ -1,3 +1,5 @@
 /nbproject
 admin/config.php
 admin/logs/events.log
+crc.example.com-access.log
+crc.example.com-error.log
