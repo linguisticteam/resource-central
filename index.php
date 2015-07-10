@@ -1,7 +1,6 @@
 <?php
 //Load all the classes
 require_once(dirname(__FILE__) . '/helpers/class_loader.php');
-//require_once(dirname(__FILE__) . '/controllers/display_resources.php');
 
 //Display the header
 $VHeader->DisplayHeader();
@@ -10,7 +9,8 @@ $VHeader->DisplayHeader();
     
     <div id="search">
             <form action="controllers/search_form_processing.php" method="post" name="search" accept-charset="utf-8">
-                <input type="text" size="50" name="search_query" placeholder="Search...">
+                <input type="text" size="50" name="search_query" placeholder="Search..." 
+                    <?php echo !empty($_GET['q']) ? "value='" . htmlspecialchars($_GET['q']) . "'" : ""; ?>>
                 <input type="submit" value="Search">
             </form>
     </div>
@@ -21,7 +21,7 @@ $VHeader->DisplayHeader();
         //If there is a search query specified
         if(!empty($_GET['q'])) {
             
-            //Sanitize it and assign it to $search_query
+            //Sanitize it for MySQL use and assign it to $search_query
             $search_query = $Database->real_escape_string($_GET['q']);
             
             //Get resource IDs that match the search query
