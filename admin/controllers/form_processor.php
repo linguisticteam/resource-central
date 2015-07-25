@@ -4,16 +4,16 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
 class FormProcessor {
     //Dependencies
     private $Database;
-    private $AddingEntry;
+    private $MAddingEntry;
     private $Error;
     
     //array to hold the inputted Resource Author(s) and Author Type(s)
     private $authors_array = array();
     private $predetermined_author_types = array();
 
-    public function __construct (Database $Database, AddingEntry $AddingEntry, Error $Error) {
+    public function __construct (Database $Database, MAddingEntry $MAddingEntry, Error $Error) {
         $this->Database = $Database;
-        $this->AddingEntry = $AddingEntry;
+        $this->MAddingEntry = $MAddingEntry;
         $this->Error = $Error;
     }
     
@@ -28,7 +28,7 @@ class FormProcessor {
         }
         
         $title = $this->getEscapedField('title');   
-        $is_duplicate = $this->AddingEntry->IsTitleDuplicate($title);
+        $is_duplicate = $this->MAddingEntry->IsTitleDuplicate($title);
         
         if($is_duplicate) {
             $this->Error->raise(__FILE__,__LINE__,'TitleAlreadyExists');
@@ -135,6 +135,58 @@ class FormProcessor {
         $keywords = implode(',', $trimmed_keywords);
         
         return $keywords;
+    }
+    
+    /* This function validates the publishing date but allows for optional year, month and day */
+    public function GetValidatedPublishingDate() {
+        //Do anything only if year is present
+        if(!$this->isFieldPresent('publishing_year')) {
+            return '';
+        }
+        
+        /* If year is present, carry on */
+        
+        //Get year value
+        $year = $this->getTrimmedField('publishing_year');
+
+        //Check if month is present
+        if($this->isFieldPresent('publishing_month')) {
+            $month = $this->getTrimmedField('publishing_month');
+
+            //If month is present, check if day is present
+            if($this->isFieldPresent('publishing_day')) {
+                $day = $this->getTrimmedField('publishing_day');
+            }
+            //If day is not present, enter a dummy value for it
+            else {
+                $day = 1;
+                $day_not_present = true;
+            }
+        }
+        //If month is not present, enter a dummy value for month and day
+        else {
+            $month = 1;
+            $month_not_present = true;
+            $day = 1;
+            $day_not_present = true;
+        }
+
+        //Now that we have some values for year, month and day, let's validate them
+        //Note: the validation is supposed to pass even if only year or year+month are present
+        $is_date_valid = checkdate($month, $day, $year);
+
+        //If date provided is not valid, raise error and finish
+        if(!$is_date_valid) {
+            $this->Error->raise(__FILE__, __LINE__, 'InvalidDate');
+            return;
+        }
+
+        //Assign either the validated month/day value or '00' (which means 'Unknown')
+        $validated_month = $month_not_present ? '00' : $month;
+        $validated_day = $day_not_present ? '00' : $day;
+        
+        $validated_date = $year . '-' . $validated_month . '-' . $validated_day;
+        return $validated_date;
     }
 
     public function GetValidatedDescription() {

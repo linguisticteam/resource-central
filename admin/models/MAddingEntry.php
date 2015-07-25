@@ -1,6 +1,6 @@
 <?php
 
-class AddingEntry extends Database {
+class MAddingEntry extends Database {
     //Dependencies
     private $Error;
     
@@ -9,6 +9,7 @@ class AddingEntry extends Database {
     private $url;
     private $authors;
     private $keywords;
+    private $publishing_date;
     private $description;
 
     public function __construct(Error $Error) {
@@ -16,13 +17,14 @@ class AddingEntry extends Database {
         $this->Error = $Error;
     }
     
-    public function SetProperties($title, $resource_type, $url, $authors, $keywords, $description) {
+    public function SetProperties($title, $resource_type, $url, $authors, $keywords, $publishing_date, $description) {
         //Call the setter methods one by one
         $this->SetTitle($title);
         $this->SetResourceType($resource_type);
         $this->SetURL($url);
         $this->SetAuthors($authors);
         $this->SetKeywords($keywords);
+        $this->SetPublishingDate($publishing_date);
         $this->SetDescription($description);
     }
 
@@ -71,13 +73,18 @@ class AddingEntry extends Database {
     public function SetURL($url) {
         $this->url = $url;
     }
+    
+    public function SetPublishingDate($publishing_date) {
+        $this->publishing_date = $publishing_date;
+    }
 
     public function SetDescription($description) {
         $this->description = $description;
     }
 
     protected function AddResource () {
-        $sql = "CALL insert_resource ('{$this->title}', '{$this->resource_type}', '{$this->url}', '{$this->description}')";
+        $sql = "CALL insert_resource ('{$this->title}', '{$this->resource_type}', '{$this->url}',"
+        . " '{$this->publishing_date}', '{$this->description}')";
         $result = $this->query($sql);
         
         if($result != true) {
@@ -128,5 +135,3 @@ class AddingEntry extends Database {
         return true;
     }
 }
-
-//$AddingEntry = new AddingEntry;
