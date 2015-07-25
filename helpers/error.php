@@ -105,6 +105,7 @@ class Error {
         $this->templates['ResourceTypeIncorrectValue'] = new ErrorTemplate(01,09,null,"Resource Type is an incorrect value");
         $this->templates['SpecifyResourceURL']         = new ErrorTemplate(01,10,null,"Please specify a URL for the Resource");
         $this->templates['ProvideDescription']         = new ErrorTemplate(01,11,null,"Please provide a description");
+        $this->templates['InvalidDate']         = new ErrorTemplate(01,12,null,"You have entered an invalid publishing date");
         
         // Errors when interacting with database (Category#02):
         //$this->templates['CannotConnectToDB']        = new ErrorTemplate(02,01,"TECHNICAL","Could not connect to database: " . mysqli_errno($connection));

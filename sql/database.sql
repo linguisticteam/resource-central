@@ -16,6 +16,7 @@ CREATE TABLE `resource` (
     `resource_type_id` INT NOT NULL REFERENCES `resource_type` (`id`),
     `title` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     `url` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `publishing_date` VARCHAR(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
     `description` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     PRIMARY KEY (id)
 );
@@ -120,18 +121,21 @@ DELIMITER $$
 
 
 /* Stored procedure to insert a single-element resource */
-CREATE PROCEDURE insert_resource (IN param_title TEXT, IN param_resource_type TEXT, IN param_url TEXT, IN param_description TEXT)
+CREATE PROCEDURE insert_resource (IN param_title TEXT, IN param_resource_type TEXT,
+    IN param_url TEXT, IN param_publishing_date VARCHAR(9), IN param_description TEXT)
 BEGIN
                 INSERT INTO `resource` (
                     `resource_type_id`,
                     `title`,
                     `url`,
+                    `publishing_date`,
                     `description`
                 )
                 VALUES (
                     (SELECT `id` FROM `resource_type` WHERE `name` = param_resource_type),
                     param_title,
                     param_url,
+                    param_publishing_date,
                     param_description
                 );             
 END $$

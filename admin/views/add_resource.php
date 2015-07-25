@@ -35,8 +35,8 @@ $ViewAddResource = new ViewAddResource($Database);
     Resource Type*:  <select name="resource_type">
                                 <option value="">Please Select</option>
                                 <?php foreach($ViewAddResource->resource_types as $type) {
-                                    echo '<option value="' . $type . '">' . ucwords(strtolower($type)) . '</option>';
-                                } ?>
+                                        echo '<option value="' . $type . '">' . ucwords(strtolower($type)) . '</option>';
+                                    }  ?>
                             </select>
     <br><br>
     Resource URL*: <input type="text" name="url"><br><br>
@@ -55,7 +55,43 @@ $ViewAddResource = new ViewAddResource($Database);
     <a href="#" id="add_another_author">+ Add another author</a>
     <br><br><br>
     Keywords*: <em>(separate them with commas)</em><br>
-    <textarea name="keywords" rows="2" cols="50"></textarea>  <br><br> 
+    <textarea name="keywords" rows="2" cols="50"></textarea>  <br><br>
+     
+    <div id="publishing_date">
+        Publishing Date: <br>
+        <input type="text" size="5" value="" name="publishing_year" placeholder="Year">
+        
+        <select name="publishing_month">
+            <option value="" selected>Month</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+        <select name="publishing_day">
+            <option value='' selected>Day</option>
+            <?php 
+                for($i = 1; $i <=31; $i++) {
+                    echo "<option value='{$i}'>{$i}</option>";
+                }
+            ?>
+        </select>
+<!--        <select name="date11_month"></select>
+        <select name="date11_date"></select>
+        <input type="text" size="5" value="" name="date11_year">
+        <a href="#" onclick="cal11.showCalendar('anchor11'); return false;" 
+           title="cal11.showCalendar('anchor11'); return false;" 
+           name="anchor11" id="anchor11">select</a>-->
+    </div>
+    <div><em>You can optionally enter the year (and/or month/day) of publication of this resource</em></div> <br><br> 
     Description*: <em>(you can use <a href="//help.github.com/articles/markdown-basics/" target="_blank">Github-flavoured markdown</a>)</em><br>
     <textarea name="description" rows="8" cols="50"></textarea>
     <br><br>

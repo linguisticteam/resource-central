@@ -10,6 +10,7 @@ $resource_type = $FormProcessor->GetValidatedResourceType();
 $url = $FormProcessor->GetValidatedUrl();
 $authors = $FormProcessor->GetValidatedAuthors();
 $keywords = $FormProcessor->GetValidatedKeywords();
+$publishing_date = $FormProcessor->GetValidatedPublishingDate();
 $description = $FormProcessor->GetValidatedDescription();
 
 //Check for raised errors, cancel operation if found
@@ -19,16 +20,17 @@ if($Error->count() > 0) {
 }
 
 //Put the values into the AddingEntry object
-$AddingEntry->SetProperties(
+$MAddingEntry->SetProperties(
         $title,
         $resource_type,
         $url,
         $authors,
         $keywords,
+        $publishing_date,
         $description);
 
 //Insert the values to the database
-$AddingEntry->InsertToDb();
+$MAddingEntry->InsertToDb();
 
 //Check for raised errors
     if($Error->count() > 0) {
