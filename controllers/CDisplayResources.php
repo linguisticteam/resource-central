@@ -1,16 +1,16 @@
 <?php
 class CDisplayResources {
     //Dependencies
-    private $Database;
+    private $MDatabase;
     
-    public function __construct(Database $Database) {
-        $this->Database = $Database;
+    public function __construct(MDatabase $MDatabase) {
+        $this->MDatabase = $MDatabase;
     }
 
     public function ReturnResourceIDsForSearch($search_query) {
 
         //Grab resource IDs for that query
-        $result = $this->Database->GetResourceIDsForSearchQuery($search_query);
+        $result = $this->MDatabase->GetResourceIDsForSearchQuery($search_query);
 
         //If there are no results for this search query, return false
         if(!$result) {

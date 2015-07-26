@@ -2,12 +2,12 @@
 require_once(dirname(dirname(__FILE__)) . '/helpers/class_loader.php');
 
 class VDisplayResources {
-    private $Database;
+    private $MDatabase;
     private $CPagination;
     private $Parsedown;
     
-    public function __construct(Database $Database, CPagination $CPagination, Parsedown $Parsedown) {
-        $this->Database = $Database;
+    public function __construct(MDatabase $MDatabase, CPagination $CPagination, Parsedown $Parsedown) {
+        $this->MDatabase = $MDatabase;
         $this->CPagination = $CPagination;
         $this->Parsedown = $Parsedown;
     }
@@ -20,7 +20,7 @@ class VDisplayResources {
         $limit_maxNumRows = $this->CPagination->limit_maxNumRows;
         
         //Get resources
-        $result = $this->Database->GetResources((int) $limit_offset, (int) $limit_maxNumRows, $resource_IDs);
+        $result = $this->MDatabase->GetResources((int) $limit_offset, (int) $limit_maxNumRows, $resource_IDs);
         
         //If nothing is returned, say so and end here
         if(!$result) {
@@ -74,7 +74,7 @@ class VDisplayResources {
     /* Get and display URLs for a single resource (this is to be expanded to more than just URLs in the future) */
     public function DisplayURLs($resource_id) {
 
-        $urls_result = $this->Database->GetURLsForResource($resource_id);
+        $urls_result = $this->MDatabase->GetURLsForResource($resource_id);
 
         $output = "<tr>";
         $output .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -91,7 +91,7 @@ class VDisplayResources {
     /* Get and display the authors for a single resource */
     public function DisplayAuthors($resource_id) {
             
-        $authors_result = $this->Database->GetAuthorsForResource($resource_id);
+        $authors_result = $this->MDatabase->GetAuthorsForResource($resource_id);
         $row_count = $authors_result->num_rows;
 
         $output = "<div class='authors'>Author(s): ";
@@ -114,7 +114,7 @@ class VDisplayResources {
         
      /* Get and display the keywords for a single resource */
     public function DisplayKeywords($resource_id) {
-        $keywords_result = $this->Database->GetKeywordsForResource($resource_id);
+        $keywords_result = $this->MDatabase->GetKeywordsForResource($resource_id);
         $row_count = $keywords_result->num_rows;
 
         $output = "<div class='keywords'>";

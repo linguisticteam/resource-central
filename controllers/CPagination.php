@@ -2,7 +2,7 @@
 
 class CPagination {
     //Dependencies
-    private $Database;
+    private $MDatabase;
     
     public $current_page;
     public $next_page;
@@ -14,8 +14,8 @@ class CPagination {
     public $limit_offset;
     public $limit_maxNumRows;
     
-    public function __construct(Database $Database, $search_query = NULL) {
-        $this->Database = $Database;
+    public function __construct(MDatabase $MDatabase, $search_query = NULL) {
+        $this->MDatabase = $MDatabase;
         
         $this->SetResourcesPerPage();
         $this->SetTotalPages($search_query);
@@ -30,12 +30,12 @@ class CPagination {
         
         //If there is a search query specified, get the number of results from it 
         if($search_query !== NULL) {
-            $num_resources = (int) $this->Database->GetTotalNumResourcesForSearchQuery($search_query);
+            $num_resources = (int) $this->MDatabase->GetTotalNumResourcesForSearchQuery($search_query);
         }
         
         //Else get the total number of resources in the database
         else {
-            $num_resources = (int) $this->Database->GetTotalNumResources();
+            $num_resources = (int) $this->MDatabase->GetTotalNumResources();
         }
         
         //Divide the above by how many resources per page will be shown

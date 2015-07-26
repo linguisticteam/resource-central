@@ -3,7 +3,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
 
 class FormProcessor {
     //Dependencies
-    private $Database;
+    private $MDatabase;
     private $MAddingEntry;
     private $Error;
     
@@ -11,8 +11,8 @@ class FormProcessor {
     private $authors_array = array();
     private $predetermined_author_types = array();
 
-    public function __construct (Database $Database, MAddingEntry $MAddingEntry, Error $Error) {
-        $this->Database = $Database;
+    public function __construct (MDatabase $MDatabase, MAddingEntry $MAddingEntry, Error $Error) {
+        $this->MDatabase = $MDatabase;
         $this->MAddingEntry = $MAddingEntry;
         $this->Error = $Error;
     }
@@ -47,7 +47,7 @@ class FormProcessor {
         }
         
         $resource_type = $this->getEscapedField('resource_type');
-        $predetermined_resource_types = $this->Database->GetTypes('resource_type', 'name');
+        $predetermined_resource_types = $this->MDatabase->GetTypes('resource_type', 'name');
         
         //Make sure that the Resource Type is one of the predetermined values
         if(!in_array($resource_type, $predetermined_resource_types, true)) {
@@ -214,7 +214,7 @@ class FormProcessor {
 
         //Get the predetermined Author Types if we haven't already
         if(!$this->predetermined_author_types) {
-            $this->predetermined_author_types = $this->Database->GetTypes('author_type', 'name');
+            $this->predetermined_author_types = $this->MDatabase->GetTypes('author_type', 'name');
         }
         
         //Make sure that Author Type is one of the values that we have predetermined
@@ -242,7 +242,7 @@ class FormProcessor {
     }
 
     public function escapeString ($String) {
-        return $this->Database->real_escape_string($String);
+        return $this->MDatabase->real_escape_string($String);
     }
     
     
