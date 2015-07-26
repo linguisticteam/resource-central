@@ -51,7 +51,7 @@ class Database extends mysqli {
                 SELECT resource_type.name
                 FROM resource_type
                 WHERE resource_type.id = resource.resource_type_id
-                ) AS resource_type, description
+                ) AS resource_type, publishing_date, description
                 FROM resource";
         
         //If there are specified resource_IDs, get only them

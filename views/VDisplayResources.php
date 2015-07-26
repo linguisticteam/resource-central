@@ -38,17 +38,25 @@ class VDisplayResources {
             $title = htmlspecialchars($row['title']);
             $resource_type = htmlspecialchars($row['resource_type']);
             $description = htmlspecialchars($row['description']);
+            $publishing_date = htmlspecialchars($row['publishing_date']);
+            
             $output .= "<h3>" . $title . "</h3>";
-            $output .= "<table class='resource_info'><tbody><tr>Type: " . ucwords(strtolower($resource_type)) . '</tr>';
+            $output .= "<table class='resource_info'><tbody>";
+            $output .= "<tr>Type: " . ucwords(strtolower($resource_type)) . '</tr>';
             $output .= ' <tr>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="tooltip">'
                     . '<img src="img/information-icon-small.png">'
                     . '<span><img class="callout" src="img/callout_black.gif" />'
                     . '<strong>Description</strong><br />' . $this->Parsedown->text($description)
                     . '</span></a></tr>';
             
-            
             /* Get and display the URLs */
-            $output .= $this->DisplayURLs((int) $row['resource_id']);            
+            $output .= $this->DisplayURLs((int) $row['resource_id']);  
+                    
+            //Clear the float
+            $output .= '<div class="clear"></div>';
+            
+            /* Display the publishing date, if it exists */
+            $output .= $publishing_date ? "<tr>Publishing Date: {$publishing_date}</tr>" : '';
            
             /* Get and display the authors */
             $output .= $this->DisplayAuthors((int) $row['resource_id']);
@@ -77,10 +85,6 @@ class VDisplayResources {
         }
 
         $output .= "</tr></tbody></table>";
-
-        //Clear the float
-        $output .= '<div class="clear"></div>';
-        
         return $output;
     }
     
@@ -107,7 +111,7 @@ class VDisplayResources {
         
         return $output;
     }
-    
+        
      /* Get and display the keywords for a single resource */
     public function DisplayKeywords($resource_id) {
         $keywords_result = $this->Database->GetKeywordsForResource($resource_id);
