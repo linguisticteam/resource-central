@@ -5,7 +5,7 @@
 require_once(dirname(dirname(__FILE__)) . '/admin/config.php');
 //require_once(dirname(dirname(__FILE__)) . '/controllers/error.php');
 
-class Database extends mysqli {
+class MDatabase extends mysqli {
     //Dependencies
     private $Error;
    
@@ -176,6 +176,25 @@ class Database extends mysqli {
         
         //Set the number of resources found for the search query
         $this->num_resources_found = $result->num_rows;
+        
+        return $result;
+    }
+    
+    /* Get the keywords and order them by those that are most commonly found */
+    public function GetKeywordsByPopularity() {
+        $sql = "SELECT ("
+                . "SELECT `name` FROM `keyword` WHERE keyword.id = keyword_xref.keyword_id"
+                . ") as keyword"
+                . " FROM `keyword_xref` "
+                . "GROUP BY `keyword_id` "
+                . "ORDER BY COUNT(keyword_id) DESC";
+        
+        $result = $this->query($sql);
+        
+        if(!$result) {
+            $this->Error->raise(__FILE__, __LINE__, 'GetKeywordsByPopularityMethodFailed');
+            return false;
+        }
         
         return $result;
     }

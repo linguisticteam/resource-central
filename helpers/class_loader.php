@@ -2,7 +2,7 @@
 //Libraries
 require_once(dirname(dirname(__FILE__)) . '/lib/Parsedown.php');
 
-require_once(dirname(dirname(__FILE__)) . '/models/database.php');
+require_once(dirname(dirname(__FILE__)) . '/models/MDatabase.php');
 require_once(dirname(dirname(__FILE__)) . '/admin/controllers/form_processor.php');
 require_once(dirname(dirname(__FILE__)) . '/admin/models/MAddingEntry.php');
 require_once(dirname(__FILE__) . '/error.php');
@@ -12,21 +12,23 @@ require_once(dirname(dirname(__FILE__)). '/controllers/CPagination.php');
 require_once(dirname(dirname(__FILE__)). '/views/VPagination.php');
 require_once(dirname(dirname((__FILE__))) . '/views/header.php');
 require_once(dirname(dirname(__FILE__)). '/controllers/CDisplayResources.php');
+require_once(dirname(dirname((__FILE__))) . '/views/VDisplayKeywords.php');
 
 //Libraries
 $Parsedown = new Parsedown();
 
 $Logger = new Logger();
 $Error = new Error($Logger);
-$Database = new Database($Error);
+$MDatabase = new MDatabase($Error);
 $MAddingEntry = new MAddingEntry($Error);
-$FormProcessor = new FormProcessor($Database, $MAddingEntry, $Error);
+$FormProcessor = new FormProcessor($MDatabase, $MAddingEntry, $Error);
 
 $VHeader = new VHeader();
-$CPagination = new CPagination($Database);
+$CPagination = new CPagination($MDatabase);
 $VPagination = new VPagination($CPagination);
-$VDisplayResources = new VDisplayResources($Database, $CPagination, $Parsedown);
-$CDisplayResources = new CDisplayResources($Database);
+$VDisplayResources = new VDisplayResources($MDatabase, $CPagination, $Parsedown);
+$CDisplayResources = new CDisplayResources($MDatabase);
+$VDisplayKeywords = new VDisplayKeywords($MDatabase);
 
 
 /* Previous approach

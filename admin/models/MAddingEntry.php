@@ -1,6 +1,6 @@
 <?php
 
-class MAddingEntry extends Database {
+class MAddingEntry extends MDatabase {
     //Dependencies
     private $Error;
     

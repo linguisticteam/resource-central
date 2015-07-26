@@ -5,9 +5,14 @@
 
 /* Frontend Resource Display */
 
+div#left_hand_side {
+    width: 250px;
+    float: left;
+}
+
 div#right_hand_side {
-    margin-left: 300px;
-    margin-right: 300px;
+    float: left;
+    margin-left: 10px;
 }
 
 /*div.resource:hover {

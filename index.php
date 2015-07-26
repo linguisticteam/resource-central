@@ -5,6 +5,10 @@ require_once(dirname(__FILE__) . '/helpers/class_loader.php');
 //Display the header
 $VHeader->DisplayHeader();
 ?>    
+    <div id="left_hand_side">
+        <?php $VDisplayKeywords->DisplayKeywordsByPopularity(); ?>
+    </div>
+    
     <div id="right_hand_side">
     
     <div id="search">
@@ -22,7 +26,7 @@ $VHeader->DisplayHeader();
         if(!empty($_GET['q'])) {
             
             //Sanitize it for MySQL use and assign it to $search_query
-            $search_query = $Database->real_escape_string($_GET['q']);
+            $search_query = $MDatabase->real_escape_string($_GET['q']);
             
             //Get resource IDs that match the search query
             $resource_IDs = $CDisplayResources->ReturnResourceIDsForSearch($search_query);
@@ -40,7 +44,7 @@ $VHeader->DisplayHeader();
         <div class="pagination">
             <?php 
             //Update the variables for the pagination
-            $CPagination->__construct($Database, $search_query);
+            $CPagination->__construct($MDatabase, $search_query);
             
             //Display the pagination
             $VPagination->DisplayPagination(); 
@@ -49,6 +53,7 @@ $VHeader->DisplayHeader();
         <div class="clear"></div>
     </div>
     </div>
+    <div class="clear"></div>
     <br>
     <div id="footer">
         <span><a href="//github.com/linguisticteam/resource-central/" target="_blank">View this project on github</a></span>
