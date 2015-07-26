@@ -124,7 +124,7 @@ class VDisplayResources {
             $keywords_row = $keywords_result->fetch_array();
             $keyword = htmlspecialchars($keywords_row['keyword']);          
 
-            $output .= "<li><a href='/?q=" . $keyword . "' class='tag'>{$keyword}</a></li>";
+            $output .= "<li><a href='/?q=" . $keyword . "' title='Search by this keyword' class='tag'>{$keyword}</a></li>";
         }
 
         $output .= "</ul>";
