@@ -1,4 +1,5 @@
 <?php
+defined('START') or die();
 
 class ErrorTemplate {
     public $category;    // Category number

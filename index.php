@@ -1,6 +1,12 @@
 <?php
+//This is a valid entry point
+define('START', true);
+
 //Load all the classes
 require_once(dirname(__FILE__) . '/helpers/class_loader.php');
+
+//Process the search form for any search query entered
+$CSearchFormProcessor->ProcessForm();
 
 //Display the header
 $VHeader->DisplayHeader();
@@ -12,7 +18,7 @@ $VHeader->DisplayHeader();
     <div id="right_hand_side">
     
     <div id="search">
-            <form action="controllers/search_form_processing.php" method="post" name="search" accept-charset="utf-8">
+            <form action="index.php" method="post" name="search" accept-charset="utf-8">
                 <input type="text" size="50" name="search_query" placeholder="Search..." 
                     <?php echo !empty($_GET['q']) ? "value='" . htmlspecialchars($_GET['q']) . "'" : ""; ?>>
                 <input type="submit" value="Search">

@@ -1,4 +1,6 @@
 <?php
+defined('START') or die();
+
 //Libraries
 require_once(dirname(dirname(__FILE__)) . '/lib/Parsedown.php');
 
@@ -13,6 +15,7 @@ require_once(dirname(dirname(__FILE__)). '/views/VPagination.php');
 require_once(dirname(dirname((__FILE__))) . '/views/header.php');
 require_once(dirname(dirname(__FILE__)). '/controllers/CDisplayResources.php');
 require_once(dirname(dirname((__FILE__))) . '/views/VDisplayKeywords.php');
+require_once(dirname(dirname(__FILE__)). '/controllers/CSearchFormProcessor.php');
 
 //Libraries
 $Parsedown = new Parsedown();
@@ -29,6 +32,7 @@ $VPagination = new VPagination($CPagination);
 $VDisplayResources = new VDisplayResources($MDatabase, $CPagination, $Parsedown);
 $CDisplayResources = new CDisplayResources($MDatabase);
 $VDisplayKeywords = new VDisplayKeywords($MDatabase);
+$CSearchFormProcessor = new CSearchFormProcessor();
 
 
 /* Previous approach

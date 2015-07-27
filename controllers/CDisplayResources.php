@@ -1,4 +1,6 @@
 <?php
+defined('START') or die();
+
 class CDisplayResources {
     //Dependencies
     private $MDatabase;
