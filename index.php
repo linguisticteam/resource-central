@@ -5,14 +5,24 @@ define('START', true);
 //Load all the classes
 require_once(dirname(__FILE__) . '/helpers/class_loader.php');
 
+//Load DICE and configure it to use only one instance of every object
+$Dice = new \Dice\Dice;
+$rule = new \Dice\Rule;
+$rule->shared = true;
+$Dice->addRule('*', $rule);
+
 //Process the search form for any search query entered
+$CSearchFormProcessor = $Dice->create('CSearchFormProcessor');
 $CSearchFormProcessor->ProcessForm();
 
 //Display the header
+$VHeader = $Dice->create('VHeader');
 $VHeader->DisplayHeader();
 ?>    
     <div id="left_hand_side">
-        <?php $VDisplayKeywords->DisplayKeywordsByPopularity(); ?>
+        <?php 
+        $VDisplayKeywords = $Dice->create('VDisplayKeywords');
+        $VDisplayKeywords->DisplayKeywordsByPopularity(); ?>
     </div>
     
     <div id="right_hand_side">
@@ -28,13 +38,20 @@ $VHeader->DisplayHeader();
     <div id="resources_display">
         
         <?php 
+        //Instantiate VDisplayResources
+        $VDisplayResources = $Dice->create('VDisplayResources');
+        
+        //Instantiate MDatabase
+        $MDatabase = $Dice->create('MDatabase');
+        
         //If there is a search query specified
         if(!empty($_GET['q'])) {
             
-            //Sanitize it for MySQL use and assign it to $search_query
+            //Sanitize the query for MySQL use and assign it to $search_query
             $search_query = $MDatabase->real_escape_string($_GET['q']);
             
             //Get resource IDs that match the search query
+            $CDisplayResources = $Dice->create('CDisplayResources');
             $resource_IDs = $CDisplayResources->ReturnResourceIDsForSearch($search_query);
         
             //Display the resources that have those IDs
@@ -49,10 +66,14 @@ $VHeader->DisplayHeader();
         
         <div class="pagination">
             <?php 
+            //Instantiate CPagination
+            $CPagination = $Dice->create('CPagination', [$search_query]);
+            
             //Update the variables for the pagination
             $CPagination->__construct($MDatabase, $search_query);
             
             //Display the pagination
+            $VPagination = $Dice->create('VPagination');
             $VPagination->DisplayPagination(); 
             ?>
         </div>

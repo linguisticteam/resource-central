@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
+defined('START') or die();
 
 class FormProcessor {
     //Dependencies

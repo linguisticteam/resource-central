@@ -2,23 +2,29 @@
 define('START', true);
 require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
 
+//Load DICE and configure it to use only one instance of every object
+$Dice = new \Dice\Dice;
+$rule = new \Dice\Rule;
+$rule->shared = true;
+$Dice->addRule('*', $rule);
+
 //Specify the encoding
 header('Content-Type: text/html; charset=utf-8');
 
 
 class ViewAddResource {
-    private $database;
+    private $MDatabase;
     public $resource_types = array();
     public $author_types = array();
     
-    public function __construct(Database $Database) {
-        $this->database = $Database;
-        $this->resource_types = $Database->GetTypes('resource_type', 'name');
-        $this->author_types = $Database->GetTypes('author_type', 'name');
+    public function __construct(MDatabase $MDatabase) {
+        $this->MDatabase = $MDatabase;
+        $this->resource_types = $MDatabase->GetTypes('resource_type', 'name');
+        $this->author_types = $MDatabase->GetTypes('author_type', 'name');
     }
 }
 
-$ViewAddResource = new ViewAddResource($Database);
+$ViewAddResource = $Dice->create('ViewAddResource');
 ?>
 
 <link rel="stylesheet" type="text/css" href="../../../css/main.css">
