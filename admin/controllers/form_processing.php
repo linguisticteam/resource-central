@@ -1,8 +1,18 @@
 <?php
-/* Don't allow direct access */
-//defined('START') or die();
+/* This is a valid entry point (at least for now) */
+define('START', true);
+
+//Load all classes
 require_once(dirname(dirname(dirname(__FILE__))) . '/helpers/class_loader.php');
  
+//Load DICE and configure it to use only one instance of every object
+$Dice = new \Dice\Dice;
+$rule = new \Dice\Rule;
+$rule->shared = true;
+$Dice->addRule('*', $rule);
+
+//Instantiate FormProcessor
+$FormProcessor = $Dice->create('FormProcessor');
 
 //Get and validate all user-suppled values from the form
 $title = $FormProcessor->GetValidatedTitle();
@@ -13,13 +23,19 @@ $keywords = $FormProcessor->GetValidatedKeywords();
 $publishing_date = $FormProcessor->GetValidatedPublishingDate();
 $description = $FormProcessor->GetValidatedDescription();
 
+//Instantiate Error
+$Error = $Dice->create('Error');
+
 //Check for raised errors, cancel operation if found
 if($Error->count() > 0) {
    $Error->print_all();
    exit;
 }
 
-//Put the values into the AddingEntry object
+//Instantiate MAddingEntry
+$MAddingEntry = $Dice->create('MAddingEntry');
+
+//Put the values into the MAddingEntry object
 $MAddingEntry->SetProperties(
         $title,
         $resource_type,
